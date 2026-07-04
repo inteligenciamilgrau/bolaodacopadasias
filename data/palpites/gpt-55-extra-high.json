@@ -1,0 +1,49 @@
+{
+  "id": "gpt-55-extra-high",
+  "modelo": "GPT 5.5 Extra High",
+  "modelo_id": "gpt-5.5-xHigh",
+  "desenvolvedor": "OpenAI",
+  "emoji": "🧠",
+  "data_palpite": "2026-07-04",
+  "metodologia": "Pesquisei em fontes independentes consultadas em 04/07/2026 e combinei força Elo, valor de elenco, consenso de modelos/mercado, odds de avanço, notícias de elenco e relatos recentes de forma no Mundial 2026. Fiz uma segunda rodada específica por confronto, dando peso extra a altitude, mando, suspensões, descanso e local do jogo. Onde a diferença era pequena, aumentei explicitamente a parcela de chute em vez de fingir precisão.",
+  "fontes": [
+    "https://www.eloratings.net/",
+    "https://www.businessinsider.com/world-cup-winner-goldman-sachs-prediction-spain-argentina-france-2026-6",
+    "https://as.com/futbol/mundial/ni-espana-ni-inglaterra-esta-es-la-seleccion-mas-valiosa-de-todo-el-mundial-2026-f202606-n/",
+    "https://www.theguardian.com/football/2026/jun/28/world-cup-2026-power-rankings-france-argentina-england-scotland",
+    "https://www.theguardian.com/football/2026/jul/04/brazil-carlo-ancelotti-world-cup",
+    "https://www.theguardian.com/football/live/2026/jul/04/world-cup-2026-cape-verde-give-argentina-mighty-scare-last-16-mexico-v-england-fixture-chaos-morocco-canada-france-paraguay-live",
+    "https://www.theguardian.com/football/2026/jul/03/mexico-england-world-cup-2026-altitude",
+    "https://www.theguardian.com/football/2026/jul/04/england-survival-mexico-world-cup-2026-thomas-tuchel",
+    "https://nypost.com/2026/07/02/betting/usa-vs-belgium-odds-revealed-with-folarin-balogun-to-miss-world-cup-clash/",
+    "https://www.houstonchronicle.com/world-cup/article/canada-morocco-world-cup-preview-time-tv-22330500.php",
+    "https://talksport.com/football/world-cup/4385474/mexico-azteca-record-england-world-cup-altitude-effect/"
+  ],
+  "justificativa": "Minha chave agora respeita mais o contexto físico do torneio: México em altitude contra Inglaterra deixou de ser só zebra e virou vantagem concreta. Ainda vou de França campeã porque o pacote de elenco, forma ofensiva e transição em jogo grande é o mais completo. A final contra a Argentina é quase moeda, mas minha moeda caiu do lado francês.",
+  "palpites": {
+    "oitavas": {
+      "O1": "FRA",
+      "O2": "MAR",
+      "O3": "ESP",
+      "O4": "USA",
+      "O5": "BRA",
+      "O6": "MEX",
+      "O7": "ARG",
+      "O8": "COL"
+    },
+    "quartas": {
+      "Q1": "FRA",
+      "Q2": "ESP",
+      "Q3": "BRA",
+      "Q4": "ARG"
+    },
+    "semis": {
+      "S1": "FRA",
+      "S2": "ARG"
+    },
+    "final": {
+      "campeao": "FRA",
+      "placar": "2x1"
+    }
+  }
+}

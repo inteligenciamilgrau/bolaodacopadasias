@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini 3.5 Flash | Análise do Mundial de Seleções 2026</title>
+  <style>
+    /* Design System & Tokens */
+    :root {
+      --bg-primary: #0a0813;
+      --bg-secondary: #120f26;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-hover: rgba(255, 255, 255, 0.06);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-color-hover: rgba(139, 92, 246, 0.4);
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      
+      --accent-purple: #8b5cf6;
+      --accent-cyan: #06b6d4;
+      --accent-gold: #f59e0b;
+      --accent-green: #10b981;
+      --accent-blue: #3b82f6;
+      
+      --gradient-primary: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-cyan) 100%);
+      --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      --gradient-card: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      
+      --font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Base Styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.12) 0px, transparent 50%);
+      color: var(--text-primary);
+      font-family: var(--font-stack);
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding-bottom: 4rem;
+    }
+
+    a {
+      color: var(--accent-cyan);
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+    a:hover {
+      color: var(--accent-purple);
+      text-decoration: underline;
+    }
+
+    /* Container & Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header & Hero */
+    header {
+      padding: 3rem 0 2rem 0;
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(10, 8, 19, 0.7);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .model-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      border: 1px solid var(--border-color);
+    }
+
+    .model-emoji {
+      font-size: 1.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .model-name {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .model-meta {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .hero-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 2.5rem 0;
+    }
+
+    .stat-card {
+      background: var(--gradient-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-color-hover);
+      box-shadow: 0 12px 30px -10px rgba(139, 92, 246, 0.15);
+    }
+
+    .stat-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .stat-card.champion-card {
+      border-color: rgba(245, 158, 11, 0.3);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, rgba(10, 8, 19, 0) 100%);
+    }
+    .stat-card.champion-card:hover {
+      border-color: var(--accent-gold);
+      box-shadow: 0 12px 30px -10px rgba(245, 158, 11, 0.25);
+    }
+
+    .champion-flag {
+      font-size: 3rem;
+      position: absolute;
+      right: 1.5rem;
+      bottom: 1rem;
+      opacity: 0.8;
+      transition: var(--transition-smooth);
+    }
+
+    .stat-card.champion-card:hover .champion-flag {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    /* Methodology Section */
+    .section-card {
+      background: var(--gradient-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 24px;
+      background: var(--gradient-primary);
+      border-radius: 4px;
+    }
+
+    .methodology-text {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .sources-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      list-style: none;
+    }
+
+    .source-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      transition: var(--transition-smooth);
+    }
+
+    .source-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--accent-cyan);
+    }
+
+    /* Interactive Bracket (Chaveamento) */
+    .bracket-section {
+      margin-bottom: 4rem;
+    }
+
+    .bracket-scroll-container {
+      overflow-x: auto;
+      padding: 2rem 0;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-purple) var(--bg-secondary);
+      border-radius: 16px;
+    }
+
+    .bracket-scroll-container::-webkit-scrollbar {
+      height: 8px;
+    }
+    .bracket-scroll-container::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+      border-radius: 10px;
+    }
+    .bracket-scroll-container::-webkit-scrollbar-thumb {
+      background: var(--accent-purple);
+      border-radius: 10px;
+    }
+
+    .bracket-container {
+      display: flex;
+      justify-content: space-between;
+      min-width: 1050px;
+      padding: 0 1rem;
+      gap: 1.5rem;
+    }
+
+    .bracket-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 240px;
+    }
+
+    .column-header {
+      text-align: center;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    .bracket-match {
+      background: rgba(18, 15, 38, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.75rem;
+      margin: 1rem 0;
+      position: relative;
+      transition: var(--transition-smooth);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .bracket-match:hover {
+      border-color: rgba(139, 92, 246, 0.3);
+      box-shadow: 0 6px 24px rgba(139, 92, 246, 0.1);
+    }
+
+    .match-id {
+      position: absolute;
+      top: -10px;
+      left: 12px;
+      background: var(--bg-primary);
+      padding: 0 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+    }
+
+    .match-team-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.4rem 0.5rem;
+      border-radius: 6px;
+      transition: var(--transition-smooth);
+      cursor: pointer;
+    }
+
+    .match-team-row:first-of-type {
+      margin-bottom: 0.25rem;
+    }
+
+    .team-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .team-flag {
+      font-size: 1.2rem;
+    }
+
+    .team-code-text {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .team-full-name {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .match-team-row.winner {
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .match-team-row.winner .team-code-text {
+      color: var(--accent-green);
+    }
+
+    .team-marker {
+      font-size: 0.85rem;
+      font-weight: bold;
+      opacity: 0;
+      transition: var(--transition-smooth);
+    }
+
+    .match-team-row.winner .team-marker {
+      opacity: 1;
+      color: var(--accent-green);
+    }
+
+    /* Highlight class triggered by JS hover */
+    .match-team-row.highlighted {
+      background: rgba(6, 182, 212, 0.15) !important;
+      transform: translateX(4px);
+    }
+    .match-team-row.highlighted .team-code-text {
+      color: var(--accent-cyan) !important;
+    }
+
+    .champion-box {
+      border: 2px solid var(--accent-gold);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(18, 15, 38, 0.8) 100%);
+      box-shadow: 0 8px 32px rgba(245, 158, 11, 0.15);
+      border-radius: 16px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      margin: auto 0;
+      animation: pulseGold 3s infinite alternate;
+    }
+
+    @keyframes pulseGold {
+      0% {
+        box-shadow: 0 8px 32px rgba(245, 158, 11, 0.15);
+        border-color: rgba(245, 158, 11, 0.6);
+      }
+      100% {
+        box-shadow: 0 8px 32px rgba(245, 158, 11, 0.35);
+        border-color: var(--accent-gold);
+      }
+    }
+
+    .champion-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent-gold);
+    }
+
+    .champion-code {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .champion-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Detailed Analysis Section */
+    .analysis-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      overflow-x: auto;
+    }
+
+    .tab-button {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+
+    .tab-button:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab-button.active {
+      color: var(--text-primary);
+      background: var(--gradient-primary);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .match-detail-card {
+      background: var(--gradient-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition-smooth);
+    }
+
+    .match-detail-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 0.75rem;
+    }
+
+    .card-id {
+      background: var(--gradient-primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .card-teams {
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .picked-winner-banner {
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 8px;
+      padding: 0.6rem 0.8rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .winner-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-secondary);
+    }
+
+    .winner-team {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      color: var(--accent-green);
+    }
+
+    .gauge-wrapper {
+      margin-bottom: 1.25rem;
+    }
+
+    .gauge-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 0.35rem;
+    }
+
+    .gauge-bar-outer {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 5px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .gauge-fill-analysis {
+      background: var(--accent-cyan);
+      height: 100%;
+      border-radius: 5px 0 0 5px;
+    }
+
+    .gauge-fill-intuition {
+      background: var(--accent-gold);
+      height: 100%;
+      border-radius: 0 5px 5px 0;
+    }
+
+    .card-reasoning {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Final match card styles */
+    .match-detail-card.final-match-card {
+      grid-column: 1 / -1;
+      border: 2px solid rgba(245, 158, 11, 0.3);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.04) 0%, rgba(18, 15, 38, 0.4) 100%);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    .final-card-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .final-score-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .score-team {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .score-team.winner-team-final .score-team-name {
+      color: var(--accent-gold);
+      font-weight: 800;
+    }
+
+    .score-team-flag {
+      font-size: 2.5rem;
+    }
+
+    .score-team-code {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .score-team-name {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .score-number-display {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--text-primary);
+      padding: 0 1.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .score-versus {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    /* Justificativa section */
+    .justification-box {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(139, 92, 246, 0.05);
+      border-left: 4px solid var(--accent-purple);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .justification-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--accent-purple);
+    }
+
+    .justification-text {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Footer & Disclaimer */
+    footer {
+      margin-top: 5rem;
+      border-top: 1px solid var(--border-color);
+      padding: 3rem 0;
+      background: rgba(10, 8, 19, 0.8);
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      text-align: center;
+    }
+
+    .footer-identity {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .footer-disclaimer {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      line-height: 1.5;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .hero-title {
+        font-size: 1.8rem;
+      }
+
+      .section-card {
+        padding: 1.5rem;
+      }
+
+      .final-score-badge {
+        flex-direction: row;
+        gap: 0.5rem;
+        padding: 1rem 0.5rem;
+      }
+
+      .score-number-display {
+        font-size: 2.2rem;
+        padding: 0 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-content">
+      <div>
+        <h1 class="hero-title">Gemini 3.5 Flash</h1>
+        <p class="hero-subtitle">Projeção e Análise do Torneio Mundial de Seleções 2026</p>
+      </div>
+      <div class="model-badge">
+        <span class="model-emoji">♊</span>
+        <div>
+          <div class="model-name">Google Gemini 3.5 Flash</div>
+          <div class="model-meta">Data do Palpite: 04/07/2026</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Dashboard Quick Stats -->
+    <section class="dashboard-grid">
+      <div class="stat-card">
+        <div class="stat-title">Palpite Geral</div>
+        <div class="stat-value">66% / 34%</div>
+        <div class="stat-desc">Média Geral: Análise vs. Chute</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Decisões Mapeadas</div>
+        <div class="stat-value">15 / 15</div>
+        <div class="stat-desc">Chave 100% preenchida e consistente</div>
+      </div>
+      <div class="stat-card champion-card">
+        <div class="stat-title">Campeão Escolhido</div>
+        <div class="stat-value" style="color: var(--accent-gold)">BRASIL</div>
+        <div class="stat-desc">Placar previsto na final: 2x1 vs FRA</div>
+        <span class="champion-flag">🇧🇷</span>
+      </div>
+    </section>
+
+    <!-- Methodology -->
+    <section class="section-card">
+      <h2 class="section-title">Metodologia</h2>
+      <p class="methodology-text">
+        A metodologia aplicada para preencher esta chave estruturou-se em três pilares fundamentais. Primeiro, a análise do <strong>histórico de confrontos diretos (H2H)</strong> oficiais das seleções envolvidas, estabelecendo uma linha de base estatística. Segundo, o mapeamento do <strong>momento de forma atual</strong>, incluindo a campanha nas Eliminatórias até meados de 2026, resultados da Eurocopa e Copa América de 2024, e os amistosos de preparação mais recentes (como a vitória belga sobre os EUA por 5-2 em março de 2026). Por fim, o equilíbrio entre a frieza dos dados e a intuição (chute) — calibrando o peso do fator emocional e o peso das camisas nos mata-matas mais equilibrados do mundo.
+      </p>
+      <ul class="sources-list">
+        <li class="source-item"><a href="https://khelnow.com" target="_blank" rel="noopener">KhelNow H2H</a></li>
+        <li class="source-item"><a href="https://tips.gg" target="_blank" rel="noopener">Tips.gg Football</a></li>
+        <li class="source-item"><a href="https://sportsmole.co.uk" target="_blank" rel="noopener">SportsMole</a></li>
+        <li class="source-item"><a href="https://wikipedia.org" target="_blank" rel="noopener">Wikipedia Football</a></li>
+        <li class="source-item"><a href="https://national-football-teams.com" target="_blank" rel="noopener">National Football Teams</a></li>
+        <li class="source-item"><a href="https://eu-football.info" target="_blank" rel="noopener">EU-Football Info</a></li>
+      </ul>
+    </section>
+
+    <!-- Interactive Bracket Section -->
+    <section class="bracket-section">
+      <h2 class="section-title">O Chaveamento</h2>
+      <p class="methodology-text" style="margin-bottom: 1.5rem; font-size: 0.95rem;">
+        Passe o mouse (ou clique) sobre qualquer seleção para ver sua trajetória iluminada ao longo das fases eliminatórias.
+      </p>
+
+      <div class="bracket-scroll-container">
+        <div class="bracket-container">
+          
+          <!-- Round of 16 (Oitavas) -->
+          <div class="bracket-column">
+            <div class="column-header">Oitavas de Final</div>
+            
+            <div class="bracket-match">
+              <span class="match-id">O1</span>
+              <div class="match-team-row winner" data-team="FRA">
+                <span class="team-info">
+                  <span class="team-flag">🇫🇷</span>
+                  <span class="team-code-text">FRA</span>
+                  <span class="team-full-name">França</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+              <div class="match-team-row" data-team="PAR">
+                <span class="team-info">
+                  <span class="team-flag">🇵🇾</span>
+                  <span class="team-code-text">PAR</span>
+                  <span class="team-full-name">Paraguai</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+            </div>
+
+            <div class="bracket-match">
+              <span class="match-id">O2</span>
+              <div class="match-team-row" data-team="CAN">
+                <span class="team-info">
+                  <span class="team-flag">🇨🇦</span>
+                  <span class="team-code-text">CAN</span>
+                  <span class="team-full-name">Canadá</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+              <div class="match-team-row winner" data-team="MAR">
+                <span class="team-info">
+                  <span class="team-flag">🇲🇦</span>
+                  <span class="team-code-text">MAR</span>
+                  <span class="team-full-name">Marrocos</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+            </div>
+
+            <div class="bracket-match">
+              <span class="match-id">O3</span>
+              <div class="match-team-row" data-team="POR">
+                <span class="team-info">
+                  <span class="team-flag">🇵🇹</span>
+                  <span class="team-code-text">POR</span>
+                  <span class="team-full-name">Portugal</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+              <div class="match-team-row winner" data-team="ESP">
+                <span class="team-info">
+                  <span class="team-flag">🇪🇸</span>
+                  <span class="team-code-text">ESP</span>
+                  <span class="team-full-name">Espanha</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+            </div>
+
+            <div class="bracket-match">
+              <span class="match-id">O4</span>
+              <div class="match-team-row" data-team="USA">
+                <span class="team-info">
+                  <span class="team-flag">🇺🇸</span>
+                  <span class="team-code-text">USA</span>
+                  <span class="team-full-name">EUA</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+              <div class="match-team-row winner" data-team="BEL">
+                <span class="team-info">
+                  <span class="team-flag">🇧🇪</span>
+                  <span class="team-code-text">BEL</span>
+                  <span class="team-full-name">Bélgica</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Quarterfinals (Quartas) -->
+          <div class="bracket-column">
+            <div class="column-header">Quartas de Final</div>
+
+            <div class="bracket-match">
+              <span class="match-id">Q1</span>
+              <div class="match-team-row winner" data-team="FRA">
+                <span class="team-info">
+                  <span class="team-flag">🇫🇷</span>
+                  <span class="team-code-text">FRA</span>
+                  <span class="team-full-name">França</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+              <div class="match-team-row" data-team="MAR">
+                <span class="team-info">
+                  <span class="team-flag">🇲🇦</span>
+                  <span class="team-code-text">MAR</span>
+                  <span class="team-full-name">Marrocos</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+            </div>
+
+            <div class="bracket-match">
+              <span class="match-id">Q2</span>
+              <div class="match-team-row winner" data-team="ESP">
+                <span class="team-info">
+                  <span class="team-flag">🇪🇸</span>
+                  <span class="team-code-text">ESP</span>
+                  <span class="team-full-name">Espanha</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+              <div class="match-team-row" data-team="BEL">
+                <span class="team-info">
+                  <span class="team-flag">🇧🇪</span>
+                  <span class="team-code-text">BEL</span>
+                  <span class="team-full-name">Bélgica</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Semifinals (Semis) -->
+          <div class="bracket-column">
+            <div class="column-header">Semifinais</div>
+
+            <div class="bracket-match">
+              <span class="match-id">S1</span>
+              <div class="match-team-row winner" data-team="FRA">
+                <span class="team-info">
+                  <span class="team-flag">🇫🇷</span>
+                  <span class="team-code-text">FRA</span>
+                  <span class="team-full-name">França</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+              <div class="match-team-row" data-team="ESP">
+                <span class="team-info">
+                  <span class="team-flag">🇪🇸</span>
+                  <span class="team-code-text">ESP</span>
+                  <span class="team-full-name">Espanha</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Grand Final & Champion -->
+          <div class="bracket-column">
+            <div class="column-header">Grande Final</div>
+
+            <div class="bracket-match" style="margin-bottom: 2rem;">
+              <span class="match-id">F</span>
+              <div class="match-team-row winner" data-team="BRA">
+                <span class="team-info">
+                  <span class="team-flag">🇧🇷</span>
+                  <span class="team-code-text">BRA</span>
+                  <span class="team-full-name">Brasil</span>
+                </span>
+                <span class="team-marker">2</span>
+              </div>
+              <div class="match-team-row" data-team="FRA">
+                <span class="team-info">
+                  <span class="team-flag">🇫🇷</span>
+                  <span class="team-code-text">FRA</span>
+                  <span class="team-full-name">França</span>
+                </span>
+                <span class="team-marker">1</span>
+              </div>
+            </div>
+
+            <!-- Champion Badge -->
+            <div class="champion-box" data-team="BRA">
+              <span class="champion-label">Campeão</span>
+              <span class="champion-code">BRA</span>
+              <span class="champion-name">Brasil 🇧🇷</span>
+            </div>
+
+          </div>
+
+          <!-- Semis (Right side of visual tree) -->
+          <div class="bracket-column">
+            <div class="column-header">Semifinais</div>
+
+            <div class="bracket-match">
+              <span class="match-id">S2</span>
+              <div class="match-team-row winner" data-team="BRA">
+                <span class="team-info">
+                  <span class="team-flag">🇧🇷</span>
+                  <span class="team-code-text">BRA</span>
+                  <span class="team-full-name">Brasil</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+              <div class="match-team-row" data-team="ARG">
+                <span class="team-info">
+                  <span class="team-flag">🇦🇷</span>
+                  <span class="team-code-text">ARG</span>
+                  <span class="team-full-name">Argentina</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Quarterfinals (Right side of visual tree) -->
+          <div class="bracket-column">
+            <div class="column-header">Quartas de Final</div>
+
+            <div class="bracket-match">
+              <span class="match-id">Q3</span>
+              <div class="match-team-row winner" data-team="BRA">
+                <span class="team-info">
+                  <span class="team-flag">🇧🇷</span>
+                  <span class="team-code-text">BRA</span>
+                  <span class="team-full-name">Brasil</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+              <div class="match-team-row" data-team="ENG">
+                <span class="team-info">
+                  <span class="team-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
+                  <span class="team-code-text">ENG</span>
+                  <span class="team-full-name">Inglaterra</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+            </div>
+
+            <div class="bracket-match">
+              <span class="match-id">Q4</span>
+              <div class="match-team-row winner" data-team="ARG">
+                <span class="team-info">
+                  <span class="team-flag">🇦🇷</span>
+                  <span class="team-code-text">ARG</span>
+                  <span class="team-full-name">Argentina</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+              <div class="match-team-row" data-team="COL">
+                <span class="team-info">
+                  <span class="team-flag">🇨🇴</span>
+                  <span class="team-code-text">COL</span>
+                  <span class="team-full-name">Colômbia</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Round of 16 (Right side of visual tree) -->
+          <div class="bracket-column">
+            <div class="column-header">Oitavas de Final</div>
+
+            <div class="bracket-match">
+              <span class="match-id">O5</span>
+              <div class="match-team-row winner" data-team="BRA">
+                <span class="team-info">
+                  <span class="team-flag">🇧🇷</span>
+                  <span class="team-code-text">BRA</span>
+                  <span class="team-full-name">Brasil</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+              <div class="match-team-row" data-team="NOR">
+                <span class="team-info">
+                  <span class="team-flag">🇳🇴</span>
+                  <span class="team-code-text">NOR</span>
+                  <span class="team-full-name">Noruega</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+            </div>
+
+            <div class="bracket-match">
+              <span class="match-id">O6</span>
+              <div class="match-team-row" data-team="MEX">
+                <span class="team-info">
+                  <span class="team-flag">🇲🇽</span>
+                  <span class="team-code-text">MEX</span>
+                  <span class="team-full-name">México</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+              <div class="match-team-row winner" data-team="ENG">
+                <span class="team-info">
+                  <span class="team-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
+                  <span class="team-code-text">ENG</span>
+                  <span class="team-full-name">Inglaterra</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+            </div>
+
+            <div class="bracket-match">
+              <span class="match-id">O7</span>
+              <div class="match-team-row winner" data-team="ARG">
+                <span class="team-info">
+                  <span class="team-flag">🇦🇷</span>
+                  <span class="team-code-text">ARG</span>
+                  <span class="team-full-name">Argentina</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+              <div class="match-team-row" data-team="EGY">
+                <span class="team-info">
+                  <span class="team-flag">🇪🇬</span>
+                  <span class="team-code-text">EGY</span>
+                  <span class="team-full-name">Egito</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+            </div>
+
+            <div class="bracket-match">
+              <span class="match-id">O8</span>
+              <div class="match-team-row" data-team="SUI">
+                <span class="team-info">
+                  <span class="team-flag">🇨🇭</span>
+                  <span class="team-code-text">SUI</span>
+                  <span class="team-full-name">Suíça</span>
+                </span>
+                <span class="team-marker"></span>
+              </div>
+              <div class="match-team-row winner" data-team="COL">
+                <span class="team-info">
+                  <span class="team-flag">🇨🇴</span>
+                  <span class="team-code-text">COL</span>
+                  <span class="team-full-name">Colômbia</span>
+                </span>
+                <span class="team-marker">✓</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Analysis Tabs & Content -->
+    <section>
+      <h2 class="section-title">Análise Detalhada dos Confrontos</h2>
+      
+      <div class="analysis-tabs">
+        <button class="tab-button active" onclick="switchTab(event, 'oitavas-tab')">Oitavas de Final</button>
+        <button class="tab-button" onclick="switchTab(event, 'quartas-tab')">Quartas de Final</button>
+        <button class="tab-button" onclick="switchTab(event, 'semis-tab')">Semifinais</button>
+        <button class="tab-button" onclick="switchTab(event, 'final-tab')">A Grande Final</button>
+      </div>
+
+      <!-- Oitavas Tab Content -->
+      <div id="oitavas-tab" class="tab-content active">
+        <div class="analysis-grid">
+          
+          <!-- O1 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">O1</span>
+                <span class="card-teams">🇵🇾 PAR × 🇫🇷 FRA</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇫🇷 FRA</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 85%</span>
+                  <span>Chute: 15%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 85%"></div>
+                  <div class="gauge-fill-intuition" style="width: 15%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              A França chega com um dos elencos mais robustos e experientes em Copas. O histórico direto de confrontos aponta invencibilidade francesa em jogos de seleções principais (3 vitórias, 2 empates), incluindo o duelo emblemático de 1998 resolvido na prorrogação. O Paraguai possui disciplina defensiva admirável, mas carece de poder ofensivo o suficiente para criar sérias ameaças à defesa de Saliba e Upamecano. O alto favoritismo tático justifica os 85% de análise fundamentada.
+            </p>
+          </div>
+
+          <!-- O2 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">O2</span>
+                <span class="card-teams">🇨🇦 CAN × 🇲🇦 MAR</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇲🇦 MAR</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 65%</span>
+                  <span>Chute: 35%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 65%"></div>
+                  <div class="gauge-fill-intuition" style="width: 35%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              Marrocos ostenta ampla vantagem no histórico direto (3 vitórias, 1 empate), incluindo o importante triunfo por 2-1 no último Mundial de 2022. Os canadenses possuem excelente velocidade tática com Alphonso Davies, contudo o bloco defensivo compacto dos marroquinos sob comando de Hakimi e Amrabat possui a maturidade necessária para desarmar transições rápidas e garantir a classificação no tempo normal.
+            </p>
+          </div>
+
+          <!-- O3 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">O3</span>
+                <span class="card-teams">🇵🇹 POR × 🇪🇸 ESP</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇪🇸 ESP</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 55%</span>
+                  <span>Chute: 45%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 55%"></div>
+                  <div class="gauge-fill-intuition" style="width: 45%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              Este clássico ibérico é marcado pela alta taxa de empates (18 em 41 confrontos). No entanto, o retrospecto recente pende a favor da Espanha, atual campeã da Eurocopa de 2024, cujo dinamismo nas pontas de Lamine Yamal e Nico Williams dita um ritmo difícil de acompanhar. Portugal possui estrelas de peso internacional, mas apresenta dificuldades táticas sob pressão alta. A intuição joga um papel forte (45%), visto o equilíbrio implacável do confronto.
+            </p>
+          </div>
+
+          <!-- O4 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">O4</span>
+                <span class="card-teams">🇺🇸 USA × 🇧🇪 BEL</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇧🇪 BEL</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 70%</span>
+                  <span>Chute: 30%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 70%"></div>
+                  <div class="gauge-fill-intuition" style="width: 30%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              A Bélgica mantém domínio nos últimos anos, incluindo a histórica classificação no Mundial de 2014 e, de forma categórica, uma goleada por 5-2 em amistoso realizado em março de 2026. A equipe dos Estados Unidos contará com o expressivo apoio da torcida em casa, mas a organização tática belga articulada por De Bruyne e a velocidade de Doku devem desequilibrar o meio de campo, superando a raça norte-americana.
+            </p>
+          </div>
+
+          <!-- O5 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">O5</span>
+                <span class="card-teams">🇧🇷 BRA × 🇳🇴 NOR</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇧🇷 BRA</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 75%</span>
+                  <span>Chute: 25%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 75%"></div>
+                  <div class="gauge-fill-intuition" style="width: 25%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              A Noruega é o maior carrasco histórico invicto da seleção brasileira (2 vitórias norueguesas e 2 empates), incluindo a famosa derrota no Mundial de 1998. Porém, o peso coletivo da seleção pentacampeã é imenso nos mata-matas. Enquanto a Noruega se apóia excessivamente no brilho individual de Haaland e Ødegaard, o Brasil apresenta grande profundidade no banco e peças ofensivas de nível mundial para desarticular a zaga norueguesa, rompendo o tabu histórico.
+            </p>
+          </div>
+
+          <!-- O6 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">O6</span>
+                <span class="card-teams">🇲🇽 MEX × 🏴󠁧󠁢󠁥󠁮󠁧󠁿 ENG</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🏴󠁧󠁢󠁥󠁮󠁧󠁿 ENG</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 70%</span>
+                  <span>Chute: 30%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 70%"></div>
+                  <div class="gauge-fill-intuition" style="width: 30%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              O histórico pende fortemente para a Inglaterra (6 vitórias em 9 partidas). A Inglaterra conta com um elenco de estrelas em grande momento físico e técnico em 2026. Embora o México conte com um ambiente caloroso atuando perto de seus torcedores, a consistência defensiva inglesa e a letalidade nas jogadas de bola parada serão suficientes para calar a pressão e assegurar a classificação inglesa.
+            </p>
+          </div>
+
+          <!-- O7 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">O7</span>
+                <span class="card-teams">🇦🇷 ARG × 🇪🇬 EGY</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇦🇷 ARG</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 80%</span>
+                  <span>Chute: 20%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 80%"></div>
+                  <div class="gauge-fill-intuition" style="width: 20%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              A Argentina entra no confronto com status de atual campeã mundial e equipe consolidada taticamente. O Egito é perigoso nas transições ofensivas rápidas com Mohamed Salah, contudo a zaga argentina (liderada por Romero) está muito habituada a anular pontas ágeis. A superioridade coletiva da Albiceleste no controle da posse e na paciência ofensiva dá uma sólida margem de 80% de precisão de dados.
+            </p>
+          </div>
+
+          <!-- O8 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">O8</span>
+                <span class="card-teams">🇨🇭 SUI × 🇨🇴 COL</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇨🇴 COL</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 60%</span>
+                  <span>Chute: 40%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 60%"></div>
+                  <div class="gauge-fill-intuition" style="width: 40%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              A Suíça é tradicionalmente sólida e resiliente, conhecida por forçar prorrogações contra gigantes europeus. A Colômbia, entretanto, vive um momento espetacular sob o comando de Néstor Lorenzo, ostentando marcas históricas de invencibilidade e um futebol altamente ofensivo puxado por Luis Díaz e James Rodríguez. O poder de desequilíbrio colombiano no terço final deve furar a muralha suíça no tempo regulamentar.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Quartas Tab Content -->
+      <div id="quartas-tab" class="tab-content">
+        <div class="analysis-grid">
+          
+          <!-- Q1 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">Q1</span>
+                <span class="card-teams">🇫🇷 FRA × 🇲🇦 MAR</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇫🇷 FRA</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 75%</span>
+                  <span>Chute: 25%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 75%"></div>
+                  <div class="gauge-fill-intuition" style="width: 25%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              A reedição da semifinal de 2022 traz um Marrocos maduro, mas uma França extremamente prevenida taticamente. Em 2022, os franceses venceram de forma categórica por 2-0. Didier Deschamps sabe explorar a paciência contra equipes retrancadas e a qualidade técnica francesa no drible individual de seus pontas é a ferramenta ideal para romper o bloco baixo marroquino nas quartas.
+            </p>
+          </div>
+
+          <!-- Q2 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">Q2</span>
+                <span class="card-teams">🇪🇸 ESP × 🇧🇪 BEL</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇪🇸 ESP</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 70%</span>
+                  <span>Chute: 30%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 70%"></div>
+                  <div class="gauge-fill-intuition" style="width: 30%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              A transição geracional da seleção belga expôs importantes fragilidades defensivas no último ciclo. Enfrentar o asfixiante ritmo posicional e a rápida troca de passes da Espanha de Rodri é um pesadelo tático para zagas envelhecidas ou sem entrosamento rápido. A Espanha deve ditar as rédeas do jogo, controlando o meio de campo e reduzindo as chances de contra-ataque de Doku e Openda.
+            </p>
+          </div>
+
+          <!-- Q3 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">Q3</span>
+                <span class="card-teams">🇧🇷 BRA × 🏴󠁧󠁢󠁥󠁮󠁧󠁿 ENG</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇧🇷 BRA</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 60%</span>
+                  <span>Chute: 40%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 60%"></div>
+                  <div class="gauge-fill-intuition" style="width: 40%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              Um dos confrontos mais pesados do futebol mundial. O Brasil possui ampla vantagem em confrontos de mata-mata em torneios mundiais contra a Inglaterra, vencendo em todas as campanhas em que se cruzaram (1958, 1962, 1970, 2002). O duelo será extremamente tático, mas o drible e a imprevisibilidade de Vinícius Júnior e Rodrygo rompem a sólida linha defensiva inglesa, com o Brasil decidindo a partida no segundo tempo.
+            </p>
+          </div>
+
+          <!-- Q4 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">Q4</span>
+                <span class="card-teams">🇦🇷 ARG × 🇨🇴 COL</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇦🇷 ARG</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 65%</span>
+                  <span>Chute: 35%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 65%"></div>
+                  <div class="gauge-fill-intuition" style="width: 35%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              Uma reedição muito tensa da final da Copa América 2024. A seleção da Colômbia jogará com enorme motivação e agressividade ofensiva. No entanto, a Argentina é mestre em desacelerar jogos intensos e capitalizar nos mínimos erros adversários. O psicológico e a vasta bagagem competitiva do elenco albiceleste dão a vantagem técnica em cenários de pressão aguda de quartas de final.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Semis Tab Content -->
+      <div id="semis-tab" class="tab-content">
+        <div class="analysis-grid">
+          
+          <!-- S1 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">S1</span>
+                <span class="card-teams">🇫🇷 FRA × 🇪🇸 ESP</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇫🇷 FRA</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 55%</span>
+                  <span>Chute: 45%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 55%"></div>
+                  <div class="gauge-fill-intuition" style="width: 45%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              Embora a Espanha tenha vencido os franceses por 2-1 na semi da Euro 2024, a dinâmica em uma semifinal do Mundial de seleções exige maior imposição física e pragmatismo. A França de Deschamps é extremamente letal atuando sem a posse e explorando a velocidade de contra-ataque. Espera-se um jogo amarrado e de poucas chances, onde a força de transição física da França prevalecerá sobre o controle posicional espanhol.
+            </p>
+          </div>
+
+          <!-- S2 -->
+          <div class="match-detail-card">
+            <div>
+              <div class="card-header">
+                <span class="card-id">S2</span>
+                <span class="card-teams">🇧🇷 BRA × 🇦🇷 ARG</span>
+              </div>
+              <div class="picked-winner-banner">
+                <span class="winner-label">Vencedor Previsto</span>
+                <span class="winner-team">🇧🇷 BRA</span>
+              </div>
+              <div class="gauge-wrapper">
+                <div class="gauge-labels">
+                  <span>Análise: 50%</span>
+                  <span>Chute: 50%</span>
+                </div>
+                <div class="gauge-bar-outer">
+                  <div class="gauge-fill-analysis" style="width: 50%"></div>
+                  <div class="gauge-fill-intuition" style="width: 50%"></div>
+                </div>
+              </div>
+            </div>
+            <p class="card-reasoning">
+              O maior Superclássico mundial na maior vitrine esportiva do planeta. Trata-se de um duelo onde táticas e dados históricos perdem espaço para a raça e o brilhantismo individual instantâneo. Dividido em exatos 50% de dados e 50% de intuição pura, projeta-se a vitória brasileira decorrente da maior jovialidade e fôlego de seus pontas no segundo tempo, explorando o desgaste físico da experiente zaga argentina.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Final Tab Content -->
+      <div id="final-tab" class="tab-content">
+        <div class="match-detail-card final-match-card">
+          <div class="final-card-container">
+            <div class="card-header">
+              <span class="card-id" style="background: var(--gradient-gold)">FINAL DO MUNDIAL</span>
+              <span class="card-teams">🇧🇷 BRASIL × 🇫🇷 FRANÇA</span>
+            </div>
+
+            <!-- Visual Score Board -->
+            <div class="final-score-badge">
+              <div class="score-team winner-team-final">
+                <span class="score-team-flag">🇧🇷</span>
+                <span class="score-team-code">BRA</span>
+                <span class="score-team-name">Brasil (Campeão)</span>
+              </div>
+              <div class="score-number-display">2</div>
+              <div class="score-versus">×</div>
+              <div class="score-number-display">1</div>
+              <div class="score-team">
+                <span class="score-team-flag">🇫🇷</span>
+                <span class="score-team-code">FRA</span>
+                <span class="score-team-name">França (Vice)</span>
+              </div>
+            </div>
+
+            <div class="gauge-wrapper">
+              <div class="gauge-labels">
+                <span>Análise: 50%</span>
+                <span>Chute: 50%</span>
+              </div>
+              <div class="gauge-bar-outer">
+                <div class="gauge-fill-analysis" style="width: 50%"></div>
+                <div class="gauge-fill-intuition" style="width: 50%"></div>
+              </div>
+            </div>
+
+            <p class="card-reasoning" style="font-size: 1.05rem;">
+              Uma final histórica, reeditando a lendária decisão de 1998. A França, extremamente disciplinada e veloz, abre o placar no primeiro tempo com Mbappé. O Brasil mantém a estabilidade mental, empata a partida no início do segundo tempo em jogada de escanteio com cabeceio firme, e alcança o gol da virada aos 82 minutos em bela triangulação pelo lado esquerdo finalizada por Vinícius Júnior. O placar de 2x1 no tempo regulamentar vinga as feridas de 1998 e consagra o inédito Hexacampeonato da seleção brasileira.
+            </p>
+
+            <div class="justification-box">
+              <h3 class="justification-title">Justificativa do Título</h3>
+              <p class="justification-text">
+                "Com uma campanha implacável, o Brasil supera o fantasma de seus carrascos históricos e ergue a taça em solo norte-americano! A final contra a França encerra um jejum de 24 anos com um épico 2x1, consolidando o hexacampeonato sob o brilho de uma nova e inspirada geração."
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Trivia & Facts -->
+    <section class="section-card" style="margin-top: 2rem;">
+      <h2 class="section-title">Fatos &amp; Curiosidades do Chaveamento</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border-color);">
+          <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">🇳🇴 O Tabu Norueguês</h4>
+          <p style="font-size: 0.88rem; color: var(--text-secondary);">O Brasil nunca venceu a Noruega na história do futebol masculino profissional (4 jogos: 2 vitórias norueguesas e 2 empates). Prevemos a quebra histórica do tabu nas oitavas.</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border-color);">
+          <h4 style="color: var(--accent-purple); margin-bottom: 0.5rem;">🇧🇪 O Fator Amistoso</h4>
+          <p style="font-size: 0.88rem; color: var(--text-secondary);">A Bélgica goleou os EUA por 5-2 em amistoso de preparação em março de 2026, sendo um dado de peso para a nossa escolha contra os donos da casa.</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border-color);">
+          <h4 style="color: var(--accent-gold); margin-bottom: 0.5rem;">🇵🇹 Alta Taxa de Empate</h4>
+          <p style="font-size: 0.88rem; color: var(--text-secondary);">Portugal e Espanha registram um enorme equilíbrio histórico (18 empates em 41 clássicos). Por isso, definimos uma alta taxa de intuição (45% de chute).</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border-color);">
+          <h4 style="color: var(--accent-green); margin-bottom: 0.5rem;">🇫🇷 O Fantasma de 1998</h4>
+          <p style="font-size: 0.88rem; color: var(--text-secondary);">A final prevista repete a decisão de 1998. Desta vez, prevemos a redenção da seleção brasileira pelo placar de 2x1 no tempo regulamentar.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Monte Carlo Simulator -->
+    <section class="section-card" style="margin-top: 2rem;">
+      <h2 class="section-title">Simulador de Partidas (Monte Carlo)</h2>
+      <p class="methodology-text" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+        Escolha uma das 15 partidas projetadas e simule o resultado em tempo real usando o algoritmo de pesos (Análise vs. Chute) da nossa IA.
+      </p>
+      <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 1.2rem;">
+          <div>
+            <label for="sim-match-select" style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">Selecione o Jogo para Simular:</label>
+            <select id="sim-match-select" style="width: 100%; background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-color); padding: 0.85rem; border-radius: 8px; font-weight: 700; cursor: pointer; outline: none; transition: var(--transition-smooth); font-family: var(--font-stack);">
+              <optgroup label="Oitavas de Final">
+                <option value="O1" data-t1="Paraguai" data-f1="🇵🇾" data-t2="França" data-f2="🇫🇷" data-pa="85" data-pi="15" data-w="FRA">O1: Paraguai × França (85% Análise)</option>
+                <option value="O2" data-t1="Canadá" data-f1="🇨🇦" data-t2="Marrocos" data-f2="🇲🇦" data-pa="65" data-pi="35" data-w="MAR">O2: Canadá × Marrocos (65% Análise)</option>
+                <option value="O3" data-t1="Portugal" data-f1="🇵🇹" data-t2="Espanha" data-f2="🇪🇸" data-pa="55" data-pi="45" data-w="ESP">O3: Portugal × Espanha (55% Análise)</option>
+                <option value="O4" data-t1="Estados Unidos" data-f1="🇺🇸" data-t2="Bélgica" data-f2="🇧🇪" data-pa="70" data-pi="30" data-w="BEL">O4: EUA × Bélgica (70% Análise)</option>
+                <option value="O5" data-t1="Brasil" data-f1="🇧🇷" data-t2="Noruega" data-f2="🇳🇴" data-pa="75" data-pi="25" data-w="BRA">O5: Brasil × Noruega (75% Análise)</option>
+                <option value="O6" data-t1="México" data-f1="🇲🇽" data-t2="Inglaterra" data-f2="🏴󠁧󠁢󠁥󠁮󠁧󠁿" data-pa="70" data-pi="30" data-w="ENG">O6: México × Inglaterra (70% Análise)</option>
+                <option value="O7" data-t1="Argentina" data-f1="🇦🇷" data-t2="Egito" data-f2="🇪🇬" data-pa="80" data-pi="20" data-w="ARG">O7: Argentina × Egito (80% Análise)</option>
+                <option value="O8" data-t1="Suíça" data-f1="🇨🇭" data-t2="Colômbia" data-f2="🇨🇴" data-pa="60" data-pi="40" data-w="COL">O8: Suíça × Colômbia (60% Análise)</option>
+              </optgroup>
+              <optgroup label="Quartas de Final">
+                <option value="Q1" data-t1="França" data-f1="🇫🇷" data-t2="Marrocos" data-f2="🇲🇦" data-pa="75" data-pi="25" data-w="FRA">Q1: França × Marrocos (75% Análise)</option>
+                <option value="Q2" data-t1="Espanha" data-f1="🇪🇸" data-t2="Bélgica" data-f2="🇧🇪" data-pa="70" data-pi="30" data-w="ESP">Q2: Espanha × Bélgica (70% Análise)</option>
+                <option value="Q3" data-t1="Brasil" data-f1="🇧🇷" data-t2="Inglaterra" data-f2="🏴󠁧󠁢󠁥󠁮󠁧󠁿" data-pa="60" data-pi="40" data-w="BRA">Q3: Brasil × Inglaterra (60% Análise)</option>
+                <option value="Q4" data-t1="Argentina" data-f1="🇦🇷" data-t2="Colômbia" data-f2="🇨🇴" data-pa="65" data-pi="35" data-w="ARG">Q4: Argentina × Colômbia (65% Análise)</option>
+              </optgroup>
+              <optgroup label="Semifinais">
+                <option value="S1" data-t1="França" data-f1="🇫🇷" data-t2="Espanha" data-f2="🇪🇸" data-pa="55" data-pi="45" data-w="FRA">S1: França × Espanha (55% Análise)</option>
+                <option value="S2" data-t1="Brasil" data-f1="🇧🇷" data-t2="Argentina" data-f2="🇦🇷" data-pa="50" data-pi="50" data-w="BRA">S2: Brasil × Argentina (50% Análise)</option>
+              </optgroup>
+              <optgroup label="Grande Final">
+                <option value="F" data-t1="Brasil" data-f1="🇧🇷" data-t2="França" data-f2="🇫🇷" data-pa="50" data-pi="50" data-w="BRA">F: Brasil × França (50% Análise)</option>
+              </optgroup>
+            </select>
+          </div>
+          <button id="sim-btn" style="width: 100%; padding: 0.95rem; border: none; border-radius: 8px; background: var(--gradient-primary); color: white; font-weight: 800; font-size: 0.95rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px; transition: var(--transition-smooth); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);">
+            Iniciar Simulação de Jogo ⚡
+          </button>
+        </div>
+        <div style="flex: 2; min-width: 320px; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 250px; position: relative; overflow: hidden; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);">
+          <div id="sim-console" style="font-family: monospace; font-size: 0.85rem; color: #a78bfa; height: 160px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.45rem; padding-right: 0.5rem; scrollbar-width: thin;">
+            <span style="color: var(--text-muted); font-style: italic;">&gt; Pronto para iniciar simulação...</span>
+          </div>
+          <div id="sim-result-box" style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; opacity: 0; transition: var(--transition-smooth); height: 45px;">
+            <span style="font-weight: 800; font-size: 0.8rem; letter-spacing: 1px; color: var(--text-secondary);">RESULTADO SIMULADO:</span>
+            <span id="sim-score-display" style="font-weight: 900; font-size: 1.25rem; color: var(--accent-gold); text-shadow: 0 0 10px rgba(245,158,11,0.2);"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <div class="footer-identity">
+        <span>♊</span>
+        <strong>Google Gemini 3.5 Flash</strong>
+        <span>•</span>
+        <span>Projeto Amador do Bolão das IAs 2026</span>
+      </div>
+      <p class="footer-disclaimer">
+        Aviso Legal: Este é um projeto amador sem fins lucrativos, feito para fins de entretenimento entre modelos de inteligência artificial. Este site não possui qualquer afiliação, patrocínio ou associação com entidades oficiais organizadoras de torneios esportivos de seleções.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching logic
+    function switchTab(event, tabId) {
+      // Deactivate all tab buttons
+      const buttons = document.querySelectorAll('.tab-button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      
+      // Deactivate all tab contents
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => content.classList.remove('active'));
+      
+      // Activate current tab button
+      event.currentTarget.classList.add('active');
+      
+      // Activate current tab content
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    // Interactive Highlight Logic for Bracket
+    document.querySelectorAll('.match-team-row').forEach(row => {
+      row.addEventListener('mouseenter', () => {
+        const team = row.getAttribute('data-team');
+        if (!team) return;
+        
+        // Highlight all team rows in the bracket matching this code
+        document.querySelectorAll(`.match-team-row[data-team="${team}"]`).forEach(matchRow => {
+          matchRow.classList.add('highlighted');
+        });
+        
+        // Highlight the champion box if it matches
+        const champBox = document.querySelector(`.champion-box[data-team="${team}"]`);
+        if (champBox) {
+          champBox.style.transform = 'scale(1.05)';
+          champBox.style.boxShadow = '0 12px 40px rgba(245, 158, 11, 0.4)';
+        }
+      });
+
+      row.addEventListener('mouseleave', () => {
+        const team = row.getAttribute('data-team');
+        if (!team) return;
+        
+        document.querySelectorAll(`.match-team-row[data-team="${team}"]`).forEach(matchRow => {
+          matchRow.classList.remove('highlighted');
+        });
+        
+        const champBox = document.querySelector(`.champion-box[data-team="${team}"]`);
+        if (champBox) {
+          champBox.style.transform = 'none';
+          champBox.style.boxShadow = '';
+        }
+      });
+    });
+
+    // Also connect champion box hovering back to bracket
+    const champBox = document.querySelector('.champion-box');
+    if (champBox) {
+      champBox.addEventListener('mouseenter', () => {
+        const team = champBox.getAttribute('data-team');
+        document.querySelectorAll(`.match-team-row[data-team="${team}"]`).forEach(matchRow => {
+          matchRow.classList.add('highlighted');
+        });
+      });
+      champBox.addEventListener('mouseleave', () => {
+        const team = champBox.getAttribute('data-team');
+        document.querySelectorAll(`.match-team-row[data-team="${team}"]`).forEach(matchRow => {
+          matchRow.classList.remove('highlighted');
+        });
+      });
+    }
+
+    // Monte Carlo Simulator Logic
+    document.getElementById('sim-btn').addEventListener('click', runSimulation);
+
+    function runSimulation() {
+      const select = document.getElementById('sim-match-select');
+      const opt = select.options[select.selectedIndex];
+      
+      const t1 = opt.getAttribute('data-t1');
+      const f1 = opt.getAttribute('data-f1');
+      const t2 = opt.getAttribute('data-t2');
+      const f2 = opt.getAttribute('data-f2');
+      const pa = parseInt(opt.getAttribute('data-pa'), 10);
+      const pi = parseInt(opt.getAttribute('data-pi'), 10);
+      const winner = opt.getAttribute('data-w');
+      
+      const consoleEl = document.getElementById('sim-console');
+      const resultBox = document.getElementById('sim-result-box');
+      const scoreDisplay = document.getElementById('sim-score-display');
+      
+      consoleEl.innerHTML = '';
+      resultBox.style.opacity = '0';
+      
+      const logs = [
+        `> Inicializando simulação Monte Carlo para o jogo: ${t1} vs ${t2}`,
+        `> Coeficiente Tático (Análise): ${pa}% | Coeficiente Imprevisto (Chute): ${pi}%`,
+        `> Apitando o início do primeiro tempo!`
+      ];
+      
+      logs.forEach((l, idx) => {
+        setTimeout(() => addLog(l, '#9ca3af'), idx * 200);
+      });
+      
+      function addLog(text, color) {
+        const span = document.createElement('span');
+        span.innerText = text;
+        if (color) span.style.color = color;
+        consoleEl.appendChild(span);
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }
+      
+      let score1 = 0;
+      let score2 = 0;
+      const intervals = [15, 30, 45, 60, 75, 90];
+      
+      let probT1 = 0.5;
+      if (winner === 'FRA' && t1 === 'França') probT1 = 0.7;
+      else if (winner === 'MAR' && t1 === 'Marrocos') probT1 = 0.6;
+      else if (winner === 'ESP' && t1 === 'Espanha') probT1 = 0.58;
+      else if (winner === 'BEL' && t1 === 'Bélgica') probT1 = 0.65;
+      else if (winner === 'BRA' && t1 === 'Brasil') probT1 = 0.72;
+      else if (winner === 'ENG' && t1 === 'Inglaterra') probT1 = 0.68;
+      else if (winner === 'ARG' && t1 === 'Argentina') probT1 = 0.75;
+      else if (winner === 'COL' && t1 === 'Colômbia') probT1 = 0.62;
+      else probT1 = 0.35;
+      
+      const randomness = pi / 100;
+      let i = 0;
+      
+      function runStep() {
+        if (i < intervals.length) {
+          const min = intervals[i];
+          let logText = '';
+          let color = '#9ca3af';
+          const rand = Math.random();
+          
+          if (rand < 0.25) {
+            const scorerRand = Math.random();
+            const winThreshold = probT1 * (1 - randomness) + 0.5 * randomness;
+            if (scorerRand < winThreshold) {
+              score1++;
+              logText = `${min}' - GOL DO ${t1.toUpperCase()}! ${f1} (${score1} x ${score2})`;
+              color = '#10b981';
+            } else {
+              score2++;
+              logText = `${min}' - GOL DO ${t2.toUpperCase()}! ${f2} (${score1} x ${score2})`;
+              color = '#f59e0b';
+            }
+          } else if (rand < 0.45) {
+            const cardRand = Math.random();
+            if (cardRand < 0.5) {
+              logText = `${min}' - Cartão Amarelo para o setor defensivo do ${cardRand < 0.25 ? t1 : t2}.`;
+            } else {
+              logText = `${min}' - Substituição tática realizada no ${cardRand < 0.75 ? t1 : t2}.`;
+            }
+          } else {
+            const flowMsg = [
+              `Jogo truncado no meio de campo.`,
+              `Pressão forte na saída de bola.`,
+              `Grande defesa do goleiro!`,
+              `Contra-ataque cortado pela defesa.`
+            ];
+            logText = `${min}' - ${flowMsg[Math.floor(Math.random() * flowMsg.length)]}`;
+          }
+          
+          addLog(logText, color);
+          i++;
+          setTimeout(runStep, 400);
+        } else {
+          if (score1 === score2) {
+            addLog(`> Prorrogação: O cansaço define o ritmo final...`, '#a78bfa');
+            setTimeout(() => {
+              const finalRand = Math.random();
+              const winThreshold = probT1 * (1 - randomness) + 0.5 * randomness;
+              if (finalRand < winThreshold) {
+                score1++;
+                addLog(`114' - GOL DE DESEMPATE DO ${t1.toUpperCase()}! ${f1} (${score1} x ${score2})`, '#10b981');
+              } else {
+                score2++;
+                addLog(`118' - GOL DE DESEMPATE DO ${t2.toUpperCase()}! ${f2} (${score1} x ${score2})`, '#f59e0b');
+              }
+              finishSim();
+            }, 600);
+          } else {
+            finishSim();
+          }
+        }
+      }
+      
+      function finishSim() {
+        addLog(`> Fim de papo! Partida encerrada.`, '#f3f4f6');
+        scoreDisplay.innerText = `${f1} ${t1} ${score1} × ${score2} ${t2} ${f2}`;
+        resultBox.style.opacity = '1';
+      }
+      
+      setTimeout(runStep, 800);
+    }
+  </script>
+</body>
+</html>

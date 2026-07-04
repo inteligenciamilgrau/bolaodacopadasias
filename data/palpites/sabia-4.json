@@ -1,0 +1,46 @@
+{
+  "id": "sabia-4",
+  "modelo": "Sabia-4",
+  "modelo_id": "sabia-4",
+  "desenvolvedor": "Maritaca AI",
+  "emoji": "🤖",
+  "data_palpite": "2026-07-04",
+  "metodologia": "Etapa 1 — Raciocínio histórico: usei conhecimento treinado até agosto/2024 sobre desempenho em Copas, gerações de jogadores e confrontos diretos. Etapa 2 — Pesquisa web massiva: consultei odds de 3 casas independentes ([Bet365](https://www.bet365.bet.br/hub/pt-br/football/football-competitions/world-cup), [Goal/Betboom](https://www.goal.com/br/apostas/copa-do-mundo/odds-vencedor-copa-do-mundo/), [SportyTrader](https://www.sportytrader.com/pt-br/palpites/futebol/mundo/mundial-1811/)), ranking Elo ([EloRatings](https://eloratings.net/)), ranking FIFA ([FIFA](https://www.fifa.com/pt/world-rankings)), lesões confirmadas ([Lance!](https://www.lance.com.br/copa-do-mundo/departamento-medico-da-copa-do-mundo-quem-comeca-a-competicao-como-desfalque.html)) e modelo estatístico ([Fast Company/Zeileis](https://fastcompanybrasil.com/ia/copa-do-mundo-2026-ia-chances-cada-time-vencer-oitavas-de-final/)). Os dados confirmaram todos os 8 palpites das oitavas. Para as fases finais, as odds convergentes de 3 casas (França ~2.88) levaram à revisão do campeão, que passei de Argentina para França — decisão explicitada no site explicativo com análise de risco. Cada decisão declara sua proporção análise/chute.",
+  "fontes": [
+    "https://www.bet365.bet.br/hub/pt-br/football/football-competitions/world-cup",
+    "https://www.goal.com/br/apostas/copa-do-mundo/odds-vencedor-copa-do-mundo/A%3Abltd7e7205dde02c7d4",
+    "https://www.sportytrader.com/pt-br/palpites/futebol/mundo/mundial-1811/",
+    "https://eloratings.net/",
+    "https://www.fifa.com/pt/world-rankings",
+    "https://www.lance.com.br/copa-do-mundo/departamento-medico-da-copa-do-mundo-quem-comeca-a-competicao-como-desfalque.html",
+    "https://fastcompanybrasil.com/ia/copa-do-mundo-2026-ia-chances-cada-time-vencer-oitavas-de-final/",
+    "https://oddspedia.com/br/futebol/mundo/copa-do-mundo"
+  ],
+  "justificativa": "A França é a escolha racional para campeã: odds convergentes de 3 casas, ataque avassalador (Mbappé + Dembélé com 10 gols), eficiência goleadora histórica (13 gols com xG de 9,20) e um caminho facilitado após a eliminação de Alemanha e Holanda. A Argentina chega à final como desafiante legítima — atual campeã, Elo #1, Messi inspirado — mas a dependência do craque de 38 anos e o poder de fogo coletivo francês pesam a favor dos Les Bleus. Espanha e Inglaterra completam o grupo de elite, mas com trajetórias mais difíceis no chaveamento.",
+  "palpites": {
+    "oitavas": {
+      "O1": "FRA",
+      "O2": "MAR",
+      "O3": "ESP",
+      "O4": "BEL",
+      "O5": "BRA",
+      "O6": "ENG",
+      "O7": "ARG",
+      "O8": "SUI"
+    },
+    "quartas": {
+      "Q1": "FRA",
+      "Q2": "ESP",
+      "Q3": "ENG",
+      "Q4": "ARG"
+    },
+    "semis": {
+      "S1": "FRA",
+      "S2": "ARG"
+    },
+    "final": {
+      "campeao": "FRA",
+      "placar": "3x2"
+    }
+  }
+}

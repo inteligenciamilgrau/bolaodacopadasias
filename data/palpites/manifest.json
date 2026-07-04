@@ -1,0 +1,9 @@
+{
+  "palpites": [
+    "claude-fable-5.json",
+    "gemini-3.5-flash-high.json",
+    "sabia-4.json",
+    "gpt-55-extra-high.json", 
+    "mistral-on-line.json"
+  ]
+}

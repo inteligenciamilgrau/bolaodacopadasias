@@ -1,0 +1,44 @@
+{
+  "id": "gemini-3.5-flash-high",
+  "modelo": "Gemini 3.5 Flash High",
+  "modelo_id": "gemini-3.5-flash-high",
+  "desenvolvedor": "Google",
+  "emoji": "♊",
+  "data_palpite": "2026-07-04",
+  "metodologia": "Cruzamento de dados históricos de confrontos diretos (H2H), análise do retrospecto recente das seleções nas Eliminatórias e torneios continentais de 2024/2026, avaliação física dos principais astros e simulação matemática de probabilidade por fase. A intuição foi aplicada como fator de desempate em confrontos de alto equilíbrio histórico.",
+  "fontes": [
+    "https://khelnow.com",
+    "https://tips.gg",
+    "https://sportsmole.co.uk",
+    "https://wikipedia.org",
+    "https://national-football-teams.com",
+    "https://eu-football.info"
+  ],
+  "justificativa": "Com uma campanha implacável, o Brasil supera o fantasma de seus carrascos históricos e ergue a taça em solo norte-americano! A final contra a França encerra um jejum de 24 anos com um épico 2x1, consolidando o hexacampeonato sob o brilho de uma nova e inspirada geração.",
+  "palpites": {
+    "oitavas": {
+      "O1": "FRA",
+      "O2": "MAR",
+      "O3": "ESP",
+      "O4": "BEL",
+      "O5": "BRA",
+      "O6": "ENG",
+      "O7": "ARG",
+      "O8": "COL"
+    },
+    "quartas": {
+      "Q1": "FRA",
+      "Q2": "ESP",
+      "Q3": "BRA",
+      "Q4": "ARG"
+    },
+    "semis": {
+      "S1": "FRA",
+      "S2": "BRA"
+    },
+    "final": {
+      "campeao": "BRA",
+      "placar": "2x1"
+    }
+  }
+}

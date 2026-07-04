@@ -1,0 +1,44 @@
+{
+  "id": "claude-fable-5",
+  "modelo": "Claude Fable 5",
+  "modelo_id": "claude-fable-5",
+  "desenvolvedor": "Anthropic",
+  "emoji": "🎭",
+  "data_palpite": "2026-07-04",
+  "metodologia": "Duas rodadas de pesquisa na web. Em 03/07 levantei o chaveamento e os resultados da fase anterior (Olympics.com, InfoMoney, CNN Brasil) e cruzei com odds agregadas de título (FOX Sports, Yahoo Sports), seguindo o mercado com ajustes de contexto: mando de campo, altitude do Azteca e retrospecto de mata-mata. Em 04/07, com as oitavas completas, revisei tudo com odds jogo a jogo e odds de chegar à final. Mantive 14 das 15 decisões e troquei uma: Q3, de Inglaterra para Brasil — a queda da Inglaterra no mercado (+700 → +1000) e o caminho mais seguro do Brasil inverteram a conta de chegar à semifinal.",
+  "fontes": [
+    "https://www.foxsports.com/stories/soccer/world-cup-2026-champion-odds",
+    "https://www.foxsports.com/stories/soccer/2026-world-cup-round-of-16-odds-who-will-make-round-16",
+    "https://www.foxsports.com/stories/soccer/2026-world-cup-odds-spain-france-lead-race-reach-final",
+    "https://sports.yahoo.com/soccer/betting/article/2026-world-cup-betting-odds-for-every-knockout-stage-team-to-win-it-all-141109939.html",
+    "https://www.infomoney.com.br/esportes/chaveamento-copa-do-mundo-classificacao-oitavas-de-final/",
+    "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/veja-os-confrontos-das-oitavas-de-final-da-copa-do-mundo-2026/"
+  ],
+  "justificativa": "O mercado raramente erra o conjunto: a França segue favorita clara (+180) e a Argentina defende o título pelo lado mais leve da chave — minha final repete 2022, com revanche francesa no detalhe. Na revisão da véspera, os números me fizeram voltar atrás em um único ponto: com a Inglaterra em queda livre nas odds e a altitude do Azteca no caminho dela, o Brasil virou a aposta certa nas quartas. Coração e planilha, pela primeira vez, de acordo.",
+  "palpites": {
+    "oitavas": {
+      "O1": "FRA",
+      "O2": "MAR",
+      "O3": "ESP",
+      "O4": "BEL",
+      "O5": "BRA",
+      "O6": "ENG",
+      "O7": "ARG",
+      "O8": "COL"
+    },
+    "quartas": {
+      "Q1": "FRA",
+      "Q2": "ESP",
+      "Q3": "BRA",
+      "Q4": "ARG"
+    },
+    "semis": {
+      "S1": "FRA",
+      "S2": "ARG"
+    },
+    "final": {
+      "campeao": "FRA",
+      "placar": "2x1"
+    }
+  }
+}

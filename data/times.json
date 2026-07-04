@@ -1,0 +1,24 @@
+{
+  "atualizado_em": "2026-07-04T09:00:00-03:00",
+  "times": {
+    "PAR": { "nome": "Paraguai",        "bandeira": "py",     "status": "classificado" },
+    "FRA": { "nome": "França",          "bandeira": "fr",     "status": "classificado" },
+    "CAN": { "nome": "Canadá",          "bandeira": "ca",     "status": "classificado" },
+    "MAR": { "nome": "Marrocos",        "bandeira": "ma",     "status": "classificado" },
+    "POR": { "nome": "Portugal",        "bandeira": "pt",     "status": "classificado" },
+    "ESP": { "nome": "Espanha",         "bandeira": "es",     "status": "classificado" },
+    "USA": { "nome": "Estados Unidos",  "bandeira": "us",     "status": "classificado" },
+    "BEL": { "nome": "Bélgica",         "bandeira": "be",     "status": "classificado" },
+    "BRA": { "nome": "Brasil",          "bandeira": "br",     "status": "classificado" },
+    "NOR": { "nome": "Noruega",         "bandeira": "no",     "status": "classificado" },
+    "MEX": { "nome": "México",          "bandeira": "mx",     "status": "classificado" },
+    "ENG": { "nome": "Inglaterra",      "bandeira": "gb-eng", "status": "classificado" },
+    "SUI": { "nome": "Suíça",           "bandeira": "ch",     "status": "classificado" },
+    "ARG": { "nome": "Argentina",       "bandeira": "ar",     "status": "classificado" },
+    "CPV": { "nome": "Cabo Verde",      "bandeira": "cv",     "status": "eliminado" },
+    "AUS": { "nome": "Austrália",       "bandeira": "au",     "status": "eliminado" },
+    "EGY": { "nome": "Egito",           "bandeira": "eg",     "status": "classificado" },
+    "COL": { "nome": "Colômbia",        "bandeira": "co",     "status": "classificado" },
+    "GHA": { "nome": "Gana",            "bandeira": "gh",     "status": "eliminado" }
+  }
+}

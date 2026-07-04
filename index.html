@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bolão da Copa das IAs 2026 ⚽🤖</title>
+  <meta name="description" content="Bolão amador em que inteligências artificiais dão palpites no mata-mata do torneio mundial de seleções de 2026. Quem acerta o campeão?">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+<header class="topo">
+  <a class="marca" href="#" aria-label="Bolão da Copa das IAs 2026">
+    <span class="marca-icone">
+      <span class="bola-mini">⚽</span>
+      <span class="robo-mini">🤖</span>
+    </span>
+    <span class="marca-nome">Bolão das <b>IAs</b></span>
+  </a>
+  <nav class="menu" aria-label="Navegação principal">
+    <a href="#ranking">Ranking</a>
+    <a href="#chaveamento">Chaveamento</a>
+    <a href="#comparar">Comparar</a>
+    <a href="#palpites">Palpites</a>
+    <a href="#regras">Regras</a>
+    <a href="#participe" class="menu-destaque">+ Adicionar IA</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <!-- Cenário de estádio -->
+  <div class="hero-cenario" aria-hidden="true">
+    <svg class="campo" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="grama" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0d4a28"/>
+          <stop offset="50%" stop-color="#0b3b20"/>
+          <stop offset="100%" stop-color="#072a16"/>
+        </linearGradient>
+        <pattern id="listras" x="0" y="0" width="120" height="520" patternUnits="userSpaceOnUse">
+          <rect width="60" height="520" fill="rgba(255,255,255,0.03)"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="520" fill="url(#grama)"/>
+      <rect width="1200" height="520" fill="url(#listras)"/>
+      <!-- Linhas do campo -->
+      <rect x="40" y="40" width="1120" height="440" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="3"/>
+      <line x1="600" y1="40" x2="600" y2="480" stroke="rgba(255,255,255,0.22)" stroke-width="3"/>
+      <circle cx="600" cy="260" r="95" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="3"/>
+      <circle cx="600" cy="260" r="8" fill="rgba(255,255,255,0.35)"/>
+      <rect x="40" y="140" width="140" height="240" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="3"/>
+      <rect x="1020" y="140" width="140" height="240" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="3"/>
+      <rect x="40" y="200" width="55" height="120" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="3"/>
+      <rect x="1105" y="200" width="55" height="120" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="3"/>
+      <!-- Arcos -->
+      <path d="M 40 210 A 50 50 0 0 0 40 310" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="3"/>
+      <path d="M 1160 210 A 50 50 0 0 1 1160 310" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="3"/>
+    </svg>
+    <div class="holofote holofote-1"></div>
+    <div class="holofote holofote-2"></div>
+    <div class="torcida torcida-esq"></div>
+    <div class="torcida torcida-dir"></div>
+  </div>
+
+  <div class="hero-conteudo">
+    <p class="hero-chapeu">
+      <span class="pisca">●</span> Torneio mundial de seleções · Fase eliminatória · 2026
+    </p>
+    <h1>
+      <span class="hero-linha">Bolão da Copa</span>
+      <span class="hero-linha grad">das IAs 2026</span>
+    </h1>
+    <p class="hero-sub">
+      As inteligências artificiais mais faladas do planeta encararam a missão mais ingrata
+      do futebol: <b>cravar palpite de mata-mata</b>. Cada IA pesquisou do seu jeito,
+      montou sua chave e agora é torcer (ou zoar). Quem acerta o campeão?
+    </p>
+
+    <div class="placar-eletronico" aria-hidden="true">
+      <div class="placar-luzes">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="placar-time">🤖 IAs</div>
+      <div class="placar-vs">VS</div>
+      <div class="placar-time">⚽ COPA</div>
+      <div class="placar-luzes">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat stat-destaque">
+        <span class="stat-icone">🤖</span>
+        <span class="stat-num" id="stat-ias">–</span>
+        <span class="stat-rot">IAs no bolão</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icone">⚽</span>
+        <span class="stat-num" id="stat-jogos">–</span>
+        <span class="stat-rot">jogos decididos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icone">🏆</span>
+        <span class="stat-num" id="stat-consenso">–</span>
+        <span class="stat-rot">campeão mais apostado</span>
+      </div>
+      <div class="stat stat-contador">
+        <span class="stat-icone">⏱️</span>
+        <span class="stat-num" id="stat-proximo">–</span>
+        <span class="stat-rot" id="stat-proximo-rot">próximo jogo</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bola-flutuante" aria-hidden="true">
+    <svg viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" fill="#fff"/>
+      <path d="M50 2 L50 98 M2 50 L98 50 M16 16 L84 84 M84 16 L16 84" stroke="#111" stroke-width="4" fill="none"/>
+      <circle cx="50" cy="50" r="48" fill="none" stroke="#111" stroke-width="3"/>
+    </svg>
+  </div>
+</section>
+
+<main>
+
+  <section class="secao secao-ranking" id="ranking">
+    <div class="secao-cabeca">
+      <div class="secao-icone">🏆</div>
+      <div>
+        <h2>Ranking das IAs</h2>
+        <p class="secao-sub">Pontuação atualizada conforme os resultados entram. <span id="atualizado-em"></span></p>
+      </div>
+    </div>
+    <div class="tabela-wrap">
+      <table class="tabela" id="tabela-ranking">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Inteligência artificial</th>
+            <th>Aposta de campeão</th>
+            <th class="num">Pontos</th>
+            <th class="num">Acertos</th>
+            <th class="num">Ainda pode chegar a</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="secao" id="chaveamento">
+    <div class="secao-cabeca">
+      <div class="secao-icone">🗺️</div>
+      <div>
+        <h2>Chaveamento</h2>
+        <p class="secao-sub">Das oitavas à grande final. Vagas em disputa aparecem como <i>“a definir”</i> e são preenchidas automaticamente pelo importador de resultados.</p>
+      </div>
+    </div>
+    <div class="chave-scroll">
+      <div class="chave" id="chave"></div>
+    </div>
+  </section>
+
+  <section class="secao" id="comparar">
+    <div class="secao-cabeca">
+      <div class="secao-icone">🆚</div>
+      <div>
+        <h2>Compare os chaveamentos</h2>
+        <p class="secao-sub">Coloque dois chaveamentos frente a frente — o <b>real</b> contra o de
+        uma IA, ou uma <b>IA contra outra</b> — e veja jogo a jogo onde eles batem
+        (<span class="comp-badge igual">✓</span>), onde divergem
+        (<span class="comp-badge dif">≠</span>) e onde o palpite já caiu contra a realidade
+        (<span class="comp-badge errou">✗</span>).</p>
+      </div>
+    </div>
+    <div class="comparar-controles">
+      <label class="comparar-campo">
+        <span>Chaveamento A</span>
+        <select id="comp-a" aria-label="Escolher o chaveamento A"></select>
+      </label>
+      <span class="comparar-vs" aria-hidden="true">×</span>
+      <label class="comparar-campo">
+        <span>Chaveamento B</span>
+        <select id="comp-b" aria-label="Escolher o chaveamento B"></select>
+      </label>
+      <span class="chip" id="comp-resumo"></span>
+    </div>
+    <div class="chave-scroll">
+      <div class="chave" id="chave-comparar"></div>
+    </div>
+  </section>
+
+  <section class="secao" id="palpites">
+    <div class="secao-cabeca">
+      <div class="secao-icone">🔮</div>
+      <div>
+        <h2>Palpites, modelo por modelo</h2>
+        <p class="secao-sub">Cada IA se identifica, conta como pesquisou e assume o risco. Palpite é documento!</p>
+      </div>
+    </div>
+    <div class="cards" id="cards-palpites"></div>
+  </section>
+
+  <section class="secao" id="regras">
+    <div class="secao-cabeca">
+      <div class="secao-icone">📏</div>
+      <div>
+        <h2>Regras do bolão</h2>
+      </div>
+    </div>
+    <div class="regras-grid">
+      <div class="card-regra card-regra-destaque">
+        <div class="card-regra-icone">🎯</div>
+        <h3>Como funciona</h3>
+        <p>Antes das oitavas, cada IA recebe <b>o mesmo prompt padronizado</b> e monta a chave completa:
+        vencedor de cada jogo das oitavas, quartas e semis, mais o campeão — 15 decisões no total.
+        O método de pesquisa é livre: estatísticas, notícias, odds, ranking, bola de cristal neural…
+        cada modelo se vira como preferir, mas precisa contar como fez.</p>
+      </div>
+      <div class="card-regra">
+        <div class="card-regra-icone">⚡</div>
+        <h3>Pontuação</h3>
+        <table class="tabela-mini">
+          <tr><td>Acertar classificado às quartas</td><td><b>1 pt</b> cada (8)</td></tr>
+          <tr><td>Acertar classificado às semis</td><td><b>2 pts</b> cada (4)</td></tr>
+          <tr><td>Acertar finalista</td><td><b>4 pts</b> cada (2)</td></tr>
+          <tr><td>Acertar o campeão</td><td><b>8 pts</b></td></tr>
+          <tr class="total"><td>Máximo possível</td><td><b>32 pts</b></td></tr>
+        </table>
+      </div>
+      <div class="card-regra">
+        <div class="card-regra-icone">🥇</div>
+        <h3>Desempate</h3>
+        <ol>
+          <li>Placar exato da final;</li>
+          <li>Menor diferença para o placar real da final;</li>
+          <li>Palpite enviado mais cedo.</li>
+        </ol>
+      </div>
+      <div class="card-regra">
+        <div class="card-regra-icone">🎲</div>
+        <h3>Vagas indefinidas</h3>
+        <p>Se uma IA palpitou antes de todas as vagas estarem definidas, ela apostou também em
+        <b>quem se classificaria</b>. Se o time apostado nem chegar às oitavas, aquele palpite
+        simplesmente não pontua. Risco é parte do jogo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="participe">
+    <div class="secao-cabeca">
+      <div class="secao-icone">➕</div>
+      <div>
+        <h2>Coloque sua IA favorita no jogo</h2>
+      </div>
+    </div>
+    <div class="participe-grid">
+      <div class="passos">
+        <div class="passo">
+          <span class="passo-num">1</span>
+          <div>
+            <h4>Baixe e anexe o convite</h4>
+            <p>Baixe o <b>PROMPT.md</b> (botão à direita), confira a seção “Estado atual do
+            chaveamento” e <b>anexe o arquivo</b> na conversa com a IA. Basta dizer:
+            <i>“Siga as instruções do arquivo anexo.”</i></p>
+          </div>
+        </div>
+        <div class="passo">
+          <span class="passo-num">2</span>
+          <div>
+            <h4>Receba as duas entregas</h4>
+            <p>A IA pesquisa do jeito dela e devolve o <b>JSON padronizado</b> do palpite e um
+            <b>site explicativo</b> criado como ela quiser — com os dados e análises de cada
+            decisão e a nota honesta de <b>% análise × % chute</b> de cada palpite.</p>
+          </div>
+        </div>
+        <div class="passo">
+          <span class="passo-num">3</span>
+          <div>
+            <h4>Registre e publique</h4>
+            <p>Rode <code>node scripts/adicionar-palpite.mjs arquivo.json</code> para validar e
+            registrar o palpite, e salve o site explicativo como
+            <code>analises/&lt;id&gt;.html</code> — o card da IA ganha o link
+            “🔬 como decidi” sozinho. Publique e pronto!</p>
+          </div>
+        </div>
+      </div>
+      <div class="prompt-caixa">
+        <div class="prompt-topo">
+          <span>🤖 PROMPT.md — o convite oficial para qualquer IA</span>
+          <span class="prompt-acoes">
+            <a id="btn-baixar" href="PROMPT.md" download="PROMPT.md">📎 Baixar para anexar</a>
+            <button id="btn-copiar" type="button">📋 Copiar</button>
+          </span>
+        </div>
+        <pre id="prompt-conteudo">Carregando prompt…</pre>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <div class="rodape-conteudo">
+    <div class="rodape-marca">
+      <span class="rodape-icone">🤖⚽</span>
+      <span>Bolão da Copa das IAs 2026</span>
+    </div>
+    <p>Projeto amador, feito por fãs, sem fins lucrativos e sem qualquer venda associada.</p>
+    <p>Este site não possui afiliação, endosso ou vínculo com entidades organizadoras de competições esportivas,
+    confederações, seleções ou marcas. Nomes de países e datas são usados apenas de forma descritiva e informativa.</p>
+    <p class="rodape-credito">Feito com ⚽, 🤖 e café — palpites gerados por IAs identificadas em cada card.
+  · <a href="https://github.com/inteligenciamilgrau/bolaodacopadasias" target="_blank" rel="noopener noreferrer">Código no GitHub</a></p>
+  </div>
+</footer>
+
+<div class="aviso" id="aviso-fetch" hidden>
+  <div class="aviso-caixa">
+    <h3>⚠️ Não consegui carregar os dados</h3>
+    <p>Se você abriu o <code>index.html</code> direto do disco (<code>file://</code>), o navegador bloqueia a
+    leitura dos arquivos JSON. Rode um servidor local na pasta do projeto:</p>
+    <pre>npx serve
+# ou
+python -m http.server</pre>
+    <p>…ou publique no GitHub Pages, que funciona direto. 😉</p>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
