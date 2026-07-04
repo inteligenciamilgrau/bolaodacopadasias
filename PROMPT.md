@@ -58,10 +58,15 @@ Tudo o que você precisa está neste arquivo. Sua resposta tem **duas entregas**
   errado não vale nada.
 - **Regras do placar:** formato `NxN` (ex.: `2x1`), gols do jogo completo (tempo
   normal + prorrogação, sem contar disputa de pênaltis). O primeiro número é SEMPRE
-  o de gols do SEU vencedor. Placar empatado (ex.: `1x1`) é permitido e significa
-  que você prevê decisão nos pênaltis, com o seu vencedor avançando.
-- **Desempate:** 1º) mais placares exatos cravados; 2º) diferença de gols mais
-  próxima na final; 3º) palpite enviado mais cedo.
+  o de gols do SEU vencedor. **Empate leva para os pênaltis:** placar empatado
+  (ex.: `1x1`) é permitido e significa que o jogo vai para a disputa de pênaltis —
+  nesse caso é OBRIGATÓRIO incluir também o campo `"penaltis"` com o placar da
+  disputa (ex.: `"4x2"`), de novo com o seu vencedor na frente (a disputa sempre
+  tem vencedor, então nada de empate aqui). Jogo com placar não-empatado NÃO deve
+  ter o campo `penaltis`.
+- **Desempate:** 1º) mais placares exatos cravados; 2º) mais placares de pênaltis
+  cravados (quando o jogo real também foi para os pênaltis); 3º) diferença de gols
+  mais próxima na final; 4º) palpite enviado mais cedo.
 - **Consistência da chave (obrigatório):**
   - O vencedor de `Q1` deve ser um dos seus vencedores de `O1` ou `O2`;
     `Q2` ← `O3`/`O4`; `Q3` ← `O5`/`O6`; `Q4` ← `O7`/`O8`.
@@ -143,14 +148,14 @@ Um JSON válido, **exatamente** nesta estrutura (sem comentários, sem texto ext
       "O3": { "vencedor": "XXX", "placar": "1x0" },
       "O4": { "vencedor": "XXX", "placar": "2x1" },
       "O5": { "vencedor": "XXX", "placar": "3x1" },
-      "O6": { "vencedor": "XXX", "placar": "1x1" },
+      "O6": { "vencedor": "XXX", "placar": "1x1", "penaltis": "4x2" },
       "O7": { "vencedor": "XXX", "placar": "2x0" },
       "O8": { "vencedor": "XXX", "placar": "2x1" }
     },
     "quartas": {
       "Q1": { "vencedor": "XXX", "placar": "2x1" },
       "Q2": { "vencedor": "XXX", "placar": "1x0" },
-      "Q3": { "vencedor": "XXX", "placar": "2x2" },
+      "Q3": { "vencedor": "XXX", "placar": "2x2", "penaltis": "5x4" },
       "Q4": { "vencedor": "XXX", "placar": "2x0" }
     },
     "semis": {
@@ -163,7 +168,8 @@ Um JSON válido, **exatamente** nesta estrutura (sem comentários, sem texto ext
 ```
 
 (Os placares acima são só exemplo de formato — escolha os seus! Lembrete: `1x1` e
-`2x2` significam decisão nos pênaltis com o seu vencedor avançando.)
+`2x2` significam que o jogo vai para os pênaltis — e aí o campo `penaltis` com o
+placar da disputa é obrigatório, com o seu vencedor na frente.)
 
 Regras do formato:
 
@@ -177,6 +183,9 @@ Regras do formato:
 - `placar` (em todos os 15 jogos): formato `NxN`, primeiro número = gols do seu
   vencedor (regras completas na seção de pontuação). Na final, o primeiro número é
   o do seu `campeao`.
+- `penaltis`: obrigatório se (e somente se) o `placar` do jogo for empatado —
+  inclusive na final (ex.: `"final": { "campeao": "XXX", "placar": "1x1",
+  "penaltis": "5x3" }`).
 - `fontes`: liste URLs reais que você consultou. Se não navegou, use `[]` e explique
   na `metodologia`.
 
@@ -226,7 +235,8 @@ Sem textão fora das entregas — tudo o que você quiser dizer cabe dentro do s
 
 - [ ] O JSON está puro (sem texto ao redor), com os 15 vencedores em códigos
       válidos E os 15 placares no formato `NxN`?
-- [ ] Todo placar tem o SEU vencedor na frente (empate = pênaltis)?
+- [ ] Todo placar tem o SEU vencedor na frente?
+- [ ] Todo placar empatado tem o campo `penaltis` com o placar da disputa?
 - [ ] A chave é consistente (cada vencedor veio do jogo certo)?
 - [ ] `modelo` e `modelo_id` identificam exatamente quem você é?
 - [ ] O site explica os dados e a análise de CADA uma das decisões?

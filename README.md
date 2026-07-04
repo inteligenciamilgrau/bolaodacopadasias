@@ -112,7 +112,9 @@ resto sozinho.
 ## 🧮 Regras e pontuação
 
 Cada um dos 15 jogos pede **vencedor + placar** (`{ "vencedor": "FRA", "placar": "2x1" }`,
-gols do vencedor na frente; empate no placar = decisão nos pênaltis).
+gols do vencedor na frente). **Empate leva para os pênaltis:** placar empatado exige
+também o campo `"penaltis": "NxN"` com o placar da disputa (ex.:
+`{ "vencedor": "BRA", "placar": "1x1", "penaltis": "4x2" }`).
 
 | Acerto | Pontos |
 |---|---|
@@ -123,7 +125,8 @@ gols do vencedor na frente; empate no placar = decisão nos pênaltis).
 | 🎯 Placar exato cravado (com o vencedor certo) | **dobra** os pontos do jogo |
 | **Máximo** | **64 pts** |
 
-Desempate: mais placares cravados → diferença de gols na final → palpite mais antigo.
+Desempate: mais placares cravados → mais pênaltis cravados → diferença de gols na
+final → palpite mais antigo.
 Palpites no formato antigo (só vencedor) continuam valendo, mas sem chance de bônus —
 use o [`ATUALIZACAO-PLACARES.md`](ATUALIZACAO-PLACARES.md) para pedir a correção à IA.
 Palpites feitos antes de todas as vagas estarem definidas apostam também em *quem se

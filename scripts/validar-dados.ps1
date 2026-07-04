@@ -63,7 +63,17 @@ foreach ($entrada in $manifest.palpites) {
     $placar = $valor.placar
     if (-not $placar) { $script:semPlacar += $rotulo; return }
     if ($placar -notmatch '^(\d+)\s*[xX]\s*(\d+)$') { Falha "$rotulo`: placar invalido '$placar' (formato NxN)"; return }
-    if ([int]$Matches[1] -lt [int]$Matches[2]) { Falha "$rotulo`: o primeiro numero e o de gols do vencedor apostado ('$placar'); empate = penaltis" }
+    $g1 = [int]$Matches[1]; $g2 = [int]$Matches[2]
+    if ($g1 -lt $g2) { Falha "$rotulo`: o primeiro numero e o de gols do vencedor apostado ('$placar')"; return }
+    $pen = $valor.penaltis
+    if ($g1 -eq $g2) {
+      # empate leva aos penaltis: campo obrigatorio, com vencedor na frente
+      if (-not $pen) { Falha "$rotulo`: placar empatado ($placar) exige campo 'penaltis' com o placar da disputa (ex.: 4x2)"; return }
+      if ($pen -notmatch '^(\d+)\s*[xX]\s*(\d+)$') { Falha "$rotulo`: penaltis invalido '$pen' (formato NxN)"; return }
+      if ([int]$Matches[1] -le [int]$Matches[2]) { Falha "$rotulo`: penaltis deve ter o vencedor apostado na frente, sem empate ('$pen')" }
+    } elseif ($pen) {
+      Falha "$rotulo`: campo 'penaltis' so e usado com placar empatado (placar $placar)"
+    }
   }
 
   $oit = $p.palpites.oitavas; $qua = $p.palpites.quartas; $sem = $p.palpites.semis
@@ -84,10 +94,7 @@ foreach ($entrada in $manifest.palpites) {
   }
   $campeao = $p.palpites.final.campeao
   if (@($picks["S1"], $picks["S2"]) -notcontains $campeao) { Falha "campeao '$campeao' nao e um dos finalistas" }
-  $placarFinal = $p.palpites.final.placar
-  if (-not $placarFinal) { $semPlacar += "final" }
-  elseif ($placarFinal -notmatch '^(\d+)\s*[xX]\s*(\d+)$') { Falha "placar da final invalido: '$placarFinal'" }
-  elseif ([int]$Matches[1] -lt [int]$Matches[2]) { Falha "placar da final deve ter o campeao na frente (empate = penaltis): '$placarFinal'" }
+  ChecarPlacar "final" $p.palpites.final
   if ($semPlacar.Count -gt 0) {
     Write-Host "  !  $($semPlacar.Count) jogo(s) sem placar (formato antigo) -- sem chance de bonus: $($semPlacar -join ', ')" -ForegroundColor Yellow
   }

@@ -34,9 +34,13 @@ e o novo 1º critério de desempate é quem cravou mais placares.
 - Formato `NxN` (ex.: `2x1`) — gols do **jogo completo** (tempo normal +
   prorrogação), **sem contar a disputa de pênaltis**.
 - O primeiro número é SEMPRE o de gols do **seu vencedor**.
-- **Empate é permitido** (ex.: `1x1`, `2x2`) e significa que você prevê decisão
-  nos pênaltis, com o seu vencedor avançando.
-- Placar exato só pontua se o vencedor também estiver certo.
+- **Empate leva para os pênaltis:** placar empatado (ex.: `1x1`, `2x2`) é
+  permitido e significa decisão na disputa de pênaltis — nesse caso é
+  OBRIGATÓRIO incluir também `"penaltis": "NxN"` com o placar da disputa
+  (ex.: `"4x2"`), de novo com o seu vencedor na frente e sem empate (disputa
+  sempre tem vencedor). Jogo com placar não-empatado NÃO leva o campo `penaltis`.
+- Placar exato só pontua se o vencedor também estiver certo. Pênaltis cravados
+  são o 2º critério de desempate do bolão.
 
 ## Novo formato do JSON (só muda o bloco "palpites")
 
@@ -48,14 +52,14 @@ e o novo 1º critério de desempate é quem cravou mais placares.
     "O3": { "vencedor": "XXX", "placar": "1x0" },
     "O4": { "vencedor": "XXX", "placar": "2x1" },
     "O5": { "vencedor": "XXX", "placar": "3x1" },
-    "O6": { "vencedor": "XXX", "placar": "1x1" },
+    "O6": { "vencedor": "XXX", "placar": "1x1", "penaltis": "4x2" },
     "O7": { "vencedor": "XXX", "placar": "2x0" },
     "O8": { "vencedor": "XXX", "placar": "2x1" }
   },
   "quartas": {
     "Q1": { "vencedor": "XXX", "placar": "2x1" },
     "Q2": { "vencedor": "XXX", "placar": "1x0" },
-    "Q3": { "vencedor": "XXX", "placar": "2x2" },
+    "Q3": { "vencedor": "XXX", "placar": "2x2", "penaltis": "5x4" },
     "Q4": { "vencedor": "XXX", "placar": "2x0" }
   },
   "semis": {
@@ -67,7 +71,9 @@ e o novo 1º critério de desempate é quem cravou mais placares.
 ```
 
 (Placares acima são exemplo de formato — os `XXX` devem virar os SEUS vencedores
-originais, e os placares são escolha sua.)
+originais, e os placares são escolha sua. Repare no O6 e no Q3 do exemplo: placar
+empatado SEMPRE acompanha o campo `penaltis`. Se a sua final for empatada, o
+`penaltis` vai dentro de `final` também.)
 
 ## Enquanto você não corrigir
 

@@ -41,15 +41,28 @@ export function validarPalpite(dados, codigosValidos) {
   // --- estrutura dos palpites
   const p = dados.palpites || {};
 
-  // Placar NxN; empate é permitido (= decisão nos pênaltis, vencedor avança).
-  const validarPlacar = (rotulo, placar) => {
+  // Placar NxN; empate leva aos pênaltis e exige o campo "penaltis" (placar da
+  // disputa, vencedor na frente, sem empate). Sem empate, "penaltis" é proibido.
+  const validarPlacar = (rotulo, placar, penaltis) => {
     const m = /^(\d+)\s*[xX]\s*(\d+)$/.exec(placar || "");
     if (!m) {
-      erro(`"${rotulo}": placar deve ter o formato NxN, com os gols do SEU vencedor na frente (ex.: 2x1 ou 1x1 para pênaltis). Recebido: ${JSON.stringify(placar)}`);
+      erro(`"${rotulo}.placar": deve ter o formato NxN, com os gols do SEU vencedor na frente (ex.: 2x1 ou 1x1 para pênaltis). Recebido: ${JSON.stringify(placar)}`);
       return;
     }
     if (Number(m[1]) < Number(m[2])) {
-      erro(`"${rotulo}": o primeiro número é o de gols do seu vencedor e não pode ser menor (recebido ${placar})`);
+      erro(`"${rotulo}.placar": o primeiro número é o de gols do seu vencedor e não pode ser menor (recebido ${placar})`);
+      return;
+    }
+    const empate = Number(m[1]) === Number(m[2]);
+    if (empate) {
+      const mp = /^(\d+)\s*[xX]\s*(\d+)$/.exec(penaltis || "");
+      if (!mp) {
+        erro(`"${rotulo}": placar empatado (${placar}) leva aos pênaltis — inclua "penaltis" com o placar da disputa (ex.: "4x2"). Recebido: ${JSON.stringify(penaltis)}`);
+      } else if (Number(mp[1]) <= Number(mp[2])) {
+        erro(`"${rotulo}.penaltis": a disputa sempre tem vencedor — o primeiro número (seu vencedor) deve ser MAIOR (recebido ${penaltis})`);
+      }
+    } else if (penaltis) {
+      erro(`"${rotulo}": "penaltis" só é usado quando o placar do jogo é empatado (placar ${placar})`);
     }
   };
 
@@ -71,7 +84,7 @@ export function validarPalpite(dados, codigosValidos) {
       }
       if (!valor.vencedor) erro(`Falta "${nome}.${id}.vencedor"`);
       else if (!codigosValidos.has(valor.vencedor)) erro(`"${nome}.${id}.vencedor": código desconhecido "${valor.vencedor}"`);
-      validarPlacar(`${nome}.${id}.placar`, valor.placar);
+      validarPlacar(`${nome}.${id}`, valor.placar, valor.penaltis);
     }
     for (const extra of chaves.filter((c) => !esperados.includes(c))) {
       erro(`"${nome}.${extra}" não é um jogo válido`);
@@ -84,7 +97,7 @@ export function validarPalpite(dados, codigosValidos) {
   const campeao = p.final && p.final.campeao;
   if (!campeao) erro(`Falta "final.campeao"`);
   else if (!codigosValidos.has(campeao)) erro(`"final.campeao": código desconhecido "${campeao}"`);
-  validarPlacar("final.placar", p.final && p.final.placar);
+  validarPlacar("final", p.final && p.final.placar, p.final && p.final.penaltis);
 
   // --- consistência da chave
   if (!erros.length) {

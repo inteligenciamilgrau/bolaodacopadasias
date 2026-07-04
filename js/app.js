@@ -154,14 +154,25 @@ function caminhoDoTime(cod) {
 
 /* ---------- pontuação ---------- */
 
-// Formato novo: { vencedor, placar }. Formato antigo (só o código do time)
+// Formato novo: { vencedor, placar, penaltis? } — penaltis é obrigatório quando o
+// placar é empate (jogo decidido na disputa). Formato antigo (só o código do time)
 // continua aceito — vale o vencedor, mas sem chance de bônus de placar.
 function normalizarPick(valor) {
-  if (typeof valor === "string") return { vencedor: valor, placar: null };
+  if (typeof valor === "string") return { vencedor: valor, placar: null, penaltis: null };
   if (valor && typeof valor === "object") {
-    return { vencedor: valor.vencedor || null, placar: valor.placar || null };
+    return {
+      vencedor: valor.vencedor || null,
+      placar: valor.placar || null,
+      penaltis: valor.penaltis || null,
+    };
   }
-  return { vencedor: null, placar: null };
+  return { vencedor: null, placar: null, penaltis: null };
+}
+
+// "2x1 (4x2 pên.)" para exibição
+function placarComPen(placar, penaltis) {
+  if (!placar) return null;
+  return penaltis ? `${placar} (${penaltis} pên.)` : String(placar);
 }
 
 // "2x1" → [2, 1]; inválido → null
@@ -182,16 +193,34 @@ function picksDoPalpite(palpite) {
   ]) {
     for (const [id, bruto] of Object.entries(valor || {})) {
       const pick = normalizarPick(bruto);
-      lista.push({ jogo: id, time: pick.vencedor, placar: pick.placar, pontos: PONTUACAO[fase], fase });
+      lista.push({
+        jogo: id, time: pick.vencedor, placar: pick.placar, penaltis: pick.penaltis,
+        pontos: PONTUACAO[fase], fase,
+      });
     }
   }
   if (p.final && p.final.campeao) {
     lista.push({
       jogo: "F", time: p.final.campeao, placar: p.final.placar || null,
-      pontos: PONTUACAO.final, fase: "final",
+      penaltis: p.final.penaltis || null, pontos: PONTUACAO.final, fase: "final",
     });
   }
   return lista;
+}
+
+// Pênaltis cravados: além do placar do jogo, acertou o placar da disputa.
+// (Só conta com o placar do jogo cravado — e jogos.json guarda os pênaltis
+// orientados ao time1, então reorienta para o vencedor.)
+function cravouPenaltis(pick) {
+  const jogo = POR_ID[pick.jogo];
+  if (!jogo || jogo.vencedor !== pick.time || !jogo.penaltis) return false;
+  const apostado = parsePlacar(pick.penaltis);
+  const real = parsePlacar(jogo.penaltis);
+  if (!apostado || !real) return false;
+  const vencedorEhTime1 = jogo.vencedor === timeNoLado(jogo, 1);
+  const doVencedor = vencedorEhTime1 ? real[0] : real[1];
+  const doPerdedor = vencedorEhTime1 ? real[1] : real[0];
+  return apostado[0] === doVencedor && apostado[1] === doPerdedor;
 }
 
 // Placar cravado: vencedor certo E gols exatos (jogo completo, sem pênaltis).
@@ -223,10 +252,12 @@ function pontuarPalpite(palpite) {
   let acertos = 0;
   let decididos = 0;
   let cravadas = 0;
+  let penCravadas = 0;
   const detalhes = picksDoPalpite(palpite).map((pick) => {
     const status = avaliarPick(pick);
     const temPlacar = !!parsePlacar(pick.placar);
     let cravou = false;
+    let cravouPen = false;
     if (status === "acertou") {
       cravou = cravouPlacar(pick);
       const ganho = cravou ? pick.pontos * 2 : pick.pontos;
@@ -234,16 +265,20 @@ function pontuarPalpite(palpite) {
       possivel += ganho;
       acertos++;
       decididos++;
-      if (cravou) cravadas++;
+      if (cravou) {
+        cravadas++;
+        cravouPen = !!pick.penaltis && cravouPenaltis(pick);
+        if (cravouPen) penCravadas++;
+      }
     } else if (status === "pendente") {
       // ainda pode acertar vencedor (+pontos) e cravar o placar (dobro)
       possivel += pick.pontos * (temPlacar ? 2 : 1);
     } else {
       decididos++;
     }
-    return { ...pick, status, cravou };
+    return { ...pick, status, cravou, cravouPen };
   });
-  return { pontos, possivel, acertos, decididos, cravadas, detalhes };
+  return { pontos, possivel, acertos, decididos, cravadas, penCravadas, detalhes };
 }
 
 /* ---------- helpers de exibição ---------- */
@@ -354,6 +389,8 @@ function renderizarRanking() {
     .sort(
       (a, b) =>
         b.placar.pontos - a.placar.pontos ||
+        b.placar.cravadas - a.placar.cravadas ||
+        b.placar.penCravadas - a.placar.penCravadas ||
         b.placar.possivel - a.placar.possivel ||
         String(a.palpite.data_palpite).localeCompare(String(b.palpite.data_palpite))
     );
@@ -462,16 +499,26 @@ function placarDoJogoDaFonte(fonte, jogoId) {
     if (!jogo || !jogo.vencedor || jogo.placar1 == null || jogo.placar2 == null) return null;
     const maior = Math.max(jogo.placar1, jogo.placar2);
     const menor = Math.min(jogo.placar1, jogo.placar2);
-    return `${maior}x${menor}`;
+    // pênaltis reais reorientados com o vencedor na frente
+    let pen = null;
+    const par = parsePlacar(jogo.penaltis);
+    if (par) {
+      const vencedorEhTime1 = jogo.vencedor === timeNoLado(jogo, 1);
+      pen = vencedorEhTime1 ? `${par[0]}x${par[1]}` : `${par[1]}x${par[0]}`;
+    }
+    return placarComPen(`${maior}x${menor}`, pen);
   }
   const p = fonte.palpite.palpites || {};
-  if (jogoId === "F") return (p.final && p.final.placar) || null;
+  if (jogoId === "F") {
+    return p.final ? placarComPen(p.final.placar, p.final.penaltis) : null;
+  }
   const bruto =
     (p.oitavas && p.oitavas[jogoId]) ||
     (p.quartas && p.quartas[jogoId]) ||
     (p.semis && p.semis[jogoId]) ||
     null;
-  return normalizarPick(bruto).placar;
+  const pick = normalizarPick(bruto);
+  return placarComPen(pick.placar, pick.penaltis);
 }
 
 // Placar da final, normalizado como "gols do campeão x gols do vice".
@@ -666,7 +713,7 @@ function cardPalpiteHTML(palpite, placar) {
         (d) => `<span class="pick ${d.status}${d.cravou ? " cravou" : ""}">
           <span class="pick-jogo">${d.jogo}</span>
           <span class="nome-pick">${escapar(nomeDoTime(d.time))}</span>
-          ${d.placar ? `<span class="pick-placar">${escapar(d.placar)}</span>` : ""}</span>`
+          ${d.placar ? `<span class="pick-placar">${escapar(placarComPen(d.placar, d.penaltis))}</span>` : ""}</span>`
       )
       .join("");
     return `<div class="cp-fase"><h4>${NOME_FASE[fase]}</h4>
@@ -703,6 +750,7 @@ function cardPalpiteHTML(palpite, placar) {
         <span class="chip chip-pontos">⭐ ${placar.pontos} pts</span>
         <span class="chip">✅ ${placar.acertos}/${placar.decididos} decididos</span>
         ${placar.cravadas ? `<span class="chip chip-cravadas">🎯 ${placar.cravadas} cravado${placar.cravadas > 1 ? "s" : ""}</span>` : ""}
+        ${placar.penCravadas ? `<span class="chip chip-cravadas">🥅 pênaltis cravados: ${placar.penCravadas}</span>` : ""}
         <span class="chip">📈 pode chegar a ${placar.possivel}</span>
         ${ANALISES.has(palpite.id)
           ? `<a class="chip chip-analise" href="analises/${encodeURIComponent(palpite.id)}.html">🔬 como decidi</a>`
