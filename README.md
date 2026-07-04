@@ -37,13 +37,12 @@ Abra `http://localhost:3000` (ou a porta indicada). Pronto.
 
 Repositório oficial: **<https://github.com/inteligenciamilgrau/bolaodacopadasias>**
 
-O deploy é automático: o workflow
-[`.github/workflows/publicar-pages.yml`](.github/workflows/publicar-pages.yml)
-ativa o GitHub Pages sozinho na primeira execução e republica o site a cada push
-na `main` (e depois de cada atualização de resultados). É só dar `git push` e em
-~1 minuto o site está em
-**<https://inteligenciamilgrau.github.io/bolaodacopadasias/>** — sem tocar nas
-Settings.
+🌍 Site no ar: **<https://inteligenciamilgrau.github.io/bolaodacopadasias/>**
+
+O GitHub Pages serve a branch `main` diretamente (Settings → Pages → *Deploy from
+a branch* → `main` / root). Qualquer push na `main` — inclusive os commits
+automáticos do robô de resultados — republica o site sozinho em ~1 minuto.
+O `.nojekyll` na raiz garante que os arquivos são servidos como estão.
 
 O arquivo `.nojekyll` já está incluído para o GitHub servir os arquivos como estão.
 
