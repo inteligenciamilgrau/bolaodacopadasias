@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolao das IAs 2026 - Kimi 2.6</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card-hover: #26334d;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --accent: #f59e0b;
+    --accent-sec: #3b82f6;
+    --violet: #8b5cf6;
+    --green: #22c55e;
+    --red: #ef4444;
+    --border: #334155;
+    --shadow: rgba(0,0,0,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 50px 20px 40px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-bottom: 3px solid var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 60%);
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+  header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent), #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  header .subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    position: relative;
+  }
+  header .model-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: 0.95rem;
+    position: relative;
+  }
+  header .model-tag .emoji { font-size: 1.4rem; }
+
+  /* Sections */
+  section { margin: 40px 0; }
+  .section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .icon { font-size: 1.4rem; }
+
+  /* Metodologia */
+  .methodology {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 25px 30px;
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
+  }
+  .methodology h3 {
+    color: var(--accent);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+  }
+  .methodology ul {
+    list-style: none;
+    padding: 0;
+  }
+  .methodology li {
+    padding: 6px 0;
+    padding-left: 24px;
+    position: relative;
+    color: var(--text-muted);
+  }
+  .methodology li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+  }
+
+  /* Game Card */
+  .game-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .game-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px var(--shadow);
+    border-color: var(--accent);
+  }
+  .game-card.penalty-card {
+    border-color: var(--violet);
+    background: linear-gradient(135deg, #1e293b 0%, #241830 100%);
+  }
+  .game-card.penalty-card:hover {
+    border-color: #a78bfa;
+    box-shadow: 0 12px 32px rgba(139,92,246,0.25);
+  }
+  .game-card .match-label {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--accent);
+    color: #0f172a;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .game-card.penalty-card .match-label {
+    background: var(--violet);
+    color: #fff;
+  }
+  .game-card .teams {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  .game-card .team {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .game-card .team .flag { font-size: 1.6rem; }
+  .game-card .vs {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  .game-card .score-box {
+    text-align: center;
+    padding: 14px;
+    background: rgba(245,158,11,0.1);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(245,158,11,0.2);
+  }
+  .game-card.penalty-card .score-box {
+    background: rgba(139,92,246,0.1);
+    border-color: rgba(139,92,246,0.3);
+  }
+  .game-card .score-main {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 2px;
+  }
+  .game-card.penalty-card .score-main { color: var(--violet); }
+  .game-card .score-penalty {
+    font-size: 0.9rem;
+    color: var(--violet);
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .game-card .winner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(34,197,94,0.15);
+    color: var(--green);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .game-card .analysis-bar {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    background: rgba(255,255,255,0.05);
+  }
+  .game-card .analysis-bar .bar-analysis {
+    background: linear-gradient(90deg, var(--accent), #fbbf24);
+    height: 100%;
+    border-radius: 4px 0 0 4px;
+    transition: width 0.6s ease;
+  }
+  .game-card .analysis-bar .bar-chute {
+    background: linear-gradient(90deg, var(--red), #f87171);
+    height: 100%;
+    border-radius: 0 4px 4px 0;
+    transition: width 0.6s ease;
+  }
+  .game-card .bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  .game-card .details {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .game-card .details strong { color: var(--text); }
+
+  /* Penalty badge */
+  .penalty-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    background: var(--violet);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    border-radius: 4px;
+    margin-left: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    animation: badge-pulse 2s infinite;
+  }
+  @keyframes badge-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Bracket */
+  .bracket-section {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .bracket {
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+    min-width: 900px;
+    padding: 10px 0;
+  }
+  .bracket-round {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 14px;
+  }
+  .bracket-round-title {
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .bracket-match {
+    background: rgba(15,23,42,0.6);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+  }
+  .bracket-match:hover {
+    border-color: var(--accent);
+    background: rgba(245,158,11,0.05);
+  }
+  .bracket-match.penalty-match {
+    border-color: var(--violet);
+    background: rgba(139,92,246,0.08);
+  }
+  .bracket-match.penalty-match:hover {
+    border-color: #a78bfa;
+  }
+  .bracket-match .bracket-teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .bracket-match .bracket-score {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 0.85rem;
+  }
+  .bracket-match.penalty-match .bracket-score { color: var(--violet); }
+  .bracket-match .bracket-pen { font-size: 0.7rem; color: var(--violet); }
+  .bracket-match .bracket-winner { color: var(--green); font-weight: 700; }
+  .bracket-match .bracket-loser { color: var(--text-muted); }
+  .connector-svg {
+    width: 24px;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  /* Final destaque */
+  .final-highlight {
+    background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(139,92,246,0.1) 100%);
+    border: 2px solid var(--accent);
+    border-radius: 20px;
+    padding: 35px;
+    text-align: center;
+    margin-top: 30px;
+  }
+  .final-highlight h3 {
+    font-size: 1.4rem;
+    color: var(--accent);
+    margin-bottom: 15px;
+  }
+  .final-highlight .final-teams {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 15px 0;
+  }
+  .final-highlight .final-score {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--accent);
+    margin: 10px 0;
+  }
+  .final-highlight .final-champion {
+    font-size: 1.3rem;
+    color: var(--green);
+    font-weight: 700;
+    margin-top: 10px;
+  }
+
+  /* Summary */
+  .summary-box {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 25px 30px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .summary-box .overall-bar {
+    display: flex;
+    height: 32px;
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 20px auto;
+    max-width: 500px;
+    background: rgba(255,255,255,0.05);
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .summary-box .overall-bar .bar-analysis {
+    background: linear-gradient(90deg, var(--accent), #fbbf24);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: #0f172a;
+    transition: width 0.8s ease;
+  }
+  .summary-box .overall-bar .bar-chute {
+    background: linear-gradient(90deg, var(--red), #f87171);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: #fff;
+    transition: width 0.8s ease;
+  }
+  .summary-box .note-text {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 50px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+  footer .disclaimer {
+    display: block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 8px;
+    color: #f87171;
+    font-weight: 600;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.7rem; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .bracket { min-width: 700px; }
+    .final-highlight .final-teams { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏆 Bolao das IAs 2026</h1>
+  <p class="subtitle">Palpites para todas as fases do torneio mundial de selecoes 2026</p>
+  <div class="model-tag">
+    <span class="emoji">🌙</span>
+    <span><strong>Kimi 2.6</strong> | Moonshot AI | ID: kimi-k2.6-agentswarm</span>
+  </div>
+  <p class="subtitle" style="margin-top:12px;font-size:0.9rem;">Data do palpite: 04 de julho de 2026</p>
+</header>
+
+<div class="container">
+
+  <!-- Metodologia -->
+  <section>
+    <h2 class="section-title"><span class="icon">📊</span> Metodologia</h2>
+    <div class="methodology">
+      <h3>Como os palpites foram elaborados</h3>
+      <ul>
+        <li>Analise de ranking FIFA e desempenho historico das selecoes em torneios mundiais</li>
+        <li>Desempenho na fase de grupos e mata-mata do torneio atual (quando aplicavel)</li>
+        <li>Confrontos diretos historicos entre as equipes</li>
+        <li>Condicoes fisicas, suspensoes e lesoes de jogadores-chave</li>
+        <li>Fatores contextuais (mando de campo, altitude, clima, distancia de viagem)</li>
+        <li>Momento de forma de atletas decisivos (artilharia, assistencias)</li>
+        <li>Todos os palpites incluem placar exato e divisao percentual entre analise e intuicao</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Oitavas -->
+  <section>
+    <h2 class="section-title"><span class="icon">⚽</span> Oitavas de Final</h2>
+    <div class="cards-grid" id="oitavas-grid"></div>
+  </section>
+
+  <!-- Quartas -->
+  <section>
+    <h2 class="section-title"><span class="icon">🔥</span> Quartas de Final</h2>
+    <div class="cards-grid" id="quartas-grid"></div>
+  </section>
+
+  <!-- Semis -->
+  <section>
+    <h2 class="section-title"><span class="icon">⭐</span> Semifinais</h2>
+    <div class="cards-grid" id="semis-grid"></div>
+  </section>
+
+  <!-- Final -->
+  <section>
+    <h2 class="section-title"><span class="icon">🏆</span> Final</h2>
+    <div class="cards-grid" id="final-grid"></div>
+  </section>
+
+  <!-- Chaveamento -->
+  <section>
+    <h2 class="section-title"><span class="icon">🗺️</span> Chaveamento Completo</h2>
+    <div class="bracket-section">
+      <div class="bracket" id="bracket"></div>
+    </div>
+  </section>
+
+  <!-- Resumo -->
+  <section>
+    <h2 class="section-title"><span class="icon">📈</span> Resumo Geral</h2>
+    <div class="summary-box">
+      <p style="font-size: 1.1rem; margin-bottom: 10px;">Proporcao media de todos os 15 palpites</p>
+      <div class="overall-bar">
+        <div class="bar-analysis" style="width: 68%;">~68% Analise</div>
+        <div class="bar-chute" style="width: 32%;">~32% Chute</div>
+      </div>
+      <p class="note-text">A maior parte dos palpites e fundamentada em dados estatisticos e analise contextual.<br>A parcela de "chute" representa a incerteza inerente ao futebol.</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p><strong>🌙 Kimi 2.6</strong> | Moonshot AI | Bolao das IAs 2026</p>
+  <span class="disclaimer">⚠️ Projeto amador sem fins lucrativos.</span>
+  <p style="margin-top: 15px; font-size: 0.75rem;">Este projeto nao possui qualquer afiliacao com entidades organizadoras oficiais de torneios de futebol.</p>
+</footer>
+
+<script>
+// ============================================================
+// DADOS DOS 15 JOGOS
+// ============================================================
+const games = [
+  // OITAVAS
+  {
+    id: 'O1', round: 'Oitavas', t1: 'Paraguai', f1: '🇵🇾', t2: 'Franca', f2: '🇫🇷',
+    winner: 'FRA', score: '3x0', penalty: null, analysis: 85, chute: 15,
+    details: '<strong>Franca:</strong> Ranking 3º, odds +180 (favorita), 9 pts grupos (3V 0E 0D, 10-2 gols), venceu Suecia 3-0 na R32. Mbappe capita, 12 gols em Copas.<br><strong>Paraguai:</strong> Ranking ~37º, classificado como melhor 3º (4 pts), eliminou Alemanha nos penaltis na R32.<br><strong>Historico:</strong> Franca nunca perdeu (3V, 2E, 15-4 em gols). Ultimo: 5-0 em 2017.'
+  },
+  {
+    id: 'O2', round: 'Oitavas', t1: 'Canada', f1: '🇨🇦', t2: 'Marrocos', f2: '🇲🇦',
+    winner: 'MAR', score: '2x0', penalty: null, analysis: 75, chute: 25,
+    details: '<strong>Marrocos:</strong> Ranking 7º, semi 2022, 7 pts grupos, eliminou Holanda nos penaltis. Defesa solida (2 gols sofridos em 3 jogos).<br><strong>Canada:</strong> Ranking ~17º, zebra +25000, 4 pts grupos, 1ª vitoria em mata-mata na historia.<br><strong>Historico:</strong> MAR invicta (3V, 1E, 10-3 em gols). Venceu 2-1 na Copa 2022.'
+  },
+  {
+    id: 'O3', round: 'Oitavas', t1: 'Portugal', f1: '🇵🇹', t2: 'Espanha', f2: '🇪🇸',
+    winner: 'ESP', score: '1x0', penalty: null, analysis: 70, chute: 30,
+    details: '<strong>Espanha:</strong> Ranking 2º, 7 pts grupos, 0 GOLS SOFRIDOS! Venceu Austria 3-0 na R32. Yamal, Rodri, Pedri.<br><strong>Portugal:</strong> Ranking 5º, Ronaldo 41a ainda titular. Bruno Fernandes, Vitinha.<br><strong>Historico:</strong> ESP 18V, 16E, 7D. Venceu final da Copa 2010.'
+  },
+  {
+    id: 'O4', round: 'Oitavas', t1: 'EUA', f1: '🇺🇸', t2: 'Belgica', f2: '🇧🇪',
+    winner: 'BEL', score: '2x1', penalty: null, analysis: 60, chute: 40,
+    details: '<strong>Belgica:</strong> Ranking 9º, De Bruyne, Lukaku, Courtois. Time envelhecido mas experiente.<br><strong>EUA:</strong> Ranking 17º, joga em casa. SEM Balogun ( suspenso) e SEM Pulisic (lesionado).<br><strong>Historico:</strong> BEL 6V, 0E, 1D. Venceu 2-1 na prorrogacao em 2014.'
+  },
+  {
+    id: 'O5', round: 'Oitavas', t1: 'Brasil', f1: '🇧🇷', t2: 'Noruega', f2: '🇳🇴',
+    winner: 'BRA', score: '3x1', penalty: null, analysis: 80, chute: 20,
+    details: '<strong>Brasil:</strong> Ranking 6º, 7 pts grupos. Vinicius Jr., Neymar, Endrick. Lesoes: Rodrygo, Militao fora.<br><strong>Noruega:</strong> Ranking 29º, Haaland (16 gols eliminatorias), Odegaard. Tabu: nunca perdeu pro Brasil.'
+  },
+  {
+    id: 'O6', round: 'Oitavas', t1: 'Mexico', f1: '🇲🇽', t2: 'Inglaterra', f2: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+    winner: 'ENG', score: '1x1', penalty: '4x2', analysis: 65, chute: 35,
+    details: '<strong>Mexico:</strong> Ranking 15º, joga no AZTECA (87 mil, altitude 2.200m). NUNCA PERDEU no Azteca em Copas (8V, 2E).<br><strong>Inglaterra:</strong> Ranking 4º, Tuchel, Kane (3 gols), Bellingham, Saka. Time solido.'
+  },
+  {
+    id: 'O7', round: 'Oitavas', t1: 'Argentina', f1: '🇦🇷', t2: 'Egito', f2: '🇪🇬',
+    winner: 'ARG', score: '3x0', penalty: null, analysis: 90, chute: 10,
+    details: '<strong>Argentina:</strong> Ranking 1º, 9 pts grupos. Messi artilheiro do torneio (6 gols). Scaloni campeao do mundo.<br><strong>Egito:</strong> Ranking ~34º, 1ª vez passando da fase de grupos na HISTORIA. Salah a esperanca.'
+  },
+  {
+    id: 'O8', round: 'Oitavas', t1: 'Suica', f1: '🇨🇭', t2: 'Colombia', f2: '🇨🇴',
+    winner: 'COL', score: '2x1', penalty: null, analysis: 55, chute: 45,
+    details: '<strong>Colombia:</strong> Ranking 13º, 7 pts grupos. James Rodriguez, Luis Diaz (Bayern).<br><strong>Suica:</strong> Ranking 19º, 7 pts grupos. Xhaka, Embolo, Akanji.<br><strong>Historico:</strong> COL venceu 2-0 na Copa 1994.'
+  },
+  // QUARTAS
+  {
+    id: 'Q1', round: 'Quartas', t1: 'Franca', f1: '🇫🇷', t2: 'Marrocos', f2: '🇲🇦',
+    winner: 'FRA', score: '2x1', penalty: null, analysis: 75, chute: 25,
+    details: 'Franca ja venceu na semi de 2022. Mbappe e Dembele contra defesa marroquina. Marrocos incomoda mas a qualidade francesa prevalece.'
+  },
+  {
+    id: 'Q2', round: 'Quartas', t1: 'Espanha', f1: '🇪🇸', t2: 'Belgica', f2: '🇧🇪',
+    winner: 'ESP', score: '2x0', penalty: null, analysis: 70, chute: 30,
+    details: 'Espanha sem sofrer gol no torneio vs Belgica envelhecida. Rodri controla, Yamal decide. Transicao de geracao belga e evidente.'
+  },
+  {
+    id: 'Q3', round: 'Quartas', t1: 'Brasil', f1: '🇧🇷', t2: 'Inglaterra', f2: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+    winner: 'ENG', score: '1x1', penalty: '5x4', analysis: 55, chute: 45,
+    details: 'Duelo de titas. Brasil sem Rodrygo e Militao. Inglaterra completa. Jogao que termina empatado, e nos penaltis a frieza inglesa leva a melhor numa disputa dramatica.'
+  },
+  {
+    id: 'Q4', round: 'Quartas', t1: 'Argentina', f1: '🇦🇷', t2: 'Colombia', f2: '🇨🇴',
+    winner: 'ARG', score: '2x0', penalty: null, analysis: 65, chute: 35,
+    details: 'Argentina ja venceu COL na final Copa America 2024. Solidez defensiva argentina anula James e Luis Diaz, Messi decide.'
+  },
+  // SEMIS
+  {
+    id: 'S1', round: 'Semis', t1: 'Franca', f1: '🇫🇷', t2: 'Espanha', f2: '🇪🇸',
+    winner: 'FRA', score: '2x1', penalty: null, analysis: 60, chute: 40,
+    details: 'O jogo do torneio. Mbappe vs defesa espanhola impecavel. Mbappe brilha, Giroud fecha. Deschamps vence de la Fuente.'
+  },
+  {
+    id: 'S2', round: 'Semis', t1: 'Inglaterra', f1: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', t2: 'Argentina', f2: '🇦🇷',
+    winner: 'ARG', score: '1x0', penalty: null, analysis: 55, chute: 45,
+    details: 'Kane vs Messi. Tuchel vs Scaloni. Messi decide no momento crucial. A camisa pesa, a experiencia de campeao fala mais alto.'
+  },
+  // FINAL
+  {
+    id: 'F1', round: 'Final', t1: 'Franca', f1: '🇫🇷', t2: 'Argentina', f2: '🇦🇷',
+    winner: 'ARG', score: '2x1', penalty: null, analysis: 55, chute: 45,
+    details: 'Messi vs Mbappe II. A revanche de 2022. Argentina sai atras, Messi empata de penalti e Lautaro marca o do titulo nos acrescimos. Fim de era dourada com bicampeonato.'
+  }
+];
+
+// ============================================================
+// RENDER CARDS
+// ============================================================
+function renderCard(g) {
+  const isPenalty = g.penalty !== null;
+  const winnerFlag = g.winner === 'FRA' ? '🇫🇷' : g.winner === 'MAR' ? '🇲🇦' : g.winner === 'ESP' ? '🇪🇸' : g.winner === 'BEL' ? '🇧🇪' : g.winner === 'BRA' ? '🇧🇷' : g.winner === 'ENG' ? '🏴󠁧󠁢󠁥󠁮󠁧󠁿' : g.winner === 'ARG' ? '🇦🇷' : g.winner === 'COL' ? '🇨🇴' : '?';
+  const winnerName = g.winner === 'FRA' ? 'Franca' : g.winner === 'MAR' ? 'Marrocos' : g.winner === 'ESP' ? 'Espanha' : g.winner === 'BEL' ? 'Belgica' : g.winner === 'BRA' ? 'Brasil' : g.winner === 'ENG' ? 'Inglaterra' : g.winner === 'ARG' ? 'Argentina' : g.winner === 'COL' ? 'Colombia' : '?';
+  return `
+    <div class="game-card ${isPenalty ? 'penalty-card' : ''}">
+      <span class="match-label">${g.id} - ${g.round}${isPenalty ? ' <span class="penalty-badge">⚽ Penaltis</span>' : ''}</span>
+      <div class="teams">
+        <span class="team"><span class="flag">${g.f1}</span> ${g.t1}</span>
+        <span class="vs">vs</span>
+        <span class="team">${g.t2} <span class="flag">${g.f2}</span></span>
+      </div>
+      <div class="score-box">
+        <div class="score-main">${g.score}</div>
+        ${isPenalty ? `<div class="score-penalty">Penaltis: ${g.penalty}</div>` : ''}
+      </div>
+      <div class="winner-badge">
+        <span>🏆</span> Vencedor: ${winnerFlag} ${winnerName}
+      </div>
+      <div class="analysis-bar">
+        <div class="bar-analysis" style="width:${g.analysis}%"></div>
+        <div class="bar-chute" style="width:${g.chute}%"></div>
+      </div>
+      <div class="bar-labels">
+        <span>📊 ${g.analysis}% Analise</span>
+        <span>🎲 ${g.chute}% Chute</span>
+      </div>
+      <div class="details">${g.details}</div>
+    </div>
+  `;
+}
+
+document.getElementById('oitavas-grid').innerHTML = games.filter(g => g.round === 'Oitavas').map(renderCard).join('');
+document.getElementById('quartas-grid').innerHTML = games.filter(g => g.round === 'Quartas').map(renderCard).join('');
+document.getElementById('semis-grid').innerHTML = games.filter(g => g.round === 'Semis').map(renderCard).join('');
+document.getElementById('final-grid').innerHTML = games.filter(g => g.round === 'Final').map(renderCard).join('');
+
+// ============================================================
+// RENDER BRACKET
+// ============================================================
+const oitavasGames = games.filter(g => g.round === 'Oitavas');
+const quartasGames = games.filter(g => g.round === 'Quartas');
+const semisGames = games.filter(g => g.round === 'Semis');
+const finalGame = games.find(g => g.round === 'Final');
+
+function bracketMatch(g) {
+  const isPenalty = g && g.penalty !== null;
+  const wClass1 = g && g.winner === getCode(g.t1) ? 'bracket-winner' : 'bracket-loser';
+  const wClass2 = g && g.winner === getCode(g.t2) ? 'bracket-winner' : 'bracket-loser';
+  if (!g) return '<div class="bracket-match">TBD</div>';
+  return `
+    <div class="bracket-match ${isPenalty ? 'penalty-match' : ''}">
+      <div class="bracket-teams">
+        <span class="${wClass1}">${g.f1} ${g.t1}</span>
+        <span class="bracket-score">${g.score}</span>
+      </div>
+      <div class="bracket-teams">
+        <span class="${wClass2}">${g.f2} ${g.t2}</span>
+        ${isPenalty ? `<span class="bracket-pen">(${g.penalty} pen)</span>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function getCode(name) {
+  const map = { 'Paraguai':'PAR','Franca':'FRA','Canada':'CAN','Marrocos':'MAR','Portugal':'POR','Espanha':'ESP','EUA':'USA','Belgica':'BEL','Brasil':'BRA','Noruega':'NOR','Mexico':'MEX','Inglaterra':'ENG','Argentina':'ARG','Egito':'EGY','Suica':'SUI','Colombia':'COL' };
+  return map[name] || name.slice(0,3).toUpperCase();
+}
+
+const svgArrow = `<svg class="connector-svg" viewBox="0 0 24 60" fill="none"><path d="M4 4 Q 20 4, 20 30 Q 20 56, 4 56" stroke="#f59e0b" stroke-width="1.5" fill="none" opacity="0.5"/><polygon points="0,52 8,56 0,60" fill="#f59e0b" opacity="0.5"/></svg>`;
+const svgArrowPenalty = `<svg class="connector-svg" viewBox="0 0 24 60" fill="none"><path d="M4 4 Q 20 4, 20 30 Q 20 56, 4 56" stroke="#8b5cf6" stroke-width="1.5" fill="none" opacity="0.5"/><polygon points="0,52 8,56 0,60" fill="#8b5cf6" opacity="0.5"/></svg>`;
+
+const bracketHTML = `
+  <div class="bracket-round">
+    <div class="bracket-round-title">Oitavas</div>
+    ${oitavasGames.slice(0,4).map(bracketMatch).join('')}
+  </div>
+  <div style="display:flex;flex-direction:column;justify-content:space-around;padding:30px 0;">
+    ${oitavasGames.slice(0,4).map((g,i) => i % 2 === 0 ? (g && g.penalty ? svgArrowPenalty : svgArrow) : '<div></div>').join('')}
+  </div>
+  <div class="bracket-round">
+    <div class="bracket-round-title">Quartas (Cima)</div>
+    ${bracketMatch(quartasGames[0])}
+    ${bracketMatch(quartasGames[1])}
+  </div>
+  <div style="display:flex;flex-direction:column;justify-content:space-around;padding:30px 0;">
+    ${svgArrow}<div></div>${svgArrow}<div></div>
+  </div>
+  <div class="bracket-round">
+    <div class="bracket-round-title">Semifinal</div>
+    ${bracketMatch(semisGames[0])}
+  </div>
+  <div style="display:flex;flex-direction:column;justify-content:center;padding:30px 0;">
+    ${svgArrow}
+  </div>
+  <div class="bracket-round">
+    <div class="bracket-round-title">Final</div>
+    ${bracketMatch(finalGame)}
+    <div class="final-highlight" style="margin-top:10px;padding:15px;">
+      <div class="final-champion" style="font-size:1.1rem;">🏆 Campeao: 🇦🇷 Argentina</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;justify-content:center;padding:30px 0;">
+    ${svgArrowPenalty}
+  </div>
+  <div class="bracket-round">
+    <div class="bracket-round-title">Semifinal</div>
+    ${bracketMatch(semisGames[1])}
+  </div>
+  <div style="display:flex;flex-direction:column;justify-content:space-around;padding:30px 0;">
+    ${svgArrowPenalty}<div></div>${svgArrow}<div></div>
+  </div>
+  <div class="bracket-round">
+    <div class="bracket-round-title">Quartas (Baixo)</div>
+    ${bracketMatch(quartasGames[2])}
+    ${bracketMatch(quartasGames[3])}
+  </div>
+  <div style="display:flex;flex-direction:column;justify-content:space-around;padding:30px 0;">
+    ${oitavasGames.slice(4).map((g,i) => i % 2 === 0 ? (g && g.penalty ? svgArrowPenalty : svgArrow) : '<div></div>').join('')}
+  </div>
+  <div class="bracket-round">
+    <div class="bracket-round-title">Oitavas</div>
+    ${oitavasGames.slice(4).map(bracketMatch).join('')}
+  </div>
+`;
+
+document.getElementById('bracket').innerHTML = bracketHTML;
+
+// Animate bars on load
+window.addEventListener('load', () => {
+  document.querySelectorAll('.bar-analysis, .bar-chute').forEach(bar => {
+    const w = bar.style.width;
+    bar.style.width = '0%';
+    setTimeout(() => { bar.style.width = w; }, 100);
+  });
+});
+</script>
+
+</body>
+</html>

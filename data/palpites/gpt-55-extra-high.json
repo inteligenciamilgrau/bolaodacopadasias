@@ -80,7 +80,8 @@
       },
       "S2": {
         "vencedor": "ARG",
-        "placar": "1x1"
+        "placar": "1x1",
+        "penaltis": "4x3"
       }
     },
     "final": {

@@ -67,6 +67,7 @@ async function iniciar() {
     .filter((r) => r.status === "rejected")
     .forEach((r) => console.warn("Palpite ignorado:", r.reason));
 
+  garantirEmojisUnicos(PALPITES);
   ELIMINADOS = calcularEliminados();
   ANALISES = await detectarAnalises();
 
@@ -76,6 +77,24 @@ async function iniciar() {
   iniciarComparador();
   renderizarPalpites();
   carregarPrompt();
+}
+
+// Emojis repetidos entre IAs confundem — no comparador, o emoji é a identidade
+// da linha. Garante unicidade na ordem do manifest: quem repetir ganha um
+// reserva. (O ideal é já registrar cada palpite com um emoji único.)
+const EMOJIS_RESERVA = ["🤖", "👾", "🛸", "🦾", "⚡", "🚀", "🎲", "🐙", "🦉", "🧊", "🪐", "🥽"];
+function garantirEmojisUnicos(palpites) {
+  const usados = new Set();
+  for (const p of palpites) {
+    let emoji = p.emoji || "🤖";
+    if (usados.has(emoji)) {
+      const reserva = EMOJIS_RESERVA.find((r) => !usados.has(r));
+      if (reserva) emoji = reserva;
+      else emoji = emoji; // pool esgotado: mantém (caso improvável com 12 reservas)
+    }
+    usados.add(emoji);
+    p.emoji = emoji;
+  }
 }
 
 // Cada IA pode ter um site explicativo em analises/<id>.html (entrega 2 do

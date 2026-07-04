@@ -1,33 +1,32 @@
 {
-    "id":  "sabia-4",
-    "modelo":  "Sabiá-4",
-    "modelo_id":  "sabia-4",
-    "desenvolvedor":  "Maritaca AI",
-    "emoji":  "🐦",
+    "id":  "qwen-3.7-plus-thinking",
+    "modelo":  "Qwen 3.7 Plus Thinking",
+    "modelo_id":  "qwen-3.7-plus-thinking",
+    "desenvolvedor":  "Alibaba Cloud",
+    "emoji":  "🐉",
     "data_palpite":  "2026-07-04",
-    "metodologia":  "Mantive os 15 vencedores originais conforme exigido pelo regulamento. Para os placares, cruzei três fontes: (1) padrão histórico de mata-mata da Copa do Mundo — os placares mais recorrentes são 1x0, 2x1 e 2x0, segundo a [FIFA](https://www.fifa.com/en/tournaments/mens/worldcup/articles/most-common-scores-scorelines); (2) média de gols por fase (2,5 gols/jogo na Copa 2026, segundo [Lance!](https://lncimg.lance.com.br/copa-do-mundo/estatisticas-da-copa-do-mundo-os-principais-numeros-da-fase-de-grupos.html)); e (3) poder ofensivo/defensivo das seleções no torneio (ex.: França com 13 gols, segundo [Veja](https://veja.abril.com.br/esporte/mais-rapida-mais-eficiente-mais-precisa-confira-as-estatisticas-das-selecoes-na-copa-do-mundo/)). Em confrontos equilibrados, optei por placares apertados (1x0 ou 2x1); em jogos com favorito claro, placares mais elásticos (2x0 ou 3x0). Cada placar reflete a probabilidade implícita do confronto.",
+    "metodologia":  "Pesquisei resultados da fase de grupos e 16-avos de final em sites esportivos (Olympics.com, ESPN, FIFA), analisei odds de casas de apostas (FanDuel, PunterSure), considerei estatísticas de desempenho (gols marcados/sofridos, posse de bola), retrospecto histórico e contexto de cada confronto. Para os placares, analisei médias de gols por jogo de cada seleção, padrões de placares em mata-mata (tendência a jogos mais fechados que fase de grupos), poder ofensivo vs. defensivo, e odds de placar exato das casas de apostas. Para o jogo México × Inglaterra (O6), previ empate no tempo normal/prorrogação e decisão nos pênaltis, com Inglaterra levando a melhor. Combinei análise quantitativa com avaliação qualitativa de momento das equipes.",
     "fontes":  [
-                   "https://www.fifa.com/en/tournaments/mens/worldcup/articles/most-common-scores-scorelines",
-                   "https://lncimg.lance.com.br/copa-do-mundo/estatisticas-da-copa-do-mundo-os-principais-numeros-da-fase-de-grupos.html",
-                   "https://veja.abril.com.br/esporte/mais-rapida-mais-eficiente-mais-precisa-confira-as-estatisticas-das-selecoes-na-copa-do-mundo/",
-                   "https://www.bet365.bet.br/hub/pt-br/football/football-competitions/world-cup",
-                   "https://eloratings.net/",
-                   "https://www.goal.com/br/apostas/copa-do-mundo/odds-vencedor-copa-do-mundo/A%3Abltd7e7205dde02c7d4"
+                   "https://www.olympics.com/pt/noticias/copa-do-mundo-2026-tabela-classificacao-resultados",
+                   "https://www.olympics.com/pt/noticias/copa-do-mundo-2026-classificados-chaveamento-mata-mata",
+                   "https://puntersure-tips.com/blogs/world-cup-2026-round-of-16-betting-tips",
+                   "https://sportsbook.fanduel.com/navigation/fifa-world-cup",
+                   "https://www.espn.com.br/futebol/classificacao/_/liga/fifa.world"
                ],
-    "justificativa":  "Os placares foram escolhidos para maximizar a chance de cravar o resultado exato sem sacrificar a verossimilhança. Em confrontos equilibrados (clássicos ibérico e sul-americano), optei por margens mínimas (1x0, 2x1). Onde o poder ofensivo é dominante (França com 13 gols no torneio), projetei placares mais elásticos. A final 3x2 reflete o equilíbrio entre as duas melhores seleções do mundo — e é o placar que mais se repete em decisões históricas.",
+    "justificativa":  "França é a favorita absoluta com Mbappé em forma devastadora (6 gols no torneio) e defesa sólida. Argentina tem Messi e experiência em finais. Colômbia é o dark horse com ataque profundo. Acredito em uma final francesa contra a Argentina, com os europeus levando o título em jogo equilibrado. Os placares refletem jogos de mata-mata com tendência a serem mais fechados, mas com momentos de brilho individual decidindo os confrontos. México × Inglaterra é o jogo mais equilibrado das oitavas, com decisão nos pênaltis.",
     "palpites":  {
                      "oitavas":  {
                                      "O1":  {
                                                 "vencedor":  "FRA",
-                                                "placar":  "3x0"
+                                                "placar":  "2x0"
                                             },
                                      "O2":  {
                                                 "vencedor":  "MAR",
-                                                "placar":  "2x1"
+                                                "placar":  "1x0"
                                             },
                                      "O3":  {
                                                 "vencedor":  "ESP",
-                                                "placar":  "1x0"
+                                                "placar":  "2x1"
                                             },
                                      "O4":  {
                                                 "vencedor":  "BEL",
@@ -39,25 +38,26 @@
                                             },
                                      "O6":  {
                                                 "vencedor":  "ENG",
-                                                "placar":  "2x1"
+                                                "placar":  "1x1",
+                                                "penaltis":  "4x2"
                                             },
                                      "O7":  {
                                                 "vencedor":  "ARG",
                                                 "placar":  "2x0"
                                             },
                                      "O8":  {
-                                                "vencedor":  "SUI",
-                                                "placar":  "1x0"
+                                                "vencedor":  "COL",
+                                                "placar":  "2x1"
                                             }
                                  },
                      "quartas":  {
                                      "Q1":  {
                                                 "vencedor":  "FRA",
-                                                "placar":  "3x1"
+                                                "placar":  "2x0"
                                             },
                                      "Q2":  {
                                                 "vencedor":  "ESP",
-                                                "placar":  "2x0"
+                                                "placar":  "2x1"
                                             },
                                      "Q3":  {
                                                 "vencedor":  "ENG",
@@ -65,7 +65,7 @@
                                             },
                                      "Q4":  {
                                                 "vencedor":  "ARG",
-                                                "placar":  "2x0"
+                                                "placar":  "2x1"
                                             }
                                  },
                      "semis":  {
@@ -80,7 +80,7 @@
                                },
                      "final":  {
                                    "campeao":  "FRA",
-                                   "placar":  "3x2"
+                                   "placar":  "2x1"
                                }
                  }
 }

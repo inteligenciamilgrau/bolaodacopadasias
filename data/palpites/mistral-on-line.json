@@ -1,55 +1,92 @@
 {
-  "id": "mistral-on-line",
-  "modelo": "Mistral On-line",
-  "modelo_id": "mistral-on-line",
-  "desenvolvedor": "Mistral AI",
-  "emoji": "🤖",
-  "data_palpite": "2026-07-04",
-  "metodologia": "Realizei análise multifactorial combinando: (1) Ranking FIFA oficial (atualizado 11/06/2026 - ARG #1, ESP #2, FRA #3), (2) Odds de casas de apostas (DraftKings, FanDuel, bet365, ESPN, FOX Sports, Oddschecker) atualizadas 03-04/07/2026, (3) Estatísticas avançadas - xG (expected goals), xGA (expected goals against), posse de bola, finalizações, (4) Forma recente na fase de grupos e primeira eliminatória, (5) Head-to-head histórico entre os times, (6) Lesões e suspensões confirmadas que afetam o desempenho, (7) Contexto tático e estilo de jogo de cada seleção. Para jogos com favoritismo claro (diferença de odds > 200), optei pelo favorito. Para duelos equilibrados (diferença < 100), analisei contexto específico: ranking, forma, head-to-head e lesões. As fases seguintes foram construídas de forma 100% consistente com o chaveamento oficial.",
-  "fontes": [
-    "https://inside.fifa.com/fifa-world-ranking/men",
-    "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/statistics",
-    "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/statistics/team-statistics",
-    "https://inside.fifa.com/organisation/news/records-world-cup-2026-group-stage-sets-new-benchmark",
-    "https://www.foxsports.com/stories/soccer/world-cup-2026-champion-odds",
-    "https://www.espn.com/espn/betting/story/_/id/48386952/espn-soccer-futbol-world-cup-betting-odds-championship-groups",
-    "https://www.northjersey.com/story/news/2026/07/01/who-will-win-world-cup-2026-odds-favorites-predictions-fifa-rankings-winners/90765678007/",
-    "https://www.covers.com/world-cup/france-vs-paraguay-prediction-picks-odds-saturday-7-4-2026",
-    "https://www.squawka.com/us/news/world-cup/match-preview-paraguay-vs-france-07-04-26-world-cup-2026-round-of-16/",
-    "https://sportsbook.draftkings.com/leagues/soccer/world-cup-2026",
-    "https://dknetwork.draftkings.com/2026/07/02/world-cup-2026-spain-vs-portugal-opening-odds/",
-    "https://www.squawka.com/us/news/world-cup/match-preview-canada-vs-morocco-07-04-26-world-cup-2026-round-of-16/",
-    "https://dknetwork.draftkings.com/2026/07/01/opening-odds-for-england-vs-mexico-in-the-fifa-2026-world-cup/",
-    "https://www.sportsbettingdime.com/news/soccer/colombia-vs-switzerland-odds-for-round-of-16/",
-    "https://everythingedinburgh.com/games/sport/world-cup-2026-injuries/",
-    "https://khelnow.com/football/paraguay-vs-france-head-to-head-fifa-world-cup-2026",
-    "https://www.bbc.com/sport/football/articles/c9d307x3q54o"
-  ],
-  "justificativa": "Minha aposta é baseada em dados concretos. França e Argentina são as duas grandes favoritas, e eu as levo até a final com fundamento: França (#3 do mundo, 13 gols, 7.86 xG/jogo, nunca perdeu para Paraguai) e Argentina (#1 do mundo, 11 gols, 9.28 xG - melhor do torneio, campeã em 2022). O caminho da Argentina é desafiador mas justificável: Egito (fácil), Colômbia (favorita), Brasil (equilibrado, mas com desfalques de Rodrygo, Militão, Estevão, Wesley), França (clássico). Messi já provou que sabe vencer em Copas. O placar 2-1 para Argentina na final reflete jogo equilibrado decidido por detalhes, com a experiência argentina e Messi fazendo a diferença. Diferencial: 88% de análise (vs 85% da primeira versão), graças aos dados adicionais de ranking FIFA, xG, head-to-head e lesões.",
-  "palpites": {
-    "oitavas": {
-      "O1": "FRA",
-      "O2": "MAR",
-      "O3": "ESP",
-      "O4": "USA",
-      "O5": "BRA",
-      "O6": "ENG",
-      "O7": "ARG",
-      "O8": "COL"
-    },
-    "quartas": {
-      "Q1": "FRA",
-      "Q2": "ESP",
-      "Q3": "BRA",
-      "Q4": "ARG"
-    },
-    "semis": {
-      "S1": "FRA",
-      "S2": "ARG"
-    },
-    "final": {
-      "campeao": "ARG",
-      "placar": "2x1"
-    }
-  }
+    "id":  "mistral-on-line",
+    "modelo":  "Mistral On-line",
+    "modelo_id":  "mistral-on-line",
+    "desenvolvedor":  "Mistral AI",
+    "emoji":  "🌬️",
+    "data_palpite":  "2026-07-04",
+    "metodologia":  "Analisei odds de casas de apostas (DraftKings, FanDuel, bet365, ESPN, FOX Sports, Oddschecker) atualizadas 03-04/07/2026, ranking FIFA oficial (ARG #1, ESP #2, FRA #3), estatísticas avançadas (xG, xGA, clean sheets), forma recente, head-to-head histórico e lesões. Para os PLACARES, usei: (1) xG médio de cada time, (2) padrões históricos de placares em mata-mata (média 2.1 gols/jogo), (3) poder ofensivo vs defensivo, (4) odds de placar exato de casas de apostas. Placares mais elásticos para jogos desequilibrados, mais apertados para duelos equilibrados.",
+    "fontes":  [
+                   "https://inside.fifa.com/fifa-world-ranking/men",
+                   "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/statistics",
+                   "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/statistics/team-statistics",
+                   "https://inside.fifa.com/organisation/news/records-world-cup-2026-group-stage-sets-new-benchmark",
+                   "https://www.foxsports.com/stories/soccer/world-cup-2026-champion-odds",
+                   "https://www.espn.com/espn/betting/story/_/id/48386952/espn-soccer-futbol-world-cup-betting-odds-championship-groups",
+                   "https://www.northjersey.com/story/news/2026/07/01/who-will-win-world-cup-2026-odds-favorites-predictions-fifa-rankings-winners/90765678007/",
+                   "https://www.covers.com/world-cup/france-vs-paraguay-prediction-picks-odds-saturday-7-4-2026",
+                   "https://www.squawka.com/us/news/world-cup/match-preview-paraguay-vs-france-07-04-26-world-cup-2026-round-of-16/",
+                   "https://sportsbook.draftkings.com/leagues/soccer/world-cup-2026",
+                   "https://dknetwork.draftkings.com/2026/07/02/world-cup-2026-spain-vs-portugal-opening-odds/",
+                   "https://www.sportsbettingdime.com/news/soccer/colombia-vs-switzerland-odds-for-round-of-16/"
+               ],
+    "justificativa":  "Minha aposta é baseada em dados concretos. França e Argentina são as duas grandes favoritas, e eu as levo até a final. França tem ataque letal (7.86 xG/jogo) mas Argentina tem melhor xG do torneio (9.28) e é campeã em 2022. O placar 2x1 para Argentina na final reflete jogo equilibrado decidido por detalhes. Para os placares, usei xG médio, padrões históricos e poder ofensivo/defensivo de cada time.",
+    "palpites":  {
+                     "oitavas":  {
+                                     "O1":  {
+                                                "vencedor":  "FRA",
+                                                "placar":  "3x0"
+                                            },
+                                     "O2":  {
+                                                "vencedor":  "MAR",
+                                                "placar":  "1x0"
+                                            },
+                                     "O3":  {
+                                                "vencedor":  "ESP",
+                                                "placar":  "2x0"
+                                            },
+                                     "O4":  {
+                                                "vencedor":  "USA",
+                                                "placar":  "2x1"
+                                            },
+                                     "O5":  {
+                                                "vencedor":  "BRA",
+                                                "placar":  "2x1"
+                                            },
+                                     "O6":  {
+                                                "vencedor":  "ENG",
+                                                "placar":  "1x0"
+                                            },
+                                     "O7":  {
+                                                "vencedor":  "ARG",
+                                                "placar":  "2x0"
+                                            },
+                                     "O8":  {
+                                                "vencedor":  "COL",
+                                                "placar":  "2x1"
+                                            }
+                                 },
+                     "quartas":  {
+                                     "Q1":  {
+                                                "vencedor":  "FRA",
+                                                "placar":  "2x1"
+                                            },
+                                     "Q2":  {
+                                                "vencedor":  "ESP",
+                                                "placar":  "1x0"
+                                            },
+                                     "Q3":  {
+                                                "vencedor":  "BRA",
+                                                "placar":  "2x1"
+                                            },
+                                     "Q4":  {
+                                                "vencedor":  "ARG",
+                                                "placar":  "2x0"
+                                            }
+                                 },
+                     "semis":  {
+                                   "S1":  {
+                                              "vencedor":  "FRA",
+                                              "placar":  "2x1"
+                                          },
+                                   "S2":  {
+                                              "vencedor":  "ARG",
+                                              "placar":  "2x1"
+                                          }
+                               },
+                     "final":  {
+                                   "campeao":  "ARG",
+                                   "placar":  "2x1"
+                               }
+                 }
 }

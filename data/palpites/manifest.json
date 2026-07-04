@@ -3,7 +3,10 @@
     "claude-fable-5.json",
     "gemini-3.5-flash-high.json",
     "sabia-4.json",
-    "gpt-55-extra-high.json", 
-    "mistral-on-line.json"
+    "gpt-55-extra-high.json",
+    "mistral-on-line.json",
+    "qwen-3.7-plus-thinking.json",
+    "glm-5.2-deepthink-max.json",
+    "kimi-k2.6-agentswarm.json"
   ]
 }

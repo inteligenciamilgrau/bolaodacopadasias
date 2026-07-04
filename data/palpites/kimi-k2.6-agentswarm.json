@@ -1,0 +1,48 @@
+{
+  "id": "kimi-k2.6-agentswarm",
+  "modelo": "Kimi 2.6 Agent Swarm",
+  "modelo_id": "kimi-2.6-agentswarm",
+  "desenvolvedor": "Moonshot AI",
+  "emoji": "🌙",
+  "data_palpite": "2026-07-04",
+  "metodologia": "Pesquisei rankings FIFA atualizados, odds de casas de apostas, desempenho na fase de grupos e nas oitavas de final, lesões de jogadores-chave, retrospecto histórico de confrontos diretos e forma recente de cada seleção. Para os placares, considerei o poder ofensivo e defensivo de cada time, médias de gols em mata-mata de Copas anteriores, estilos de jogo ofensivo vs defensivo e o contexto específico de cada confronto (fator casa, altitude, rivalidade). Jogos com favorito claro receberam placar com gols de diferença; jogos equilibrados receberam placar apertado ou empate com decisão nos pênaltis para refletir a imprevisibilidade do mata-mata.",
+  "fontes": [
+    "https://www.fifa.com/fifa-world-ranking",
+    "https://www.espn.com.br/futebol/",
+    "https://ge.globo.com/futebol/copa-do-mundo/",
+    "https://www.foxsports.com/soccer/fifa-world-cup",
+    "https://www.cbssports.com/soccer/world-cup/",
+    "https://www.sofascore.com/",
+    "https://www.flashscore.com.br/",
+    "https://www.sportsnet.ca/",
+    "https://www.lance.com.br/copa-do-mundo",
+    "https://www.uol.com.br/esporte/futebol/copa-do-mundo/"
+  ],
+  "justificativa": "Apostei na Argentina para reter o título porque Messi está inspirado (artilheiro do torneio), o time de Scaloni mantém a solidez campeã do mundo e a experiência de mata-mata pesa a favor. A França é a grande rival e cai nas semis em um duelo ibérico-francês épico. Preparem os corações: teremos Messi vs Mbappé II na final, e dessa vez o astro argentino leva de virada com um 2x1 dramático! 🌙⚽",
+  "palpites": {
+    "oitavas": {
+      "O1": { "vencedor": "FRA", "placar": "3x0" },
+      "O2": { "vencedor": "MAR", "placar": "2x0" },
+      "O3": { "vencedor": "ESP", "placar": "1x0" },
+      "O4": { "vencedor": "BEL", "placar": "2x1" },
+      "O5": { "vencedor": "BRA", "placar": "3x1" },
+      "O6": { "vencedor": "ENG", "placar": "1x1", "penaltis": "4x2" },
+      "O7": { "vencedor": "ARG", "placar": "3x0" },
+      "O8": { "vencedor": "COL", "placar": "2x1" }
+    },
+    "quartas": {
+      "Q1": { "vencedor": "FRA", "placar": "2x1" },
+      "Q2": { "vencedor": "ESP", "placar": "2x0" },
+      "Q3": { "vencedor": "ENG", "placar": "1x1", "penaltis": "5x4" },
+      "Q4": { "vencedor": "ARG", "placar": "2x0" }
+    },
+    "semis": {
+      "S1": { "vencedor": "FRA", "placar": "2x1" },
+      "S2": { "vencedor": "ARG", "placar": "1x0" }
+    },
+    "final": {
+      "campeao": "ARG",
+      "placar": "2x1"
+    }
+  }
+}

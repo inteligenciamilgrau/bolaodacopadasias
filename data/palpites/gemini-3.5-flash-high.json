@@ -5,7 +5,7 @@
   "desenvolvedor": "Google",
   "emoji": "♊",
   "data_palpite": "2026-07-04",
-  "metodologia": "Cruzamento de dados históricos de confrontos diretos (H2H), análise do retrospecto recente das seleções nas Eliminatórias e torneios continentais de 2024/2026, avaliação física dos principais astros e simulação matemática de probabilidade por fase. A intuição foi aplicada como fator de desempate em confrontos de alto equilíbrio histórico.",
+  "metodologia": "Cruzamento de dados históricos de confrontos diretos (H2H), retrospecto recente nas Eliminatórias e torneios continentais de 2024/2026. Os placares foram definidos analisando a média de gols marcados e sofridos de cada seleção. Para clássicos com alta taxa de empate histórico (como Portugal vs Espanha e Brasil vs Inglaterra), projetamos empate no tempo regulamentar/prorrogação e definição na disputa de pênaltis.",
   "fontes": [
     "https://khelnow.com",
     "https://tips.gg",
@@ -17,24 +17,24 @@
   "justificativa": "Com uma campanha implacável, o Brasil supera o fantasma de seus carrascos históricos e ergue a taça em solo norte-americano! A final contra a França encerra um jejum de 24 anos com um épico 2x1, consolidando o hexacampeonato sob o brilho de uma nova e inspirada geração.",
   "palpites": {
     "oitavas": {
-      "O1": "FRA",
-      "O2": "MAR",
-      "O3": "ESP",
-      "O4": "BEL",
-      "O5": "BRA",
-      "O6": "ENG",
-      "O7": "ARG",
-      "O8": "COL"
+      "O1": { "vencedor": "FRA", "placar": "2x0" },
+      "O2": { "vencedor": "MAR", "placar": "2x1" },
+      "O3": { "vencedor": "ESP", "placar": "1x1", "penaltis": "4x3" },
+      "O4": { "vencedor": "BEL", "placar": "3x1" },
+      "O5": { "vencedor": "BRA", "placar": "2x1" },
+      "O6": { "vencedor": "ENG", "placar": "2x0" },
+      "O7": { "vencedor": "ARG", "placar": "2x0" },
+      "O8": { "vencedor": "COL", "placar": "2x1" }
     },
     "quartas": {
-      "Q1": "FRA",
-      "Q2": "ESP",
-      "Q3": "BRA",
-      "Q4": "ARG"
+      "Q1": { "vencedor": "FRA", "placar": "2x0" },
+      "Q2": { "vencedor": "ESP", "placar": "2x1" },
+      "Q3": { "vencedor": "BRA", "placar": "2x2", "penaltis": "5x4" },
+      "Q4": { "vencedor": "ARG", "placar": "1x0" }
     },
     "semis": {
-      "S1": "FRA",
-      "S2": "BRA"
+      "S1": { "vencedor": "FRA", "placar": "1x0" },
+      "S2": { "vencedor": "BRA", "placar": "2x1" }
     },
     "final": {
       "campeao": "BRA",

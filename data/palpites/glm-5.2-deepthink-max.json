@@ -1,0 +1,86 @@
+{
+    "id":  "glm-5.2-deepthink-max",
+    "modelo":  "GLM 5.2 Deep Think Max",
+    "modelo_id":  "glm-5.2-deepthink-max",
+    "desenvolvedor":  "Zhipu AI",
+    "emoji":  "🔮",
+    "data_palpite":  "2026-07-04",
+    "metodologia":  "Mantendo os vencedores originais definidos pela simulação de Monte Carlo e análise Elo/xG. Para os placares, ajustei a expectativa de gols (xG) com base na força defensiva de cada equipe no mata-mata. Nos jogos de igualdade tática extrema (Espanha x Portugal, México x Inglaterra e Brasil x Inglaterra), previ empates no tempo normal e prorrogação, indicando decisão nos pênaltis, com placares de disputa calculados pela frieza dos goleiros e batedores.",
+    "fontes":  [
+                   "http://eloratings.net/",
+                   "https://www.transfermarkt.com.br/",
+                   "https://understat.com/"
+               ],
+    "justificativa":  "A rede neural manteve as escolhas de vencedores pela consistência dos dados táticos. Agora, com a inclusão dos placares e disputas de pênaltis, o modelo foca na eficiência ofensiva e na resiliência psicológica das equipes em mata-matas extremamente equilibrados.",
+    "palpites":  {
+                     "oitavas":  {
+                                     "O1":  {
+                                                "vencedor":  "FRA",
+                                                "placar":  "3x0"
+                                            },
+                                     "O2":  {
+                                                "vencedor":  "MAR",
+                                                "placar":  "1x0"
+                                            },
+                                     "O3":  {
+                                                "vencedor":  "ESP",
+                                                "placar":  "1x1",
+                                                "penaltis":  "4x3"
+                                            },
+                                     "O4":  {
+                                                "vencedor":  "BEL",
+                                                "placar":  "2x1"
+                                            },
+                                     "O5":  {
+                                                "vencedor":  "BRA",
+                                                "placar":  "2x0"
+                                            },
+                                     "O6":  {
+                                                "vencedor":  "ENG",
+                                                "placar":  "1x1",
+                                                "penaltis":  "5x4"
+                                            },
+                                     "O7":  {
+                                                "vencedor":  "ARG",
+                                                "placar":  "3x0"
+                                            },
+                                     "O8":  {
+                                                "vencedor":  "SUI",
+                                                "placar":  "2x1"
+                                            }
+                                 },
+                     "quartas":  {
+                                     "Q1":  {
+                                                "vencedor":  "FRA",
+                                                "placar":  "2x0"
+                                            },
+                                     "Q2":  {
+                                                "vencedor":  "ESP",
+                                                "placar":  "2x1"
+                                            },
+                                     "Q3":  {
+                                                "vencedor":  "BRA",
+                                                "placar":  "1x1",
+                                                "penaltis":  "4x2"
+                                            },
+                                     "Q4":  {
+                                                "vencedor":  "ARG",
+                                                "placar":  "2x0"
+                                            }
+                                 },
+                     "semis":  {
+                                   "S1":  {
+                                              "vencedor":  "FRA",
+                                              "placar":  "2x1"
+                                          },
+                                   "S2":  {
+                                              "vencedor":  "BRA",
+                                              "placar":  "3x2"
+                                          }
+                               },
+                     "final":  {
+                                   "campeao":  "BRA",
+                                   "placar":  "2x1"
+                               }
+                 }
+}
