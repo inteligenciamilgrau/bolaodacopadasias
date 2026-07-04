@@ -158,7 +158,8 @@
       <div class="secao-icone">🗺️</div>
       <div>
         <h2>Chaveamento</h2>
-        <p class="secao-sub">Das oitavas à grande final. Vagas em disputa aparecem como <i>“a definir”</i> e são preenchidas automaticamente pelo importador de resultados.</p>
+        <p class="secao-sub">Das oitavas à grande final. Vagas em disputa aparecem como <i>“a definir”</i> e são preenchidas automaticamente pelo importador de resultados.
+        <b>Passe o mouse (ou toque) em qualquer jogo</b> para ver o palpite de todas as IAs para aquela partida.</p>
       </div>
     </div>
     <div class="chave-scroll">
@@ -175,7 +176,8 @@
         uma IA, ou uma <b>IA contra outra</b> — e veja jogo a jogo onde eles batem
         (<span class="comp-badge igual">✓</span>), onde divergem
         (<span class="comp-badge dif">≠</span>) e onde o palpite já caiu contra a realidade
-        (<span class="comp-badge errou">✗</span>).</p>
+        (<span class="comp-badge errou">✗</span>). Aqui também vale: <b>mouse ou toque em um jogo</b>
+        mostra o palpite de todas as IAs.</p>
       </div>
     </div>
     <div class="comparar-controles">
@@ -335,6 +337,8 @@ python -m http.server</pre>
     <p>…ou publique no GitHub Pages, que funciona direto. 😉</p>
   </div>
 </div>
+
+<div class="popover-palpites" id="popover-palpites" role="dialog" aria-label="Palpites das IAs para o jogo" hidden></div>
 
 <script src="js/app.js"></script>
 </body>

@@ -604,6 +604,25 @@ main { padding: 0 clamp(16px, 4vw, 48px); max-width: 1400px; margin: 0 auto; }
 
 .jogo-penaltis { font-size: 0.74rem; color: var(--texto-2); text-align: right; margin-top: 7px; }
 
+/* data/hora no rodapé de cada card de jogo (chaveamento e comparador) */
+.jogo-data {
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px dashed var(--borda);
+  font-size: 0.68rem;
+  color: var(--texto-2);
+  text-align: center;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* cards com data-jogo abrem o popover de palpites */
+.jogo[data-jogo] { cursor: pointer; }
+.jogo-palpites-dica { color: var(--texto-2); opacity: 0.75; transition: color 0.15s, opacity 0.15s; }
+.jogo:hover .jogo-palpites-dica { color: var(--verde); opacity: 1; }
+
 /* ---------- comparador de chaveamentos ---------- */
 
 .comparar-controles {
@@ -742,6 +761,97 @@ main { padding: 0 clamp(16px, 4vw, 48px); max-width: 1400px; margin: 0 auto; }
   from { box-shadow: 0 0 20px rgba(255, 213, 79, 0.08); }
   to { box-shadow: 0 0 35px rgba(255, 213, 79, 0.20); }
 }
+
+/* ---------- popover: palpites de todas as IAs por jogo ---------- */
+
+.popover-palpites {
+  position: fixed;
+  z-index: 90;
+  width: min(340px, calc(100vw - 16px));
+  max-height: min(72vh, 540px);
+  overflow-y: auto;
+  padding: 12px;
+  background: linear-gradient(180deg, #141c30, #0b111f);
+  border: 1px solid var(--verde-brilho);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+  font-size: 0.82rem;
+}
+.popover-palpites[hidden] { display: none; }
+
+.pp-cabeca { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.pp-rotulo {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--verde);
+}
+.pp-data { font-size: 0.7rem; color: var(--texto-2); margin-top: 2px; }
+.pp-fechar {
+  font: inherit;
+  width: 26px; height: 26px;
+  display: grid;
+  place-items: center;
+  color: var(--texto-2);
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.pp-fechar:hover { color: var(--texto); background: var(--superficie-3); }
+
+.pp-lista { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.pp-linha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 9px;
+  background: var(--superficie);
+  border: 1px solid transparent;
+}
+.pp-linha .bandeira { width: 22px; height: 15px; border-radius: 4px; }
+.pp-linha .bandeira i { font-size: 0.5rem; }
+.pp-emoji { width: 1.3em; text-align: center; flex-shrink: 0; }
+.pp-modelo {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--texto-2);
+}
+.pp-pick { display: flex; align-items: center; gap: 5px; font-weight: 700; flex-shrink: 0; }
+.pp-sem { font-size: 0.76rem; font-style: italic; color: var(--texto-2); }
+.pp-placar {
+  flex-shrink: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 0.72rem;
+  color: var(--texto-2);
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  padding: 0 6px;
+  white-space: nowrap;
+}
+.pp-status { width: 1.2em; text-align: center; font-weight: 800; flex-shrink: 0; }
+.pp-linha.pp-real { background: rgba(0, 0, 0, 0.3); border-style: dashed; border-color: var(--borda); }
+.pp-linha.pp-real .pp-modelo { color: var(--texto); }
+.pp-linha.pp-acertou { background: var(--verde-suave); }
+.pp-linha.pp-acertou .pp-status { color: var(--verde); }
+.pp-linha.pp-errou { background: var(--vermelho-suave); }
+.pp-linha.pp-errou .pp-status { color: var(--vermelho); }
+.pp-linha.pp-errou .pp-pick { opacity: 0.75; }
+.pp-linha.pp-cravou { background: var(--ouro-suave); border-color: rgba(255, 213, 79, 0.4); }
+.pp-linha.pp-cravou .pp-placar { color: var(--ouro); border-color: rgba(255, 213, 79, 0.4); }
+.pp-consenso { margin-top: 9px; font-size: 0.72rem; color: var(--texto-2); text-align: center; }
 
 /* ---------- cards de palpites ---------- */
 

@@ -75,6 +75,7 @@ async function iniciar() {
   renderizarRanking();
   renderizarChave();
   iniciarComparador();
+  iniciarPopoverPalpites();
   renderizarPalpites();
   carregarPrompt();
 }
@@ -452,6 +453,11 @@ function ladoHTML(jogo, n) {
     <span class="gols">${placar == null ? "" : placar}</span></div>`;
 }
 
+// Rodapé dos cards de jogo: data/hora (e cidade, quando definida) da partida.
+function dataJogoHTML(jogo) {
+  return `<div class="jogo-data">📅 ${dataCurta(jogo.data)}${jogo.cidade ? " · " + escapar(jogo.cidade) : ""}</div>`;
+}
+
 function jogoHTML(jogo) {
   const ehFinal = jogo.fase === "final";
   const penaltis = jogo.penaltis
@@ -461,10 +467,10 @@ function jogoHTML(jogo) {
     ehFinal && jogo.vencedor
       ? `<div class="campeao-banner">🏆 ${escapar(nomeDoTime(jogo.vencedor))} CAMPEÃO!</div>`
       : "";
-  return `<div class="jogo ${ehFinal ? "final-card" : ""}" id="jogo-${jogo.id}">
+  return `<div class="jogo ${ehFinal ? "final-card" : ""}" id="jogo-${jogo.id}" data-jogo="${jogo.id}">
     <div class="jogo-meta"><span>${escapar(jogo.rotulo)}</span>
-    <span>${dataCurta(jogo.data)}${jogo.cidade ? " · " + escapar(jogo.cidade) : ""}</span></div>
-    ${ladoHTML(jogo, 1)}${ladoHTML(jogo, 2)}${penaltis}${banner}</div>`;
+    <span class="jogo-palpites-dica">🤖 palpites</span></div>
+    ${ladoHTML(jogo, 1)}${ladoHTML(jogo, 2)}${penaltis}${banner}${dataJogoHTML(jogo)}</div>`;
 }
 
 function renderizarChave() {
@@ -498,17 +504,29 @@ function listarFontes() {
   return fontes;
 }
 
-// Quem a fonte diz que vence o jogo (para o real: só depois de decidido).
-function pickDaFonte(fonte, jogoId) {
-  if (fonte.ehReal) return (POR_ID[jogoId] && POR_ID[jogoId].vencedor) || null;
+// Pick completo { vencedor, placar, penaltis } que uma fonte-IA registrou para
+// o jogo (a final vira pick também: campeão + placar apostado).
+function pickCompletoDaFonte(fonte, jogoId) {
   const p = fonte.palpite.palpites || {};
-  if (jogoId === "F") return (p.final && p.final.campeao) || null;
+  if (jogoId === "F") {
+    return normalizarPick(
+      p.final
+        ? { vencedor: p.final.campeao, placar: p.final.placar, penaltis: p.final.penaltis }
+        : null
+    );
+  }
   const bruto =
     (p.oitavas && p.oitavas[jogoId]) ||
     (p.quartas && p.quartas[jogoId]) ||
     (p.semis && p.semis[jogoId]) ||
     null;
-  return normalizarPick(bruto).vencedor;
+  return normalizarPick(bruto);
+}
+
+// Quem a fonte diz que vence o jogo (para o real: só depois de decidido).
+function pickDaFonte(fonte, jogoId) {
+  if (fonte.ehReal) return (POR_ID[jogoId] && POR_ID[jogoId].vencedor) || null;
+  return pickCompletoDaFonte(fonte, jogoId).vencedor;
 }
 
 // Placar que a fonte aposta/registrou para o jogo (vencedor na frente).
@@ -527,16 +545,7 @@ function placarDoJogoDaFonte(fonte, jogoId) {
     }
     return placarComPen(`${maior}x${menor}`, pen);
   }
-  const p = fonte.palpite.palpites || {};
-  if (jogoId === "F") {
-    return p.final ? placarComPen(p.final.placar, p.final.penaltis) : null;
-  }
-  const bruto =
-    (p.oitavas && p.oitavas[jogoId]) ||
-    (p.quartas && p.quartas[jogoId]) ||
-    (p.semis && p.semis[jogoId]) ||
-    null;
-  const pick = normalizarPick(bruto);
+  const pick = pickCompletoDaFonte(fonte, jogoId);
   return placarComPen(pick.placar, pick.penaltis);
 }
 
@@ -647,15 +656,16 @@ function jogoComparacaoHTML(fa, fb, jogo) {
         ${escapar(fa.emoji)} ${escapar(pa || "—")} · ${escapar(fb.emoji)} ${escapar(pb || "—")}</div>`;
     }
   }
-  return `<div class="jogo jogo-comp ${ehFinal ? "final-card" : ""}">
+  return `<div class="jogo jogo-comp ${ehFinal ? "final-card" : ""}" data-jogo="${jogo.id}">
     <div class="jogo-meta"><span>${escapar(jogo.rotulo)}</span>${v.badge}</div>
     ${confrontoHeaderHTML(jogo)}
     ${ladoComparacaoHTML(fa, jogo, v.a, v.classeA)}
     ${ladoComparacaoHTML(fb, jogo, v.b, v.classeB)}
-    ${placares}</div>`;
+    ${placares}${dataJogoHTML(jogo)}</div>`;
 }
 
 function renderizarComparacao() {
+  fecharPopoverPalpites(); // os cards antigos saem do DOM; popover aberto ficaria órfão
   const fontes = listarFontes();
   const fa = fontes.find((f) => f.id === $("#comp-a").value) || fontes[0];
   const fb = fontes.find((f) => f.id === $("#comp-b").value) || fontes[fontes.length - 1];
@@ -718,6 +728,157 @@ function iniciarComparador() {
   selA.addEventListener("change", renderizarComparacao);
   selB.addEventListener("change", renderizarComparacao);
   renderizarComparacao();
+}
+
+/* ---------- popover: palpites de todas as IAs por jogo ---------- */
+
+let PP_CARD = null;    // card (.jogo) dono do popover aberto
+let PP_FIXADO = false; // aberto por clique/toque: só fecha em novo clique, fora ou Esc
+
+function fecharPopoverPalpites() {
+  const pop = $("#popover-palpites");
+  if (pop) pop.hidden = true;
+  PP_CARD = null;
+  PP_FIXADO = false;
+}
+
+// Conteúdo do popover: confronto, resultado real e o pick de cada IA no jogo.
+function popoverPalpitesHTML(jogo) {
+  const fontes = listarFontes();
+  const real = fontes[0];
+
+  const placarReal = placarDoJogoDaFonte(real, jogo.id);
+  const linhaReal = jogo.vencedor
+    ? `<div class="pp-linha pp-real"><span class="pp-emoji">⚽</span>
+        <span class="pp-modelo">Resultado</span>
+        <span class="pp-pick">${bandeiraHTML(jogo.vencedor)}<b>${escapar(jogo.vencedor)}</b></span>
+        ${placarReal ? `<span class="pp-placar">${escapar(placarReal)}</span>` : ""}</div>`
+    : `<div class="pp-linha pp-real"><span class="pp-emoji">⚽</span>
+        <span class="pp-modelo">Resultado</span>
+        <span class="pp-sem">aguardando</span></div>`;
+
+  const votos = {};
+  const linhas = fontes
+    .filter((f) => !f.ehReal)
+    .map((f) => {
+      const pick = pickCompletoDaFonte(f, jogo.id);
+      const cod = pick.vencedor;
+      if (cod) votos[cod] = (votos[cod] || 0) + 1;
+
+      let classe = "";
+      let icone = "";
+      if (cod) {
+        const status = avaliarPick({ jogo: jogo.id, time: cod });
+        if (status === "acertou") {
+          const cravou = cravouPlacar({ jogo: jogo.id, time: cod, placar: pick.placar });
+          classe = cravou ? "pp-acertou pp-cravou" : "pp-acertou";
+          icone = cravou ? "🎯" : "✓";
+        } else if (status === "errou") {
+          classe = "pp-errou";
+          icone = "✗";
+        }
+      }
+      const placar = placarComPen(pick.placar, pick.penaltis);
+      return `<div class="pp-linha ${classe}">
+        <span class="pp-emoji">${escapar(f.emoji)}</span>
+        <span class="pp-modelo" title="${escapar(f.rotulo)}">${escapar(f.rotulo)}</span>
+        ${cod
+          ? `<span class="pp-pick">${bandeiraHTML(cod)}<b title="${escapar(nomeDoTime(cod))}">${escapar(cod)}</b></span>`
+          : `<span class="pp-sem">sem palpite</span>`}
+        ${placar ? `<span class="pp-placar" title="Placar apostado (vencedor na frente)">${escapar(placar)}</span>` : ""}
+        ${icone ? `<span class="pp-status">${icone}</span>` : ""}
+      </div>`;
+    });
+
+  const consenso = Object.entries(votos)
+    .sort((a, b) => b[1] - a[1])
+    .map(([cod, n]) => `${n}× ${escapar(cod)}`)
+    .join(" · ");
+
+  return `<div class="pp-cabeca">
+      <div>
+        <div class="pp-rotulo">${escapar(jogo.rotulo)}</div>
+        <div class="pp-data">📅 ${dataCurta(jogo.data)}${jogo.cidade ? " · " + escapar(jogo.cidade) : ""}</div>
+      </div>
+      <button class="pp-fechar" type="button" aria-label="Fechar">✕</button>
+    </div>
+    ${confrontoHeaderHTML(jogo)}
+    <div class="pp-lista">${linhaReal}${linhas.join("")}</div>
+    ${consenso ? `<div class="pp-consenso">🤖 Palpites: ${consenso}</div>` : ""}`;
+}
+
+// Hover mostra, clique/toque fixa (clica de novo, fora ou Esc para fechar).
+// Delegado no document porque os cards do comparador re-renderizam.
+function iniciarPopoverPalpites() {
+  const pop = $("#popover-palpites");
+  if (!pop) return;
+
+  const posicionar = () => {
+    if (!PP_CARD || pop.hidden) return;
+    const r = PP_CARD.getBoundingClientRect();
+    const margem = 10;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const pw = pop.offsetWidth;
+    const ph = pop.offsetHeight;
+    // preferência: à direita do card; senão à esquerda; senão abaixo/acima
+    let x = r.right + margem;
+    if (x + pw > vw - 8) x = r.left - pw - margem;
+    let y = r.top + r.height / 2 - ph / 2;
+    if (x < 8) {
+      x = r.left + r.width / 2 - pw / 2;
+      y = r.bottom + margem + ph > vh - 8 ? r.top - ph - margem : r.bottom + margem;
+    }
+    pop.style.left = Math.max(8, Math.min(x, vw - pw - 8)) + "px";
+    pop.style.top = Math.max(8, Math.min(y, vh - ph - 8)) + "px";
+  };
+
+  const abrir = (card, fixar) => {
+    const jogo = POR_ID[card.dataset.jogo];
+    if (!jogo) return;
+    if (card !== PP_CARD) {
+      pop.innerHTML = popoverPalpitesHTML(jogo);
+      pop.hidden = false;
+      PP_CARD = card;
+    }
+    PP_FIXADO = fixar;
+    posicionar();
+  };
+
+  document.addEventListener("mouseover", (e) => {
+    if (PP_FIXADO) return;
+    const card = e.target.closest(".jogo[data-jogo]");
+    if (card) abrir(card, false);
+  });
+
+  document.addEventListener("mouseout", (e) => {
+    if (PP_FIXADO || !PP_CARD) return;
+    const para = e.relatedTarget;
+    if (para && (PP_CARD.contains(para) || pop.contains(para))) return;
+    if (PP_CARD.contains(e.target) || pop.contains(e.target)) fecharPopoverPalpites();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".pp-fechar")) {
+      fecharPopoverPalpites();
+      return;
+    }
+    const card = e.target.closest(".jogo[data-jogo]");
+    if (card) {
+      if (PP_FIXADO && card === PP_CARD) fecharPopoverPalpites();
+      else abrir(card, true);
+      return;
+    }
+    if (!pop.contains(e.target)) fecharPopoverPalpites();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") fecharPopoverPalpites();
+  });
+
+  // segue o card quando a página (ou o trilho horizontal da chave) rola
+  window.addEventListener("scroll", posicionar, true);
+  window.addEventListener("resize", posicionar);
 }
 
 /* ---------- cards de palpites ---------- */
