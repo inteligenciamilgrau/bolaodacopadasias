@@ -111,15 +111,21 @@ resto sozinho.
 
 ## 🧮 Regras e pontuação
 
+Cada um dos 15 jogos pede **vencedor + placar** (`{ "vencedor": "FRA", "placar": "2x1" }`,
+gols do vencedor na frente; empate no placar = decisão nos pênaltis).
+
 | Acerto | Pontos |
 |---|---|
 | Classificado às quartas (vencedor de jogo das oitavas) | 1 pt × 8 |
 | Classificado às semis | 2 pts × 4 |
 | Finalista | 4 pts × 2 |
 | Campeão | 8 pts |
-| **Máximo** | **32 pts** |
+| 🎯 Placar exato cravado (com o vencedor certo) | **dobra** os pontos do jogo |
+| **Máximo** | **64 pts** |
 
-Desempate: placar exato da final → diferença de gols na final → palpite mais antigo.
+Desempate: mais placares cravados → diferença de gols na final → palpite mais antigo.
+Palpites no formato antigo (só vencedor) continuam valendo, mas sem chance de bônus —
+use o [`ATUALIZACAO-PLACARES.md`](ATUALIZACAO-PLACARES.md) para pedir a correção à IA.
 Palpites feitos antes de todas as vagas estarem definidas apostam também em *quem se
 classifica* — se o time apostado nem chegar às oitavas, aquele pick não pontua.
 

@@ -55,22 +55,42 @@ foreach ($entrada in $manifest.palpites) {
   if ($p.id -and ($p.id -notmatch '^[a-z0-9]+([.-][a-z0-9]+)*$')) { Falha "id fora do padrao: '$($p.id)'" }
   if ($p.id -and ("$($p.id).json" -ne $arq)) { Falha "id '$($p.id)' nao bate com o nome do arquivo '$arq'" }
 
-  $oit = $p.palpites.oitavas; $qua = $p.palpites.quartas; $sem = $p.palpites.semis
-  foreach ($o in @("O1","O2","O3","O4","O5","O6","O7","O8")) {
-    if ($codigos -notcontains $oit.$o) { Falha "oitavas.$o invalido: '$($oit.$o)'" }
+  # Cada jogo pode ser { vencedor, placar } (novo) ou so o codigo (legado, sem bonus)
+  $semPlacar = @()
+  function VencedorDe($valor) { if ($valor -is [string]) { return $valor } if ($valor) { return $valor.vencedor } return $null }
+  function ChecarPlacar($rotulo, $valor) {
+    if ($valor -is [string]) { $script:semPlacar += $rotulo; return }
+    $placar = $valor.placar
+    if (-not $placar) { $script:semPlacar += $rotulo; return }
+    if ($placar -notmatch '^(\d+)\s*[xX]\s*(\d+)$') { Falha "$rotulo`: placar invalido '$placar' (formato NxN)"; return }
+    if ([int]$Matches[1] -lt [int]$Matches[2]) { Falha "$rotulo`: o primeiro numero e o de gols do vencedor apostado ('$placar'); empate = penaltis" }
   }
+
+  $oit = $p.palpites.oitavas; $qua = $p.palpites.quartas; $sem = $p.palpites.semis
   $picks = @{}
-  foreach ($o in @("O1","O2","O3","O4","O5","O6","O7","O8")) { $picks[$o] = $oit.$o }
+  foreach ($o in @("O1","O2","O3","O4","O5","O6","O7","O8")) {
+    $v = VencedorDe $oit.$o
+    if ($codigos -notcontains $v) { Falha "oitavas.$o invalido: '$v'" }
+    ChecarPlacar "oitavas.$o" $oit.$o
+    $picks[$o] = $v
+  }
   foreach ($r in $regras) {
     $obj = if ($r.fase -eq "quartas") { $qua } else { $sem }
-    $pick = $obj.($r.jogo); $permitidos = $r.origem | ForEach-Object { $picks[$_] }
+    $valor = $obj.($r.jogo); $pick = VencedorDe $valor
+    $permitidos = $r.origem | ForEach-Object { $picks[$_] }
     if ($permitidos -notcontains $pick) { Falha "chave inconsistente em $($r.jogo): '$pick' nao veio de $($r.origem -join '/')" }
+    ChecarPlacar "$($r.fase).$($r.jogo)" $valor
     $picks[$r.jogo] = $pick
   }
   $campeao = $p.palpites.final.campeao
   if (@($picks["S1"], $picks["S2"]) -notcontains $campeao) { Falha "campeao '$campeao' nao e um dos finalistas" }
-  if ($p.palpites.final.placar -notmatch '^(\d+)\s*[xX]\s*(\d+)$') { Falha "placar da final invalido: '$($p.palpites.final.placar)'" }
-  elseif ([int]$Matches[1] -le [int]$Matches[2]) { Falha "placar da final deve ter o campeao na frente: '$($p.palpites.final.placar)'" }
+  $placarFinal = $p.palpites.final.placar
+  if (-not $placarFinal) { $semPlacar += "final" }
+  elseif ($placarFinal -notmatch '^(\d+)\s*[xX]\s*(\d+)$') { Falha "placar da final invalido: '$placarFinal'" }
+  elseif ([int]$Matches[1] -lt [int]$Matches[2]) { Falha "placar da final deve ter o campeao na frente (empate = penaltis): '$placarFinal'" }
+  if ($semPlacar.Count -gt 0) {
+    Write-Host "  !  $($semPlacar.Count) jogo(s) sem placar (formato antigo) -- sem chance de bonus: $($semPlacar -join ', ')" -ForegroundColor Yellow
+  }
 
   if ($erros -eq $errosAntes) { Ok "palpite valido -- campeao: $campeao" }
   $analise = Join-Path $raiz "analises\$($p.id).html"

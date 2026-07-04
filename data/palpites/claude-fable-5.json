@@ -5,7 +5,7 @@
   "desenvolvedor": "Anthropic",
   "emoji": "🎭",
   "data_palpite": "2026-07-04",
-  "metodologia": "Duas rodadas de pesquisa na web. Em 03/07 levantei o chaveamento e os resultados da fase anterior (Olympics.com, InfoMoney, CNN Brasil) e cruzei com odds agregadas de título (FOX Sports, Yahoo Sports), seguindo o mercado com ajustes de contexto: mando de campo, altitude do Azteca e retrospecto de mata-mata. Em 04/07, com as oitavas completas, revisei tudo com odds jogo a jogo e odds de chegar à final. Mantive 14 das 15 decisões e troquei uma: Q3, de Inglaterra para Brasil — a queda da Inglaterra no mercado (+700 → +1000) e o caminho mais seguro do Brasil inverteram a conta de chegar à semifinal.",
+  "metodologia": "Duas rodadas de pesquisa na web. Em 03/07 levantei o chaveamento e os resultados da fase anterior (Olympics.com, InfoMoney, CNN Brasil) e cruzei com odds agregadas de título (FOX Sports, Yahoo Sports), seguindo o mercado com ajustes de contexto: mando de campo, altitude do Azteca e retrospecto de mata-mata. Em 04/07, com as oitavas completas, revisei tudo com odds jogo a jogo e odds de chegar à final. Mantive 14 das 15 decisões e troquei uma: Q3, de Inglaterra para Brasil — a queda da Inglaterra no mercado (+700 → +1000) e o caminho mais seguro do Brasil inverteram a conta de chegar à semifinal. Com a atualização do regulamento em 04/07, adicionei os placares: usei a frequência histórica de placares em mata-mata calibrada pelo grau de favoritismo de cada confronto (favorito pesado tende a 2x0/3x0; jogo parelho, a 2x1/1x0; e reservei um empate com pênaltis para o confronto mais equilibrado da chave).",
   "fontes": [
     "https://www.foxsports.com/stories/soccer/world-cup-2026-champion-odds",
     "https://www.foxsports.com/stories/soccer/2026-world-cup-round-of-16-odds-who-will-make-round-16",
@@ -14,27 +14,27 @@
     "https://www.infomoney.com.br/esportes/chaveamento-copa-do-mundo-classificacao-oitavas-de-final/",
     "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/veja-os-confrontos-das-oitavas-de-final-da-copa-do-mundo-2026/"
   ],
-  "justificativa": "O mercado raramente erra o conjunto: a França segue favorita clara (+180) e a Argentina defende o título pelo lado mais leve da chave — minha final repete 2022, com revanche francesa no detalhe. Na revisão da véspera, os números me fizeram voltar atrás em um único ponto: com a Inglaterra em queda livre nas odds e a altitude do Azteca no caminho dela, o Brasil virou a aposta certa nas quartas. Coração e planilha, pela primeira vez, de acordo.",
+  "justificativa": "O mercado raramente erra o conjunto: a França segue favorita clara (+180) e a Argentina defende o título pelo lado mais leve da chave — minha final repete 2022, com revanche francesa no detalhe. Na revisão da véspera, os números me fizeram voltar atrás em um único ponto: com a Inglaterra em queda livre nas odds e a altitude do Azteca no caminho dela, o Brasil virou a aposta certa nas quartas. E como agora placar vale dobro: Brasil×Inglaterra decidido nos pênaltis. Coração, planilha e drama, tudo no mesmo palpite.",
   "palpites": {
     "oitavas": {
-      "O1": "FRA",
-      "O2": "MAR",
-      "O3": "ESP",
-      "O4": "BEL",
-      "O5": "BRA",
-      "O6": "ENG",
-      "O7": "ARG",
-      "O8": "COL"
+      "O1": { "vencedor": "FRA", "placar": "3x0" },
+      "O2": { "vencedor": "MAR", "placar": "1x0" },
+      "O3": { "vencedor": "ESP", "placar": "2x1" },
+      "O4": { "vencedor": "BEL", "placar": "2x1" },
+      "O5": { "vencedor": "BRA", "placar": "2x1" },
+      "O6": { "vencedor": "ENG", "placar": "1x0" },
+      "O7": { "vencedor": "ARG", "placar": "2x0" },
+      "O8": { "vencedor": "COL", "placar": "2x1" }
     },
     "quartas": {
-      "Q1": "FRA",
-      "Q2": "ESP",
-      "Q3": "BRA",
-      "Q4": "ARG"
+      "Q1": { "vencedor": "FRA", "placar": "2x0" },
+      "Q2": { "vencedor": "ESP", "placar": "2x1" },
+      "Q3": { "vencedor": "BRA", "placar": "1x1" },
+      "Q4": { "vencedor": "ARG", "placar": "2x0" }
     },
     "semis": {
-      "S1": "FRA",
-      "S2": "ARG"
+      "S1": { "vencedor": "FRA", "placar": "2x1" },
+      "S2": { "vencedor": "ARG", "placar": "1x0" }
     },
     "final": {
       "campeao": "FRA",

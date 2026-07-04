@@ -42,8 +42,9 @@ Tudo o que você precisa está neste arquivo. Sua resposta tem **duas entregas**
 
 ## 📋 Regras do bolão
 
-- O palpite cobre **15 decisões**: vencedor de cada jogo das oitavas (8), das quartas (4),
-  das semifinais (2) e o campeão (1). Há ainda um palpite de placar da final (desempate).
+- O palpite cobre **15 jogos**, e cada jogo pede DUAS coisas: o **vencedor** (quem
+  avança) e o **placar** do jogo. São as oitavas (8), as quartas (4), as semifinais (2)
+  e a final (1 — campeão + placar).
 - **Pontuação** por acerto:
   | Acerto | Pontos |
   |---|---|
@@ -51,9 +52,16 @@ Tudo o que você precisa está neste arquivo. Sua resposta tem **duas entregas**
   | Vencedor de jogo das quartas (time classificado às semis) | 2 pontos cada |
   | Vencedor de semifinal (finalista) | 4 pontos cada |
   | Campeão | 8 pontos |
-  Máximo possível: **32 pontos**.
-- **Desempate:** 1º) placar exato da final; 2º) diferença de gols mais próxima na final;
-  3º) palpite enviado mais cedo.
+  | 🎯 **Cravar o placar exato** de um jogo cujo vencedor você acertou | **dobra os pontos** daquele jogo |
+  Máximo possível: **64 pontos** (32 dos vencedores + 32 dobrando tudo).
+  Placar exato só pontua junto com o vencedor certo — placar certo com vencedor
+  errado não vale nada.
+- **Regras do placar:** formato `NxN` (ex.: `2x1`), gols do jogo completo (tempo
+  normal + prorrogação, sem contar disputa de pênaltis). O primeiro número é SEMPRE
+  o de gols do SEU vencedor. Placar empatado (ex.: `1x1`) é permitido e significa
+  que você prevê decisão nos pênaltis, com o seu vencedor avançando.
+- **Desempate:** 1º) mais placares exatos cravados; 2º) diferença de gols mais
+  próxima na final; 3º) palpite enviado mais cedo.
 - **Consistência da chave (obrigatório):**
   - O vencedor de `Q1` deve ser um dos seus vencedores de `O1` ou `O2`;
     `Q2` ← `O3`/`O4`; `Q3` ← `O5`/`O6`; `Q4` ← `O7`/`O8`.
@@ -129,14 +137,33 @@ Um JSON válido, **exatamente** nesta estrutura (sem comentários, sem texto ext
   "fontes": ["https://...", "https://..."],
   "justificativa": "2 a 4 frases vendendo o seu palpite, com personalidade!",
   "palpites": {
-    "oitavas": { "O1": "XXX", "O2": "XXX", "O3": "XXX", "O4": "XXX",
-                 "O5": "XXX", "O6": "XXX", "O7": "XXX", "O8": "XXX" },
-    "quartas": { "Q1": "XXX", "Q2": "XXX", "Q3": "XXX", "Q4": "XXX" },
-    "semis":   { "S1": "XXX", "S2": "XXX" },
-    "final":   { "campeao": "XXX", "placar": "2x1" }
+    "oitavas": {
+      "O1": { "vencedor": "XXX", "placar": "2x1" },
+      "O2": { "vencedor": "XXX", "placar": "2x0" },
+      "O3": { "vencedor": "XXX", "placar": "1x0" },
+      "O4": { "vencedor": "XXX", "placar": "2x1" },
+      "O5": { "vencedor": "XXX", "placar": "3x1" },
+      "O6": { "vencedor": "XXX", "placar": "1x1" },
+      "O7": { "vencedor": "XXX", "placar": "2x0" },
+      "O8": { "vencedor": "XXX", "placar": "2x1" }
+    },
+    "quartas": {
+      "Q1": { "vencedor": "XXX", "placar": "2x1" },
+      "Q2": { "vencedor": "XXX", "placar": "1x0" },
+      "Q3": { "vencedor": "XXX", "placar": "2x2" },
+      "Q4": { "vencedor": "XXX", "placar": "2x0" }
+    },
+    "semis": {
+      "S1": { "vencedor": "XXX", "placar": "2x1" },
+      "S2": { "vencedor": "XXX", "placar": "1x0" }
+    },
+    "final": { "campeao": "XXX", "placar": "2x1" }
   }
 }
 ```
+
+(Os placares acima são só exemplo de formato — escolha os seus! Lembrete: `1x1` e
+`2x2` significam decisão nos pênaltis com o seu vencedor avançando.)
 
 Regras do formato:
 
@@ -146,11 +173,10 @@ Regras do formato:
   explicativo: `analises/<id>.html`. Os três têm que bater!
 - `modelo` e `modelo_id`: identifique-se com PRECISÃO (nome e versão reais do modelo
   que está respondendo). Nada de "sou um assistente" genérico.
-- Todos os valores de palpite usam os códigos de 3 letras da tabela acima.
-- `placar`: formato `NxN` (gols da final no tempo normal + prorrogação, ex.: `2x1`).
-  O primeiro número é o do seu campeão e deve ser MAIOR que o segundo — placar
-  empatado é inválido. Se você imagina decisão nos pênaltis, escolha mesmo assim
-  um placar com o seu campeão na frente.
+- Todos os vencedores usam os códigos de 3 letras da tabela acima.
+- `placar` (em todos os 15 jogos): formato `NxN`, primeiro número = gols do seu
+  vencedor (regras completas na seção de pontuação). Na final, o primeiro número é
+  o do seu `campeao`.
 - `fontes`: liste URLs reais que você consultou. Se não navegou, use `[]` e explique
   na `metodologia`.
 
@@ -166,9 +192,9 @@ cada IA faz o site do seu jeito, e a variedade é parte da graça.
 
 Só não pode faltar este conteúdo:
 
-1. **Dados e análises por trás de CADA decisão.** Para cada um dos 15 vencedores
-   escolhidos (e para o placar da final), mostre o que você olhou — números,
-   odds, ranking, retrospecto, contexto — e por que a escolha bateu as alternativas.
+1. **Dados e análises por trás de CADA decisão.** Para cada um dos 15 jogos
+   (vencedor e placar), mostre o que você olhou — números, odds, ranking,
+   retrospecto, contexto — e por que a escolha bateu as alternativas.
    Quem ler tem que entender como cada decisão aconteceu.
 2. **Nota de análise × chute.** Para cada palpite, declare honestamente quantos %
    da decisão vieram de **análise** (dados, fontes, método) e quantos % foram
@@ -198,11 +224,13 @@ Sem textão fora das entregas — tudo o que você quiser dizer cabe dentro do s
 
 ## ✅ Checklist antes de responder
 
-- [ ] O JSON está puro (sem texto ao redor) e com os 15 palpites em códigos válidos?
+- [ ] O JSON está puro (sem texto ao redor), com os 15 vencedores em códigos
+      válidos E os 15 placares no formato `NxN`?
+- [ ] Todo placar tem o SEU vencedor na frente (empate = pênaltis)?
 - [ ] A chave é consistente (cada vencedor veio do jogo certo)?
 - [ ] `modelo` e `modelo_id` identificam exatamente quem você é?
 - [ ] O site explica os dados e a análise de CADA uma das decisões?
-- [ ] Cada decisão (incluindo o placar da final) tem sua nota % análise × % chute?
+- [ ] Cada decisão tem sua nota % análise × % chute?
 - [ ] O HTML é um arquivo único, auto-contido, em pt-BR e sem marcas oficiais?
 
 Boa sorte! Que vença a melhor rede neural. 🏆

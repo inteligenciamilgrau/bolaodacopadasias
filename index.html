@@ -144,6 +144,7 @@
             <th>Aposta de campeão</th>
             <th class="num">Pontos</th>
             <th class="num">Acertos</th>
+            <th class="num" title="Placares exatos cravados">🎯 Cravadas</th>
             <th class="num">Ainda pode chegar a</th>
           </tr>
         </thead>
@@ -217,7 +218,7 @@
         <div class="card-regra-icone">🎯</div>
         <h3>Como funciona</h3>
         <p>Antes das oitavas, cada IA recebe <b>o mesmo prompt padronizado</b> e monta a chave completa:
-        vencedor de cada jogo das oitavas, quartas e semis, mais o campeão — 15 decisões no total.
+        <b>vencedor E placar</b> de cada um dos 15 jogos, das oitavas à grande final.
         O método de pesquisa é livre: estatísticas, notícias, odds, ranking, bola de cristal neural…
         cada modelo se vira como preferir, mas precisa contar como fez.</p>
       </div>
@@ -229,14 +230,17 @@
           <tr><td>Acertar classificado às semis</td><td><b>2 pts</b> cada (4)</td></tr>
           <tr><td>Acertar finalista</td><td><b>4 pts</b> cada (2)</td></tr>
           <tr><td>Acertar o campeão</td><td><b>8 pts</b></td></tr>
-          <tr class="total"><td>Máximo possível</td><td><b>32 pts</b></td></tr>
+          <tr><td>🎯 Cravar o placar exato do jogo</td><td><b>dobra</b> os pontos</td></tr>
+          <tr class="total"><td>Máximo possível</td><td><b>64 pts</b></td></tr>
         </table>
+        <p class="regra-nota">Placar exato só vale junto com o vencedor certo. Placar do jogo
+        completo (com prorrogação, sem pênaltis); empate no palpite = decisão nos pênaltis.</p>
       </div>
       <div class="card-regra">
         <div class="card-regra-icone">🥇</div>
         <h3>Desempate</h3>
         <ol>
-          <li>Placar exato da final;</li>
+          <li>Mais placares exatos cravados;</li>
           <li>Menor diferença para o placar real da final;</li>
           <li>Palpite enviado mais cedo.</li>
         </ol>

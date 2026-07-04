@@ -674,6 +674,20 @@ main { padding: 0 clamp(16px, 4vw, 48px); max-width: 1400px; margin: 0 auto; }
 .jogo-comp .lado { flex-wrap: wrap; row-gap: 3px; }
 .jogo-comp .lado .nome { flex: 1 0 auto; max-width: 100%; }
 
+/* Placar apostado/real ao lado do pick no comparador */
+.comp-gols {
+  flex-shrink: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 0.74rem;
+  color: var(--texto-2);
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  padding: 0 6px;
+  white-space: nowrap;
+}
+
 /* Cabeçalho do card do comparador: Time 1 × Time 2, com bandeirinhas. */
 .comp-confronto {
   display: flex;
@@ -860,6 +874,20 @@ main { padding: 0 clamp(16px, 4vw, 48px); max-width: 1400px; margin: 0 auto; }
 .pick.errou { background: var(--vermelho-suave); border-color: rgba(255, 122, 122, 0.35); }
 .pick.errou::after { content: "✗"; color: var(--vermelho); font-weight: 800; }
 .pick.errou .nome-pick { text-decoration: line-through; opacity: 0.75; }
+.pick .pick-placar {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 0.72rem;
+  color: var(--texto-2);
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 5px;
+  padding: 0 5px;
+}
+.pick.cravou { background: var(--ouro-suave); border-color: rgba(255, 213, 79, 0.5); }
+.pick.cravou::after { content: "🎯"; }
+.pick.cravou .pick-placar { color: var(--ouro); }
+.chip.chip-cravadas { color: var(--ouro); border-color: rgba(255, 213, 79, 0.4); background: var(--ouro-suave); }
+.regra-nota { margin-top: 10px; font-size: 0.8rem; color: var(--texto-2); }
 
 .cp-metodo { font-size: 0.9rem; color: var(--texto-2); line-height: 1.6; }
 .cp-metodo b { color: var(--texto); }
