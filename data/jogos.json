@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-05T21:00:53.924Z",
+  "atualizado_em": "2026-07-05T22:30:13.841Z",
   "pontuacao": {
     "oitavas": 1,
     "quartas": 2,
@@ -95,10 +95,10 @@
       "origem2": null,
       "candidatos1": null,
       "candidatos2": null,
-      "placar1": 0,
-      "placar2": 0,
+      "placar1": 1,
+      "placar2": 2,
       "penaltis": null,
-      "vencedor": null,
+      "vencedor": "NOR",
       "alimentado_por": null,
       "proximo": "Q3"
     },
@@ -218,7 +218,7 @@
       "rotulo": "Quartas 3",
       "data": "2026-07-11T18:00:00-03:00",
       "cidade": null,
-      "time1": null,
+      "time1": "NOR",
       "time2": null,
       "origem1": "Vencedor Oitavas 5",
       "origem2": "Vencedor Oitavas 6",
