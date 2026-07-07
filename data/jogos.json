@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-07T20:28:30.004Z",
+  "atualizado_em": "2026-07-07T23:04:08.094Z",
   "pontuacao": {
     "oitavas": 1,
     "quartas": 2,
@@ -161,9 +161,9 @@
         "COL",
         "GHA"
       ],
-      "placar1": 0,
-      "placar2": 0,
-      "penaltis": null,
+      "placar1": 4,
+      "placar2": 3,
+      "penaltis": "3x3",
       "vencedor": null,
       "alimentado_por": null,
       "proximo": "Q4"
