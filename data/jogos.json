@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-06T22:13:37.675Z",
+  "atualizado_em": "2026-07-07T03:26:26.985Z",
   "pontuacao": {
     "oitavas": 1,
     "quartas": 2,
@@ -76,10 +76,10 @@
       "origem2": null,
       "candidatos1": null,
       "candidatos2": null,
-      "placar1": null,
-      "placar2": null,
+      "placar1": 1,
+      "placar2": 4,
       "penaltis": null,
-      "vencedor": null,
+      "vencedor": "BEL",
       "alimentado_por": null,
       "proximo": "Q2"
     },
@@ -197,7 +197,7 @@
       "data": "2026-07-10T16:00:00-03:00",
       "cidade": null,
       "time1": "ESP",
-      "time2": null,
+      "time2": "BEL",
       "origem1": "Vencedor Oitavas 3",
       "origem2": "Vencedor Oitavas 4",
       "candidatos1": null,
