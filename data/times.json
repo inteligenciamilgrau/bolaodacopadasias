@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-07T03:26:26.985Z",
+  "atualizado_em": "2026-07-07T18:29:26.551Z",
   "times": {
     "PAR": {
       "nome": "Paraguai",
@@ -84,7 +84,7 @@
     "EGY": {
       "nome": "Egito",
       "bandeira": "eg",
-      "status": "classificado"
+      "status": "eliminado"
     },
     "COL": {
       "nome": "Colômbia",

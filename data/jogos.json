@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-07T03:26:26.985Z",
+  "atualizado_em": "2026-07-07T18:29:26.551Z",
   "pontuacao": {
     "oitavas": 1,
     "quartas": 2,
@@ -139,10 +139,10 @@
         "AUS",
         "EGY"
       ],
-      "placar1": null,
-      "placar2": null,
+      "placar1": 3,
+      "placar2": 2,
       "penaltis": null,
-      "vencedor": null,
+      "vencedor": "ARG",
       "alimentado_por": null,
       "proximo": "Q4"
     },
@@ -240,7 +240,7 @@
       "rotulo": "Quartas 4",
       "data": "2026-07-11T22:00:00-03:00",
       "cidade": null,
-      "time1": null,
+      "time1": "ARG",
       "time2": null,
       "origem1": "Vencedor Oitavas 7",
       "origem2": "Vencedor Oitavas 8",
