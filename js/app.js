@@ -597,22 +597,41 @@ function confrontoDaFonte(fonte, jogo) {
   ];
 }
 
-// Cabeçalho do card: o confronto real do jogo (Time 1 × Time 2, com bandeiras).
-// Lado ainda sem dono mostra de onde ele virá (ex.: "Venc. Q1").
-function confrontoHeaderHTML(jogo) {
-  const lados = [1, 2].map((n) => {
+// Cabeçalho do card: o confronto do jogo (Time 1 × Time 2, com bandeiras).
+// Lado ainda sem dono mostra de onde ele virá (ex.: "Venc. Q1"). Com comPlacar,
+// o miolo traz o PLACAR REAL do jogo já decidido (ex.: 0 × 0) com o vencedor
+// destacado e os pênaltis embaixo — é o resultado de referência do comparador.
+function confrontoHeaderHTML(jogo, comPlacar = false) {
+  const decidido =
+    comPlacar && jogo.vencedor && jogo.placar1 != null && jogo.placar2 != null;
+
+  const ladoHTML = (n) => {
     const cod = timeNoLado(jogo, n);
-    if (cod) {
-      return `${bandeiraHTML(cod)}<span class="cc-nome" title="${escapar(nomeDoTime(cod))}">${escapar(cod)}</span>`;
+    const dir = n === 2 ? " cc-dir" : "";
+    if (!cod) {
+      const alimentador = jogo.alimentado_por && jogo.alimentado_por[n - 1];
+      return `<span class="cc-time${dir}"><span class="cc-nome cc-indef">${alimentador ? "Venc. " + escapar(alimentador) : "A definir"}</span></span>`;
     }
-    const alimentador = jogo.alimentado_por && jogo.alimentado_por[n - 1];
-    return `<span class="cc-nome cc-indef">${alimentador ? "Venc. " + escapar(alimentador) : "A definir"}</span>`;
-  });
-  return `<div class="comp-confronto">
-    <span class="cc-time">${lados[0]}</span>
-    <span class="cc-x">×</span>
-    <span class="cc-time cc-dir">${lados[1]}</span>
-  </div>`;
+    const venceu = decidido && jogo.vencedor === cod ? " cc-venceu" : "";
+    return `<span class="cc-time${dir}${venceu}">${bandeiraHTML(cod)}<span class="cc-nome" title="${escapar(nomeDoTime(cod))}">${escapar(cod)}</span></span>`;
+  };
+
+  let miolo;
+  if (decidido) {
+    const v1 = jogo.vencedor === timeNoLado(jogo, 1) ? " cc-gol-vc" : "";
+    const v2 = jogo.vencedor === timeNoLado(jogo, 2) ? " cc-gol-vc" : "";
+    miolo =
+      `<span class="cc-placar"><span class="cc-gol${v1}">${jogo.placar1}</span>` +
+      `<span class="cc-x">×</span><span class="cc-gol${v2}">${jogo.placar2}</span></span>`;
+  } else {
+    miolo = `<span class="cc-placar"><span class="cc-x">×</span></span>`;
+  }
+
+  const pen = decidido && jogo.penaltis
+    ? `<div class="cc-pen">pênaltis ${escapar(jogo.penaltis)}</div>`
+    : "";
+
+  return `<div class="comp-confronto">${ladoHTML(1)}${miolo}${ladoHTML(2)}</div>${pen}`;
 }
 
 function ladoComparacaoHTML(fonte, jogo, cod, classe) {
@@ -658,7 +677,7 @@ function jogoComparacaoHTML(fa, fb, jogo) {
   }
   return `<div class="jogo jogo-comp ${ehFinal ? "final-card" : ""}" data-jogo="${jogo.id}">
     <div class="jogo-meta"><span>${escapar(jogo.rotulo)}</span>${v.badge}</div>
-    ${confrontoHeaderHTML(jogo)}
+    ${confrontoHeaderHTML(jogo, true)}
     ${ladoComparacaoHTML(fa, jogo, v.a, v.classeA)}
     ${ladoComparacaoHTML(fb, jogo, v.b, v.classeB)}
     ${placares}${dataJogoHTML(jogo)}</div>`;
@@ -666,9 +685,9 @@ function jogoComparacaoHTML(fa, fb, jogo) {
 
 function renderizarComparacao() {
   fecharPopoverPalpites(); // os cards antigos saem do DOM; popover aberto ficaria órfão
-  const fontes = listarFontes();
-  const fa = fontes.find((f) => f.id === $("#comp-a").value) || fontes[0];
-  const fb = fontes.find((f) => f.id === $("#comp-b").value) || fontes[fontes.length - 1];
+  const ias = listarFontes().filter((f) => !f.ehReal);
+  const fa = ias.find((f) => f.id === $("#comp-a").value) || ias[0];
+  const fb = ias.find((f) => f.id === $("#comp-b").value) || ias[1] || ias[0];
 
   const colunas = [
     { titulo: "Oitavas", ids: ["O1", "O2", "O3", "O4"] },
@@ -709,21 +728,21 @@ function iniciarComparador() {
   const selB = $("#comp-b");
   if (!selA || !selB) return;
 
-  const fontes = listarFontes();
-  if (fontes.length < 2) {
-    $("#chave-comparar").innerHTML = `<p class="secao-sub">Nenhum palpite registrado ainda —
-      assim que a primeira IA entrar no bolão, dá para comparar com o chaveamento real.</p>`;
+  const ias = listarFontes().filter((f) => !f.ehReal);
+  if (ias.length < 2) {
+    $("#chave-comparar").innerHTML = `<p class="secao-sub">Precisa de pelo menos duas IAs no
+      bolão para comparar dois chaveamentos — assim que a segunda entrar, a comparação abre aqui.</p>`;
     $("#comp-resumo").textContent = "";
     return;
   }
 
-  const opcoes = fontes
+  const opcoes = ias
     .map((f) => `<option value="${escapar(f.id)}">${escapar(f.emoji)} ${escapar(f.rotulo)}</option>`)
     .join("");
   selA.innerHTML = opcoes;
   selB.innerHTML = opcoes;
-  selA.value = "real";
-  selB.value = fontes[1].id;
+  selA.value = ias[0].id;
+  selB.value = ias[1].id;
 
   selA.addEventListener("change", renderizarComparacao);
   selB.addEventListener("change", renderizarComparacao);
