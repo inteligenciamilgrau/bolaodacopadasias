@@ -70,9 +70,26 @@ function vencedorDe(partidaApi, cod1, cod2) {
 function aplicarResultado(jogo, partidaApi, codCasa, codFora) {
   // Orientação: nosso time1 pode ser o mandante ou o visitante da API
   const invertido = jogo.time1 === codFora || jogo.time2 === codCasa;
-  const casa = partidaApi.score?.fullTime?.home;
-  const fora = partidaApi.score?.fullTime?.away;
-  const pen = partidaApi.score?.penalties;
+  const score = partidaApi.score || {};
+  let casa = score.fullTime?.home;
+  let fora = score.fullTime?.away;
+  const pen = score.penalties;
+  const foiPenaltis =
+    score.duration === "PENALTY_SHOOTOUT" ||
+    score.duration === "PENALTIES" ||
+    (pen && pen.home != null && pen.away != null);
+
+  // Jogo decidido nos pênaltis: o tempo normal/prorrogação é sempre EMPATE.
+  // A football-data.org às vezes devolve em fullTime o placar da própria
+  // disputa (ex.: 4×3 num jogo que foi 0×0) — isso jogava o resultado dos
+  // pênaltis para dentro do placar do jogo. Se fullTime não é empate, ele não
+  // presta para o placar: preservamos o valor curado à mão e só avisamos.
+  // (console.warn e não registrar: um aviso não deve forçar gravação/commit.)
+  if (foiPenaltis && casa != null && fora != null && casa !== fora) {
+    console.warn(`  ⚠️  ${jogo.id}: jogo por pênaltis, mas a API mandou ${casa}×${fora} ` +
+      `no tempo normal — placar do jogo preservado (confira à mão).`);
+    casa = fora = null; // não sobrescreve placar1/placar2
+  }
 
   const antes = JSON.stringify([jogo.placar1, jogo.placar2, jogo.vencedor, jogo.penaltis]);
 
@@ -80,8 +97,13 @@ function aplicarResultado(jogo, partidaApi, codCasa, codFora) {
     jogo.placar1 = invertido ? fora : casa;
     jogo.placar2 = invertido ? casa : fora;
   }
+  // Uma disputa de pênaltis não termina empatada — valor empatado é lixo da API.
   if (pen && pen.home != null && pen.away != null) {
-    jogo.penaltis = invertido ? `${pen.away}x${pen.home}` : `${pen.home}x${pen.away}`;
+    if (pen.home === pen.away) {
+      console.warn(`  ⚠️  ${jogo.id}: pênaltis ${pen.home}×${pen.away} (empate impossível) — ignorado.`);
+    } else {
+      jogo.penaltis = invertido ? `${pen.away}x${pen.home}` : `${pen.home}x${pen.away}`;
+    }
   }
   const vencedor = vencedorDe(partidaApi, codCasa, codFora);
   if (vencedor) jogo.vencedor = vencedor;
