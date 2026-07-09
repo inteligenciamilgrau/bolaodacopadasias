@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-08T07:03:49.478Z",
+  "atualizado_em": "2026-07-09T21:04:07.031Z",
   "pontuacao": {
     "oitavas": 1,
     "quartas": 2,
@@ -180,8 +180,8 @@
       "origem2": "Vencedor Oitavas 2",
       "candidatos1": null,
       "candidatos2": null,
-      "placar1": null,
-      "placar2": null,
+      "placar1": 0,
+      "placar2": 0,
       "penaltis": null,
       "vencedor": null,
       "alimentado_por": [
