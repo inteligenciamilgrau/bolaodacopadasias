@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-09T21:04:07.031Z",
+  "atualizado_em": "2026-07-09T22:50:18.927Z",
   "times": {
     "PAR": {
       "nome": "Paraguai",
@@ -19,7 +19,7 @@
     "MAR": {
       "nome": "Marrocos",
       "bandeira": "ma",
-      "status": "classificado"
+      "status": "eliminado"
     },
     "POR": {
       "nome": "Portugal",
