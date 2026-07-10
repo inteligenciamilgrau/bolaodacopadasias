@@ -76,6 +76,7 @@ async function iniciar() {
   renderizarChave();
   iniciarComparador();
   iniciarPopoverPalpites();
+  iniciarPopoverPontos();
   renderizarPalpites();
   carregarPrompt();
 }
@@ -427,7 +428,8 @@ function renderizarRanking() {
           <span class="ia-dev">${escapar(palpite.desenvolvedor || "")}</span></span>
         </div></td>
         <td><span class="campeao-pick">${campeao ? bandeiraHTML(campeao) : ""} ${escapar(nomeDoTime(campeao))}</span></td>
-        <td class="num"><span class="pontos">${placar.pontos}</span></td>
+        <td class="num celula-pontos" data-pontos-ia="${escapar(palpite.id)}"
+          title="Extrato de pontos de ${escapar(palpite.modelo)} — jogo a jogo, com a conta"><span class="pontos">${placar.pontos}</span></td>
         <td class="num">${placar.acertos}/${placar.decididos}</td>
         <td class="num">${placar.cravadas ? "🎯 " + placar.cravadas : "–"}</td>
         <td class="num"><span class="possivel">${placar.possivel} pts</span></td>
@@ -855,6 +857,7 @@ function iniciarPopoverPalpites() {
   const abrir = (card, fixar) => {
     const jogo = POR_ID[card.dataset.jogo];
     if (!jogo) return;
+    fecharPopoverPontos(); // um popover por vez
     if (card !== PP_CARD) {
       pop.innerHTML = popoverPalpitesHTML(jogo);
       pop.hidden = false;
@@ -896,6 +899,178 @@ function iniciarPopoverPalpites() {
   });
 
   // segue o card quando a página (ou o trilho horizontal da chave) rola
+  window.addEventListener("scroll", posicionar, true);
+  window.addEventListener("resize", posicionar);
+}
+
+/* ---------- popover: extrato de pontos (auditoria do ranking) ---------- */
+
+let EPT_CELULA = null;  // célula do ranking dona do extrato aberto
+let EPT_FIXADO = false; // aberto por clique/toque: só fecha em novo clique, fora ou Esc
+
+function fecharPopoverPontos() {
+  const pop = $("#popover-pontos");
+  if (pop) pop.hidden = true;
+  EPT_CELULA = null;
+  EPT_FIXADO = false;
+}
+
+// Uma linha do extrato: jogo · aposta → resultado real · conta dos pontos.
+function linhaExtratoHTML(d) {
+  const jogo = POR_ID[d.jogo];
+  const apostaPlacar = placarComPen(d.placar, d.penaltis);
+  const aposta = d.time
+    ? `<span class="pp-pick">${bandeiraHTML(d.time)}<b title="${escapar(nomeDoTime(d.time))}">${escapar(d.time)}</b></span>` +
+      (apostaPlacar
+        ? `<span class="pp-placar" title="Placar apostado (vencedor na frente)">${escapar(apostaPlacar)}</span>`
+        : "")
+    : `<span class="pp-sem">sem palpite</span>`;
+
+  let real;
+  if (jogo && jogo.vencedor) {
+    const placarReal = placarDoJogoDaFonte({ ehReal: true }, d.jogo);
+    real =
+      `<span class="pp-pick">${bandeiraHTML(jogo.vencedor)}<b title="${escapar(nomeDoTime(jogo.vencedor))}">${escapar(jogo.vencedor)}</b></span>` +
+      (placarReal
+        ? `<span class="pp-placar" title="Resultado real (vencedor na frente)">${escapar(placarReal)}</span>`
+        : "");
+  } else {
+    real = `<span class="pp-sem">aguarda</span>`;
+  }
+
+  let classe = "";
+  let calc;
+  if (d.status === "acertou") {
+    classe = d.cravou ? "pp-acertou pp-cravou" : "pp-acertou";
+    calc = d.cravou
+      ? `🎯${d.cravouPen ? "🥅" : ""} ${d.pontos}×2 = <b>${d.pontos * 2}</b>`
+      : `✓ <b>+${d.pontos}</b>`;
+  } else if (d.status === "errou") {
+    classe = "pp-errou";
+    calc = `✗ <b>0</b>`;
+  } else {
+    const teto = parsePlacar(d.placar) ? d.pontos * 2 : d.pontos;
+    calc = `<span class="ep-pend">⏳ vale ${d.pontos}${teto > d.pontos ? "–" + teto : ""}</span>`;
+  }
+
+  return `<div class="pp-linha ${classe}">
+    <span class="ep-id">${escapar(d.jogo)}</span>
+    ${aposta}
+    <span class="ep-seta">→</span>
+    ${real}
+    <span class="ep-calc">${calc}</span>
+  </div>`;
+}
+
+// Conteúdo do popover: cada pick da IA com o resultado real e a conta,
+// agrupado por fase, com subtotal e o somatório final auditável.
+function popoverPontosHTML(palpite) {
+  const placar = pontuarPalpite(palpite);
+
+  const blocos = FASES.map((fase) => {
+    const picks = placar.detalhes.filter((d) => d.fase === fase);
+    if (!picks.length) return "";
+    const subtotal = picks.reduce(
+      (soma, d) => soma + (d.status === "acertou" ? (d.cravou ? d.pontos * 2 : d.pontos) : 0),
+      0
+    );
+    const valor = PONTUACAO[fase];
+    return `<div class="ep-fase"><span>${NOME_FASE[fase]}</span>
+        <span>${valor} pt${valor > 1 ? "s" : ""}/acerto · subtotal ${subtotal}</span></div>` +
+      picks.map(linhaExtratoHTML).join("");
+  }).join("");
+
+  // conta auditável: um termo por acerto (cravada aparece como "N×2")
+  const termos = placar.detalhes
+    .filter((d) => d.status === "acertou")
+    .map((d) => (d.cravou ? `${d.pontos}×2` : `${d.pontos}`));
+  const conta = termos.length ? `${termos.join(" + ")} = ` : "";
+
+  return `<div class="pp-cabeca">
+      <div>
+        <div class="pp-rotulo">🧾 Extrato de pontos</div>
+        <div class="pp-data">${escapar(palpite.emoji || "🤖")} ${escapar(palpite.modelo)}</div>
+      </div>
+      <button class="pp-fechar ep-fechar" type="button" aria-label="Fechar">✕</button>
+    </div>
+    <div class="pp-lista">${blocos}</div>
+    <div class="ep-total">
+      <div class="ep-conta">Total: ${conta}<b>${placar.pontos} pt${placar.pontos === 1 ? "" : "s"}</b></div>
+      ${placar.cravadas ? `<div>🎯 Placar exato cravado ${placar.cravadas}× — dobra os pontos do jogo</div>` : ""}
+      ${placar.penCravadas ? `<div>🥅 Pênaltis cravados: ${placar.penCravadas} (critério de desempate)</div>` : ""}
+      <div>📈 Somando o que ainda está em aberto, pode chegar a <b>${placar.possivel} pts</b></div>
+    </div>
+    <div class="ep-legenda">✓ acertou quem avança · 🎯 cravou o placar (×2) · ✗ errou (0) · ⏳ em aberto</div>`;
+}
+
+// Mesmo comportamento do popover de palpites: hover mostra, clique/toque fixa.
+function iniciarPopoverPontos() {
+  const pop = $("#popover-pontos");
+  if (!pop) return;
+
+  const posicionar = () => {
+    if (!EPT_CELULA || pop.hidden) return;
+    const r = EPT_CELULA.getBoundingClientRect();
+    const margem = 10;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const pw = pop.offsetWidth;
+    const ph = pop.offsetHeight;
+    let x = r.right + margem;
+    if (x + pw > vw - 8) x = r.left - pw - margem;
+    let y = r.top + r.height / 2 - ph / 2;
+    if (x < 8) {
+      x = r.left + r.width / 2 - pw / 2;
+      y = r.bottom + margem + ph > vh - 8 ? r.top - ph - margem : r.bottom + margem;
+    }
+    pop.style.left = Math.max(8, Math.min(x, vw - pw - 8)) + "px";
+    pop.style.top = Math.max(8, Math.min(y, vh - ph - 8)) + "px";
+  };
+
+  const abrir = (celula, fixar) => {
+    const palpite = PALPITES.find((p) => p.id === celula.dataset.pontosIa);
+    if (!palpite) return;
+    fecharPopoverPalpites(); // um popover por vez
+    if (celula !== EPT_CELULA) {
+      pop.innerHTML = popoverPontosHTML(palpite);
+      pop.hidden = false;
+      EPT_CELULA = celula;
+    }
+    EPT_FIXADO = fixar;
+    posicionar();
+  };
+
+  document.addEventListener("mouseover", (e) => {
+    if (EPT_FIXADO) return;
+    const celula = e.target.closest("[data-pontos-ia]");
+    if (celula) abrir(celula, false);
+  });
+
+  document.addEventListener("mouseout", (e) => {
+    if (EPT_FIXADO || !EPT_CELULA) return;
+    const para = e.relatedTarget;
+    if (para && (EPT_CELULA.contains(para) || pop.contains(para))) return;
+    if (EPT_CELULA.contains(e.target) || pop.contains(e.target)) fecharPopoverPontos();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".ep-fechar")) {
+      fecharPopoverPontos();
+      return;
+    }
+    const celula = e.target.closest("[data-pontos-ia]");
+    if (celula) {
+      if (EPT_FIXADO && celula === EPT_CELULA) fecharPopoverPontos();
+      else abrir(celula, true);
+      return;
+    }
+    if (!pop.contains(e.target)) fecharPopoverPontos();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") fecharPopoverPontos();
+  });
+
   window.addEventListener("scroll", posicionar, true);
   window.addEventListener("resize", posicionar);
 }
