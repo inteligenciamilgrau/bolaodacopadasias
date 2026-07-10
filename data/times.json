@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-10T20:51:03.622Z",
+  "atualizado_em": "2026-07-10T22:03:33.024Z",
   "times": {
     "PAR": {
       "nome": "Paraguai",
@@ -39,7 +39,7 @@
     "BEL": {
       "nome": "Bélgica",
       "bandeira": "be",
-      "status": "classificado"
+      "status": "eliminado"
     },
     "BRA": {
       "nome": "Brasil",
