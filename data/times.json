@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-11T23:48:19.903Z",
+  "atualizado_em": "2026-07-11T23:55:10.674Z",
   "times": {
     "PAR": {
       "nome": "Paraguai",
@@ -49,7 +49,7 @@
     "NOR": {
       "nome": "Noruega",
       "bandeira": "no",
-      "status": "classificado"
+      "status": "eliminado"
     },
     "MEX": {
       "nome": "México",
