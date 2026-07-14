@@ -84,6 +84,12 @@
         "penaltis": "4x3"
       }
     },
+    "terceiro": {
+      "T": {
+        "vencedor": "BRA",
+        "placar": "2x1"
+      }
+    },
     "final": {
       "campeao": "FRA",
       "placar": "2x1"

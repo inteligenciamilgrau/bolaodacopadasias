@@ -6,11 +6,12 @@
 
 "use strict";
 
-const FASES = ["oitavas", "quartas", "semis", "final"];
+const FASES = ["oitavas", "quartas", "semis", "terceiro", "final"];
 const NOME_FASE = {
   oitavas: "Oitavas de final",
   quartas: "Quartas de final",
   semis: "Semifinais",
+  terceiro: "Disputa de 3º lugar",
   final: "Final",
 };
 
@@ -119,11 +120,18 @@ async function detectarAnalises() {
 /* ---------- lógica do chaveamento ---------- */
 
 // Time que ocupa o lado n (1|2) de um jogo, seguindo os vencedores da chave.
+// Jogo com usa_perdedor (disputa de 3º lugar) recebe o PERDEDOR do alimentador.
 function timeNoLado(jogo, n) {
   if (jogo["time" + n]) return jogo["time" + n];
-  const alimentador = jogo.alimentado_por && jogo.alimentado_por[n - 1];
-  if (alimentador && POR_ID[alimentador] && POR_ID[alimentador].vencedor) {
-    return POR_ID[alimentador].vencedor;
+  const alimentador =
+    jogo.alimentado_por && POR_ID[jogo.alimentado_por[n - 1]];
+  if (alimentador && alimentador.vencedor) {
+    if (!jogo.usa_perdedor) return alimentador.vencedor;
+    return (
+      (alimentador.vencedor === alimentador.time1
+        ? alimentador.time2
+        : alimentador.time1) || null
+    );
   }
   return null;
 }
@@ -211,6 +219,7 @@ function picksDoPalpite(palpite) {
     ["oitavas", p.oitavas],
     ["quartas", p.quartas],
     ["semis", p.semis],
+    ["terceiro", p.terceiro],
   ]) {
     for (const [id, bruto] of Object.entries(valor || {})) {
       const pick = normalizarPick(bruto);
@@ -262,9 +271,31 @@ function avaliarPick(pick) {
   if (!jogo) return "errou";
   if (jogo.vencedor === pick.time) return "acertou";
   if (jogo.vencedor) return "errou";
+  if (jogo.usa_perdedor) {
+    return aindaDisputaTerceiro(pick.time, jogo) ? "pendente" : "errou";
+  }
   if (ELIMINADOS.has(pick.time)) return "errou";
   if (!caminhoDoTime(pick.time).includes(pick.jogo)) return "errou";
   return "pendente";
+}
+
+// A disputa de 3º lugar foge da régua da chave: quem chega nela é quem PERDE
+// uma semi — "eliminado" não mata o pick e o caminho do time não passa por ela.
+// O pick segue vivo enquanto o time puder perder uma semi (ou já a perdeu).
+function aindaDisputaTerceiro(cod, jogo) {
+  for (const idAlim of jogo.alimentado_por || []) {
+    const semi = POR_ID[idAlim];
+    if (!semi) continue;
+    if (semi.vencedor) {
+      const perdedor =
+        semi.vencedor === semi.time1 ? semi.time2 : semi.time1;
+      if (perdedor === cod) return true;
+    } else {
+      if (timeNoLado(semi, 1) === cod || timeNoLado(semi, 2) === cod) return true;
+      if (!ELIMINADOS.has(cod) && caminhoDoTime(cod).includes(semi.id)) return true;
+    }
+  }
+  return false;
 }
 
 function pontuarPalpite(palpite) {
@@ -468,7 +499,9 @@ function jogoHTML(jogo) {
   const banner =
     ehFinal && jogo.vencedor
       ? `<div class="campeao-banner">🏆 ${escapar(nomeDoTime(jogo.vencedor))} CAMPEÃO!</div>`
-      : "";
+      : jogo.fase === "terceiro" && jogo.vencedor
+        ? `<div class="campeao-banner">🥉 ${escapar(nomeDoTime(jogo.vencedor))} fica com o bronze!</div>`
+        : "";
   return `<div class="jogo ${ehFinal ? "final-card" : ""}" id="jogo-${jogo.id}" data-jogo="${jogo.id}">
     <div class="jogo-meta"><span>${escapar(jogo.rotulo)}</span>
     <span class="jogo-palpites-dica">🤖 palpites</span></div>
@@ -480,7 +513,7 @@ function renderizarChave() {
     { titulo: "Oitavas", ids: ["O1", "O2", "O3", "O4"] },
     { titulo: "Quartas", ids: ["Q1", "Q2"] },
     { titulo: "Semifinal", ids: ["S1"] },
-    { titulo: "🏆 Final", ids: ["F"] },
+    { titulo: "🏆 Final", ids: ["F", "T"] },
     { titulo: "Semifinal", ids: ["S2"] },
     { titulo: "Quartas", ids: ["Q3", "Q4"] },
     { titulo: "Oitavas", ids: ["O5", "O6", "O7", "O8"] },
@@ -521,6 +554,7 @@ function pickCompletoDaFonte(fonte, jogoId) {
     (p.oitavas && p.oitavas[jogoId]) ||
     (p.quartas && p.quartas[jogoId]) ||
     (p.semis && p.semis[jogoId]) ||
+    (p.terceiro && p.terceiro[jogoId]) ||
     null;
   return normalizarPick(bruto);
 }
@@ -593,10 +627,13 @@ function confrontoDaFonte(fonte, jogo) {
   if (fonte.ehReal || !jogo.alimentado_por) {
     return [timeNoLado(jogo, 1), timeNoLado(jogo, 2)];
   }
-  return [
-    pickDaFonte(fonte, jogo.alimentado_por[0]),
-    pickDaFonte(fonte, jogo.alimentado_por[1]),
-  ];
+  return jogo.alimentado_por.map((idAlim) => {
+    const vencedor = pickDaFonte(fonte, idAlim);
+    if (!jogo.usa_perdedor) return vencedor;
+    // disputa de 3º: o lado projetado é quem a fonte põe na semi e NÃO avança
+    const [c1, c2] = confrontoDaFonte(fonte, POR_ID[idAlim]);
+    return vencedor === c1 ? c2 : vencedor === c2 ? c1 : null;
+  });
 }
 
 // Cabeçalho do card: o confronto do jogo (Time 1 × Time 2, com bandeiras).
@@ -612,7 +649,7 @@ function confrontoHeaderHTML(jogo, comPlacar = false) {
     const dir = n === 2 ? " cc-dir" : "";
     if (!cod) {
       const alimentador = jogo.alimentado_por && jogo.alimentado_por[n - 1];
-      return `<span class="cc-time${dir}"><span class="cc-nome cc-indef">${alimentador ? "Venc. " + escapar(alimentador) : "A definir"}</span></span>`;
+      return `<span class="cc-time${dir}"><span class="cc-nome cc-indef">${alimentador ? (jogo.usa_perdedor ? "Perd. " : "Venc. ") + escapar(alimentador) : "A definir"}</span></span>`;
     }
     const venceu = decidido && jogo.vencedor === cod ? " cc-venceu" : "";
     return `<span class="cc-time${dir}${venceu}">${bandeiraHTML(cod)}<span class="cc-nome" title="${escapar(nomeDoTime(cod))}">${escapar(cod)}</span></span>`;
@@ -695,7 +732,7 @@ function renderizarComparacao() {
     { titulo: "Oitavas", ids: ["O1", "O2", "O3", "O4"] },
     { titulo: "Quartas", ids: ["Q1", "Q2"] },
     { titulo: "Semifinal", ids: ["S1"] },
-    { titulo: "🏆 Final", ids: ["F"] },
+    { titulo: "🏆 Final", ids: ["F", "T"] },
     { titulo: "Semifinal", ids: ["S2"] },
     { titulo: "Quartas", ids: ["Q3", "Q4"] },
     { titulo: "Oitavas", ids: ["O5", "O6", "O7", "O8"] },

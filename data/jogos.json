@@ -4,6 +4,7 @@
     "oitavas": 1,
     "quartas": 2,
     "semis": 4,
+    "terceiro": 4,
     "final": 8
   },
   "jogos": [
@@ -299,6 +300,29 @@
         "Q4"
       ],
       "proximo": "F"
+    },
+    {
+      "id": "T",
+      "fase": "terceiro",
+      "rotulo": "Disputa de 3º lugar",
+      "data": "2026-07-18T16:00:00-03:00",
+      "cidade": null,
+      "time1": null,
+      "time2": null,
+      "origem1": "Perdedor Semifinal 1",
+      "origem2": "Perdedor Semifinal 2",
+      "candidatos1": null,
+      "candidatos2": null,
+      "placar1": null,
+      "placar2": null,
+      "penaltis": null,
+      "vencedor": null,
+      "alimentado_por": [
+        "S1",
+        "S2"
+      ],
+      "usa_perdedor": true,
+      "proximo": null
     },
     {
       "id": "F",

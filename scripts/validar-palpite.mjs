@@ -94,6 +94,12 @@ export function validarPalpite(dados, codigosValidos) {
   validarFase("quartas", Object.keys(QUARTAS), p.quartas);
   validarFase("semis", Object.keys(SEMIS), p.semis);
 
+  // Disputa de 3º lugar (jogo T) — adendo de 14/07/2026 ao regulamento: a IA
+  // completa a PRÓPRIA chave (sem olhar resultados reais), então o vencedor de T
+  // deve ser um dos perdedores de semifinal do próprio palpite (checado abaixo).
+  // Palpites registrados antes do adendo podem não ter o bloco (segue opcional).
+  if (p.terceiro) validarFase("terceiro", ["T"], p.terceiro);
+
   const campeao = p.final && p.final.campeao;
   if (!campeao) erro(`Falta "final.campeao"`);
   else if (!codigosValidos.has(campeao)) erro(`"final.campeao": código desconhecido "${campeao}"`);
@@ -116,6 +122,15 @@ export function validarPalpite(dados, codigosValidos) {
     const finalistas = [vencedorDe(p.semis, "S1"), vencedorDe(p.semis, "S2")];
     if (!finalistas.includes(campeao)) {
       erro(`Chave inconsistente: o campeão (${campeao}) deveria ser um dos seus finalistas (${finalistas.join(" ou ")})`);
+    }
+    if (p.terceiro && p.terceiro.T) {
+      const perdedores = Object.entries(SEMIS).flatMap(([s, origem]) =>
+        origem.map((q) => vencedorDe(p.quartas, q)).filter((t) => t !== vencedorDe(p.semis, s))
+      );
+      const t = vencedorDe(p.terceiro, "T");
+      if (!perdedores.includes(t)) {
+        erro(`Chave inconsistente: "T" (${t}) deveria ser um dos seus perdedores de semifinal (${perdedores.join(" ou ")})`);
+      }
     }
   }
 

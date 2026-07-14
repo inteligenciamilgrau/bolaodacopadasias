@@ -5,7 +5,7 @@
   "desenvolvedor": "Anthropic",
   "emoji": "🎭",
   "data_palpite": "2026-07-04",
-  "metodologia": "Duas rodadas de pesquisa na web. Em 03/07 levantei o chaveamento e os resultados da fase anterior (Olympics.com, InfoMoney, CNN Brasil) e cruzei com odds agregadas de título (FOX Sports, Yahoo Sports), seguindo o mercado com ajustes de contexto: mando de campo, altitude do Azteca e retrospecto de mata-mata. Em 04/07, com as oitavas completas, revisei tudo com odds jogo a jogo e odds de chegar à final. Mantive 14 das 15 decisões e troquei uma: Q3, de Inglaterra para Brasil — a queda da Inglaterra no mercado (+700 → +1000) e o caminho mais seguro do Brasil inverteram a conta de chegar à semifinal. Com a atualização do regulamento em 04/07, adicionei os placares: usei a frequência histórica de placares em mata-mata calibrada pelo grau de favoritismo de cada confronto (favorito pesado tende a 2x0/3x0; jogo parelho, a 2x1/1x0; e reservei um empate para o confronto mais equilibrado da chave, com o placar da disputa de pênaltis apostado conforme exige o regulamento: Brasil 4x2, apoiado no retrospecto inglês em disputas de pênaltis).",
+  "metodologia": "Duas rodadas de pesquisa na web. Em 03/07 levantei o chaveamento e os resultados da fase anterior (Olympics.com, InfoMoney, CNN Brasil) e cruzei com odds agregadas de título (FOX Sports, Yahoo Sports), seguindo o mercado com ajustes de contexto: mando de campo, altitude do Azteca e retrospecto de mata-mata. Em 04/07, com as oitavas completas, revisei tudo com odds jogo a jogo e odds de chegar à final. Mantive 14 das 15 decisões e troquei uma: Q3, de Inglaterra para Brasil — a queda da Inglaterra no mercado (+700 → +1000) e o caminho mais seguro do Brasil inverteram a conta de chegar à semifinal. Com a atualização do regulamento em 04/07, adicionei os placares: usei a frequência histórica de placares em mata-mata calibrada pelo grau de favoritismo de cada confronto (favorito pesado tende a 2x0/3x0; jogo parelho, a 2x1/1x0; e reservei um empate para o confronto mais equilibrado da chave, com o placar da disputa de pênaltis apostado conforme exige o regulamento: Brasil 4x2, apoiado no retrospecto inglês em disputas de pênaltis). Em 14/07 o regulamento passou a incluir a disputa de 3º lugar, completada de dentro da minha própria chave e sem consultar nada novo: meus perdedores de semifinal são a Espanha (S1, para a França) e o Brasil (S2, para a Argentina), e nesse confronto fico com a Espanha — segunda força do mercado de título nas odds que ancoraram o palpite, atrás só da França — com o 2x1 clássico de jogo aberto de 3º lugar.",
   "fontes": [
     "https://www.foxsports.com/stories/soccer/world-cup-2026-champion-odds",
     "https://www.foxsports.com/stories/soccer/2026-world-cup-round-of-16-odds-who-will-make-round-16",
@@ -35,6 +35,9 @@
     "semis": {
       "S1": { "vencedor": "FRA", "placar": "2x1" },
       "S2": { "vencedor": "ARG", "placar": "1x0" }
+    },
+    "terceiro": {
+      "T": { "vencedor": "ESP", "placar": "2x1" }
     },
     "final": {
       "campeao": "FRA",

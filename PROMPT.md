@@ -42,18 +42,20 @@ Tudo o que você precisa está neste arquivo. Sua resposta tem **duas entregas**
 
 ## 📋 Regras do bolão
 
-- O palpite cobre **15 jogos**, e cada jogo pede DUAS coisas: o **vencedor** (quem
-  avança) e o **placar** do jogo. São as oitavas (8), as quartas (4), as semifinais (2)
-  e a final (1 — campeão + placar).
+- O palpite cobre **16 jogos**, e cada jogo pede DUAS coisas: o **vencedor** (quem
+  avança) e o **placar** do jogo. São as oitavas (8), as quartas (4), as semifinais (2),
+  a **disputa de 3º lugar** (1 — jogo `T`, entre os perdedores das semis) e a final
+  (1 — campeão + placar).
 - **Pontuação** por acerto:
   | Acerto | Pontos |
   |---|---|
   | Vencedor de jogo das oitavas (time classificado às quartas) | 1 ponto cada |
   | Vencedor de jogo das quartas (time classificado às semis) | 2 pontos cada |
   | Vencedor de semifinal (finalista) | 4 pontos cada |
+  | Vencedor da disputa de 3º lugar (jogo `T`) | 4 pontos |
   | Campeão | 8 pontos |
   | 🎯 **Cravar o placar exato** de um jogo cujo vencedor você acertou | **dobra os pontos** daquele jogo |
-  Máximo possível: **64 pontos** (32 dos vencedores + 32 dobrando tudo).
+  Máximo possível: **72 pontos** (36 dos vencedores + 36 dobrando tudo).
   Placar exato só pontua junto com o vencedor certo — placar certo com vencedor
   errado não vale nada.
 - **Regras do placar:** formato `NxN` (ex.: `2x1`), gols do jogo completo (tempo
@@ -72,6 +74,8 @@ Tudo o que você precisa está neste arquivo. Sua resposta tem **duas entregas**
     `Q2` ← `O3`/`O4`; `Q3` ← `O5`/`O6`; `Q4` ← `O7`/`O8`.
   - O vencedor de `S1` deve ser seu vencedor de `Q1` ou `Q2`; `S2` ← `Q3`/`Q4`.
   - O `campeao` deve ser seu vencedor de `S1` ou `S2`.
+  - O vencedor de `T` (disputa de 3º lugar) deve ser um dos seus **perdedores** de
+    semifinal — quem você colocou em `S1`/`S2` e, na sua chave, não avançou à final.
 - **Vagas ainda indefinidas:** se algum jogo das oitavas ainda estiver com
   "a definir", aposte no time que você ACREDITA que vai se classificar para aquela vaga
   (entre os candidatos listados). Se ele não se classificar, você simplesmente não pontua
@@ -91,6 +95,8 @@ O2 ─┘      │       │      └─ O6
 O3 ─┐      │       │      ┌─ O7
     ├─ Q2 ─┘       └─ Q4 ─┤
 O4 ─┘                     └─ O8
+
+T = disputa de 3º lugar: perdedor de S1 × perdedor de S2, na véspera da final
 ```
 
 ## 🚩 Códigos de time permitidos
@@ -124,7 +130,7 @@ Gana foram eliminados na fase anterior):
 | O7 | 07/07 | Argentina × Egito |
 | O8 | 07/07 | Suíça × Colômbia |
 
-Quartas: 09 a 11/07 · Semis: 14 e 15/07 · Final: 19/07.
+Quartas: 09 a 11/07 · Semis: 14 e 15/07 · Disputa de 3º lugar: 18/07 · Final: 19/07.
 
 ## 1️⃣ ENTREGA 1 — O palpite (JSON obrigatório)
 
@@ -162,6 +168,9 @@ Um JSON válido, **exatamente** nesta estrutura (sem comentários, sem texto ext
       "S1": { "vencedor": "XXX", "placar": "2x1" },
       "S2": { "vencedor": "XXX", "placar": "1x0" }
     },
+    "terceiro": {
+      "T": { "vencedor": "XXX", "placar": "2x1" }
+    },
     "final": { "campeao": "XXX", "placar": "2x1" }
   }
 }
@@ -180,7 +189,7 @@ Regras do formato:
 - `modelo` e `modelo_id`: identifique-se com PRECISÃO (nome e versão reais do modelo
   que está respondendo). Nada de "sou um assistente" genérico.
 - Todos os vencedores usam os códigos de 3 letras da tabela acima.
-- `placar` (em todos os 15 jogos): formato `NxN`, primeiro número = gols do seu
+- `placar` (em todos os 16 jogos): formato `NxN`, primeiro número = gols do seu
   vencedor (regras completas na seção de pontuação). Na final, o primeiro número é
   o do seu `campeao`.
 - `penaltis`: obrigatório se (e somente se) o `placar` do jogo for empatado —
@@ -201,7 +210,7 @@ cada IA faz o site do seu jeito, e a variedade é parte da graça.
 
 Só não pode faltar este conteúdo:
 
-1. **Dados e análises por trás de CADA decisão.** Para cada um dos 15 jogos
+1. **Dados e análises por trás de CADA decisão.** Para cada um dos 16 jogos
    (vencedor e placar), mostre o que você olhou — números, odds, ranking,
    retrospecto, contexto — e por que a escolha bateu as alternativas.
    Quem ler tem que entender como cada decisão aconteceu.
@@ -233,8 +242,8 @@ Sem textão fora das entregas — tudo o que você quiser dizer cabe dentro do s
 
 ## ✅ Checklist antes de responder
 
-- [ ] O JSON está puro (sem texto ao redor), com os 15 vencedores em códigos
-      válidos E os 15 placares no formato `NxN`?
+- [ ] O JSON está puro (sem texto ao redor), com os 16 vencedores em códigos
+      válidos E os 16 placares no formato `NxN`?
 - [ ] Todo placar tem o SEU vencedor na frente?
 - [ ] Todo placar empatado tem o campo `penaltis` com o placar da disputa?
 - [ ] A chave é consistente (cada vencedor veio do jogo certo)?

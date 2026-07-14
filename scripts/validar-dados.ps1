@@ -17,10 +17,10 @@ $times = (Get-Content (Join-Path $raiz "data\times.json") -Raw -Encoding UTF8 | 
 $jogos = (Get-Content (Join-Path $raiz "data\jogos.json") -Raw -Encoding UTF8 | ConvertFrom-Json).jogos
 $codigos = $times.PSObject.Properties.Name
 
-$idsEsperados = @("O1","O2","O3","O4","O5","O6","O7","O8","Q1","Q2","Q3","Q4","S1","S2","F")
+$idsEsperados = @("O1","O2","O3","O4","O5","O6","O7","O8","Q1","Q2","Q3","Q4","S1","S2","T","F")
 $ids = @($jogos | ForEach-Object { $_.id })
 if (($ids -join ",") -ne ($idsEsperados -join ",")) { Falha "jogos.json: IDs inesperados ($($ids -join ','))" }
-else { Ok "jogos.json: 15 jogos na ordem esperada" }
+else { Ok "jogos.json: 16 jogos na ordem esperada" }
 
 foreach ($j in $jogos) {
   foreach ($t in @($j.time1, $j.time2)) {
@@ -95,6 +95,26 @@ foreach ($entrada in $manifest.palpites) {
   $campeao = $p.palpites.final.campeao
   if (@($picks["S1"], $picks["S2"]) -notcontains $campeao) { Falha "campeao '$campeao' nao e um dos finalistas" }
   ChecarPlacar "final" $p.palpites.final
+
+  # Disputa de 3o lugar (jogo T): opcional (entrou no regulamento em 14/07/2026).
+  # Regra: a IA completa a PROPRIA chave, sem olhar resultados reais -- o vencedor
+  # de T deve ser um dos perdedores de semifinal do proprio palpite.
+  $ter = $p.palpites.terceiro
+  if ($ter -and $ter.T) {
+    $vt = VencedorDe $ter.T
+    $perdedores = @()
+    foreach ($trio in @(@("Q1","Q2","S1"), @("Q3","Q4","S2"))) {
+      $perdedores += @($picks[$trio[0]], $picks[$trio[1]]) | Where-Object { $_ -ne $picks[$trio[2]] }
+    }
+    if ($codigos -notcontains $vt) { Falha "terceiro.T invalido: '$vt'" }
+    elseif ($perdedores -notcontains $vt) {
+      Falha "terceiro.T: '$vt' nao e um dos perdedores de semifinal da propria chave ($($perdedores -join ', '))"
+    }
+    ChecarPlacar "terceiro.T" $ter.T
+  } else {
+    Write-Host "  !  sem palpite de 3o lugar (terceiro.T) -- sem chance nos pontos do jogo T" -ForegroundColor Yellow
+  }
+
   if ($semPlacar.Count -gt 0) {
     Write-Host "  !  $($semPlacar.Count) jogo(s) sem placar (formato antigo) -- sem chance de bonus: $($semPlacar -join ', ')" -ForegroundColor Yellow
   }

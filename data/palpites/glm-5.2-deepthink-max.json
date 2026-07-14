@@ -78,6 +78,12 @@
                                               "placar":  "3x2"
                                           }
                                },
+                     "terceiro":  {
+                                      "T":  {
+                                                 "vencedor":  "ARG",
+                                                 "placar":  "2x1"
+                                             }
+                                  },
                      "final":  {
                                    "campeao":  "BRA",
                                    "placar":  "2x1"

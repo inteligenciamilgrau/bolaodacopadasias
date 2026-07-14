@@ -59,7 +59,7 @@ O arquivo `.nojekyll` já está incluído para o GitHub servir os arquivos como 
    - um **site explicativo** (arquivo HTML único, auto-contido, criado do jeito
      que ela quiser) mostrando os dados e análises por trás de cada decisão, com
      a nota honesta de quantos % foi **análise** e quantos % foi **chute** em cada
-     um dos 15 palpites e no placar da final;
+     um dos 16 palpites e no placar da final;
 4. Registre o palpite:
 
 ```bash
@@ -97,8 +97,11 @@ node scripts/atualizar-resultados.mjs --dry-run  # só mostra o que mudaria
 O que ele faz:
 
 - preenche as vagas “a definir” das oitavas quando os jogos da fase anterior terminam;
-- atualiza placares, pênaltis e vencedores de oitavas, quartas, semis e final;
-- propaga os classificados para a fase seguinte;
+- atualiza placares, pênaltis e vencedores de oitavas, quartas, semis, disputa de
+  3º lugar e final (só de partidas **encerradas** — placar parcial de jogo ao vivo
+  não é gravado);
+- propaga os classificados para a fase seguinte (e os perdedores das semis para a
+  disputa de 3º lugar);
 - marca times eliminados em `data/times.json` (o ranking usa isso para calcular
   quantos pontos cada IA ainda pode alcançar).
 
@@ -113,7 +116,7 @@ resto sozinho.
 
 ## 🧮 Regras e pontuação
 
-Cada um dos 15 jogos pede **vencedor + placar** (`{ "vencedor": "FRA", "placar": "2x1" }`,
+Cada um dos 16 jogos pede **vencedor + placar** (`{ "vencedor": "FRA", "placar": "2x1" }`,
 gols do vencedor na frente). **Empate leva para os pênaltis:** placar empatado exige
 também o campo `"penaltis": "NxN"` com o placar da disputa (ex.:
 `{ "vencedor": "BRA", "placar": "1x1", "penaltis": "4x2" }`).
@@ -123,12 +126,21 @@ também o campo `"penaltis": "NxN"` com o placar da disputa (ex.:
 | Classificado às quartas (vencedor de jogo das oitavas) | 1 pt × 8 |
 | Classificado às semis | 2 pts × 4 |
 | Finalista | 4 pts × 2 |
+| 🥉 Vencedor da disputa de 3º lugar (jogo T) | 4 pts |
 | Campeão | 8 pts |
 | 🎯 Placar exato cravado (com o vencedor certo) | **dobra** os pontos do jogo |
-| **Máximo** | **64 pts** |
+| **Máximo** | **72 pts** |
 
 Desempate: mais placares cravados → mais pênaltis cravados → diferença de gols na
 final → palpite mais antigo.
+A **disputa de 3º lugar** (jogo `T`, 18/07, entre os perdedores das semis) entrou no
+regulamento em 14/07/2026: o pick é
+`"terceiro": { "T": { "vencedor": "XXX", "placar": "NxN" } }` e completa a chave **da
+própria IA** — o vencedor deve ser um dos perdedores de semifinal do palpite original
+dela, decidido sem olhar nenhum resultado real (mesmo que o time já esteja eliminado
+de verdade). A pontuação segue por vaga: só pontua se o apostado vencer o jogo `T` de
+verdade. Use o [`ATUALIZACAO-TERCEIRO-LUGAR.md`](ATUALIZACAO-TERCEIRO-LUGAR.md) para
+pedir o complemento às IAs; quem não complementar segue no bolão, só sem os pontos do T.
 Palpites no formato antigo (só vencedor) continuam valendo, mas sem chance de bônus —
 use o [`ATUALIZACAO-PLACARES.md`](ATUALIZACAO-PLACARES.md) para pedir a correção à IA.
 Palpites feitos antes de todas as vagas estarem definidas apostam também em *quem se

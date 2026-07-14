@@ -36,6 +36,9 @@
       "S1": { "vencedor": "FRA", "placar": "1x0" },
       "S2": { "vencedor": "BRA", "placar": "2x1" }
     },
+    "terceiro": {
+      "T": { "vencedor": "ESP", "placar": "2x1" }
+    },
     "final": {
       "campeao": "BRA",
       "placar": "2x1"

@@ -31,6 +31,9 @@ const FASE_API = {
   ROUND_OF_16: "oitavas",
   QUARTER_FINALS: "quartas",
   SEMI_FINALS: "semis",
+  THIRD_PLACE: "terceiro",
+  THIRD_PLACE_PLAYOFF: "terceiro",
+  PLAY_OFF_FOR_THIRD_PLACE: "terceiro",
   FINAL: "final",
 };
 const FASES_R32 = ["LAST_32", "ROUND_OF_32", "PLAY_OFF_ROUND"];
@@ -169,15 +172,21 @@ async function principal() {
   }
 
   // ---- 2) Propaga vencedores já conhecidos para as fases seguintes
+  // (jogo com usa_perdedor — a disputa de 3º lugar — recebe o PERDEDOR)
   const propagar = () => {
     for (const jogo of jogosDoc.jogos) {
       if (!jogo.alimentado_por) continue;
       for (const n of [1, 2]) {
         const alimentador = porId[jogo.alimentado_por[n - 1]];
-        if (!jogo["time" + n] && alimentador?.vencedor) {
-          jogo["time" + n] = alimentador.vencedor;
-          registrar(`${jogo.id}: ${alimentador.vencedor} avança de ${alimentador.id}`);
-        }
+        if (jogo["time" + n] || !alimentador?.vencedor) continue;
+        const avanca = jogo.usa_perdedor
+          ? (alimentador.vencedor === alimentador.time1 ? alimentador.time2 : alimentador.time1)
+          : alimentador.vencedor;
+        if (!avanca) continue;
+        jogo["time" + n] = avanca;
+        registrar(jogo.usa_perdedor
+          ? `${jogo.id}: ${avanca} cai para a disputa de 3º lugar (perdeu ${alimentador.id})`
+          : `${jogo.id}: ${avanca} avança de ${alimentador.id}`);
       }
     }
   };
@@ -191,7 +200,12 @@ async function principal() {
     const codFora = codigoDoTime(p.awayTeam, codigosValidos);
     if (!codCasa || !codFora) continue;
 
-    const nossos = jogosDoc.jogos.filter((j) => j.fase === fase);
+    // O nome da fase do 3º lugar varia entre temporadas da API — se ela vier
+    // rotulada como FINAL, o par de times desambigua (finalistas × perdedores
+    // das semis nunca se repetem) e o filtro de horário (<24h) separa os dias.
+    const nossos = jogosDoc.jogos.filter(
+      (j) => j.fase === fase || (fase === "final" && j.fase === "terceiro")
+    );
     // preferir jogo com o mesmo par de times; senão, o de horário mais próximo
     let jogo = nossos.find(
       (j) =>
@@ -211,6 +225,12 @@ async function principal() {
       }
     }
     if (!jogo) continue;
+
+    // Só grava resultado de partida ENCERRADA. Durante o jogo a API devolve o
+    // placar PARCIAL dentro de fullTime (com winner ainda null) — sem esta
+    // guarda, cada ciclo de 30 min commitava o parcial do momento (1×0, 1×1…)
+    // sem vencedor, sujando o site ao vivo. AWARDED cobre W.O./decisão de mesa.
+    if (p.status !== "FINISHED" && p.status !== "AWARDED") continue;
 
     aplicarResultado(jogo, p, codCasa, codFora);
     if (jogo.vencedor) {
