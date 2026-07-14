@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-12T06:02:01.669Z",
+  "atualizado_em": "2026-07-14T21:30:24.250Z",
   "pontuacao": {
     "oitavas": 1,
     "quartas": 2,
@@ -269,10 +269,10 @@
       "origem2": "Vencedor Quartas 2",
       "candidatos1": null,
       "candidatos2": null,
-      "placar1": null,
-      "placar2": null,
+      "placar1": 0,
+      "placar2": 2,
       "penaltis": null,
-      "vencedor": null,
+      "vencedor": "ESP",
       "alimentado_por": [
         "Q1",
         "Q2"
@@ -307,7 +307,7 @@
       "rotulo": "Disputa de 3º lugar",
       "data": "2026-07-18T16:00:00-03:00",
       "cidade": null,
-      "time1": null,
+      "time1": "FRA",
       "time2": null,
       "origem1": "Perdedor Semifinal 1",
       "origem2": "Perdedor Semifinal 2",
@@ -330,7 +330,7 @@
       "rotulo": "A Grande Final",
       "data": "2026-07-19T16:00:00-03:00",
       "cidade": null,
-      "time1": null,
+      "time1": "ESP",
       "time2": null,
       "origem1": "Vencedor Semifinal 1",
       "origem2": "Vencedor Semifinal 2",
