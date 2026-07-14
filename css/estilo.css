@@ -674,14 +674,14 @@ main { padding: 0 clamp(16px, 4vw, 48px); max-width: 1400px; margin: 0 auto; }
 .lado.comp-dif { background: var(--ouro-suave); }
 .lado.comp-dif .nome { color: var(--ouro); }
 .comp-placar { font-size: 0.72rem; color: var(--texto-2); text-align: center; margin-top: 7px; }
-/* Linha da fonte no comparador: 🎭 🇪🇸ESP × 🇧🇷BRA 2x1 — o confronto completo
-   projetado pela chave da IA, compacto para caber em UMA linha, com o
-   vencedor apostado aceso e o perdedor apagado. */
-/* wrap: o par de times fica sempre junto na 1ª linha; só o chip de placar
-   desce quando é largo demais (ex.: aposta com pênaltis "1x1 (4x2 pên.)") */
-.jogo-comp .lado { flex-wrap: wrap; gap: 4px; row-gap: 3px; padding: 6px 6px; }
+/* Linha da fonte no comparador em formato de placar clássico:
+   🎭 🇪🇸ESP 2 × 1 BRA🇧🇷 — o confronto completo projetado pela chave da IA,
+   cada gol colado no seu time, vencedor apostado aceso e perdedor apagado.
+   Aposta com pênaltis ganha a sublinha "pên. 4x2". */
+.jogo-comp .lado { flex-wrap: wrap; gap: 4px; row-gap: 2px; padding: 6px 6px; }
 .jogo-comp .lado .nome { flex: 1 0 auto; max-width: 100%; }
 .comp-time {
+  flex: 1;
   display: inline-flex;
   align-items: center;
   gap: 3px;
@@ -692,12 +692,25 @@ main { padding: 0 clamp(16px, 4vw, 48px); max-width: 1400px; margin: 0 auto; }
   color: var(--texto-2);
   opacity: 0.7;
 }
+.comp-time-dir { flex-direction: row-reverse; }
 .comp-time .bandeira { width: 17px; height: 12px; border-radius: 3px; }
 .comp-time .bandeira i { font-size: 0.4rem; }
 .comp-time-venceu { color: var(--texto); opacity: 1; }
 .comp-time-indef { font-style: italic; opacity: 0.7; }
+.comp-meio { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.comp-gol {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 0.78rem;
+  min-width: 0.85em;
+  text-align: center;
+  color: var(--texto-2);
+  opacity: 0.7;
+}
+.comp-gol.comp-time-venceu { color: var(--texto); opacity: 1; }
 .comp-vs { color: var(--texto-2); font-weight: 800; font-size: 0.58rem; flex-shrink: 0; opacity: 0.6; }
-/* vencedor apostado herda a cor do veredito da linha */
+.comp-pen { flex-basis: 100%; text-align: center; font-size: 0.62rem; color: var(--texto-2); }
+/* vencedor apostado (nome e gol) herda a cor do veredito da linha */
 .lado.comp-igual .comp-time-venceu { color: var(--verde); }
 .lado.comp-errou .comp-time-venceu { color: var(--vermelho); }
 .lado.comp-dif .comp-time-venceu { color: var(--ouro); }

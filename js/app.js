@@ -681,28 +681,58 @@ function ladoComparacaoHTML(fonte, jogo, cod, classe) {
     return `<div class="lado indefinido">${marca}<span class="nome">aguardando resultado</span></div>`;
   }
 
-  // Confronto COMPLETO que a fonte projeta para o jogo — bandeira + código dos
-  // DOIS lados, com o vencedor apostado aceso. É o que deixa a lógica da chave
-  // da IA auditável no card (só o vencedor isolado escondia de quem ele ganhou).
+  // Confronto COMPLETO que a fonte projeta para o jogo, em formato de placar
+  // clássico: Time gols × gols Time (cada gol colado no seu lado), vencedor
+  // apostado aceso. É o que deixa a lógica da chave da IA auditável no card.
   const [c1, c2] = confrontoDaFonte(fonte, jogo);
-  const timeHTML = (c) => {
-    if (!c) return `<span class="comp-time comp-time-indef">?</span>`;
+  const timeHTML = (c, dir) => {
+    if (!c) return `<span class="comp-time${dir} comp-time-indef">?</span>`;
     const venceu = c === cod ? " comp-time-venceu" : "";
-    return `<span class="comp-time${venceu}" title="${escapar(nomeDoTime(c))}">${bandeiraHTML(c)}<b>${escapar(c)}</b></span>`;
+    return `<span class="comp-time${dir}${venceu}" title="${escapar(nomeDoTime(c))}">${bandeiraHTML(c)}<b>${escapar(c)}</b></span>`;
   };
 
-  const placar = placarDoJogoDaFonte(fonte, jogo.id);
-  const gols = placar
-    ? `<span class="comp-gols" title="${fonte.ehReal ? "Resultado real" : "Placar apostado"} (vencedor na frente)">${escapar(placar)}</span>`
-    : "";
-
-  // Pick fora do confronto projetado (palpite legado/inconsistente): mostra ao
-  // menos o vencedor apostado.
-  if (cod !== c1 && cod !== c2) {
-    return `<div class="lado ${classe}">${marca}${timeHTML(cod)}${gols}</div>`;
+  // Gols orientados aos lados c1/c2 (o pick guarda o placar com o vencedor na
+  // frente; o jogo real já guarda por lado, como no cabeçalho).
+  let g1 = null;
+  let g2 = null;
+  let pen = null;
+  if (fonte.ehReal) {
+    if (jogo.placar1 != null && jogo.placar2 != null) {
+      g1 = jogo.placar1;
+      g2 = jogo.placar2;
+    }
+    pen = jogo.penaltis;
+  } else {
+    const pick = pickCompletoDaFonte(fonte, jogo.id);
+    const par = parsePlacar(pick.placar);
+    if (par) {
+      g1 = cod === c1 ? par[0] : par[1];
+      g2 = cod === c1 ? par[1] : par[0];
+    }
+    pen = pick.penaltis;
   }
 
-  return `<div class="lado ${classe}">${marca}${timeHTML(c1)}<span class="comp-vs">×</span>${timeHTML(c2)}${gols}</div>`;
+  // Pick fora do confronto projetado (palpite legado/inconsistente): mostra ao
+  // menos o vencedor apostado, com o placar em chip.
+  if (cod !== c1 && cod !== c2) {
+    const placar = placarDoJogoDaFonte(fonte, jogo.id);
+    const gols = placar
+      ? `<span class="comp-gols" title="Placar apostado (vencedor na frente)">${escapar(placar)}</span>`
+      : "";
+    return `<div class="lado ${classe}">${marca}${timeHTML(cod, "")}${gols}</div>`;
+  }
+
+  const golHTML = (g, venceu) =>
+    `<span class="comp-gol${venceu ? " comp-time-venceu" : ""}">${g == null ? "" : g}</span>`;
+  const meio =
+    g1 == null && g2 == null
+      ? `<span class="comp-vs">×</span>`
+      : `<span class="comp-meio">${golHTML(g1, c1 === cod)}<span class="comp-vs">×</span>${golHTML(g2, c2 === cod)}</span>`;
+  const penHTML = pen
+    ? `<span class="comp-pen" title="Placar da disputa de pênaltis">pên. ${escapar(pen)}</span>`
+    : "";
+
+  return `<div class="lado ${classe}">${marca}${timeHTML(c1, "")}${meio}${timeHTML(c2, " comp-time-dir")}${penHTML}</div>`;
 }
 
 function jogoComparacaoHTML(fa, fb, jogo) {
