@@ -78,6 +78,12 @@
                                               "placar":  "2x1"
                                           }
                                },
+                     "terceiro":  {
+                                      "T":  {
+                                                 "vencedor":  "ENG",
+                                                 "placar":  "2x1"
+                                             }
+                                  },
                      "final":  {
                                    "campeao":  "FRA",
                                    "placar":  "3x2"
