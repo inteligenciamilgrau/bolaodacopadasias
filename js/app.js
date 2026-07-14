@@ -681,25 +681,28 @@ function ladoComparacaoHTML(fonte, jogo, cod, classe) {
     return `<div class="lado indefinido">${marca}<span class="nome">aguardando resultado</span></div>`;
   }
 
-  // Chip "vence XXX" só quando acrescenta algo além do cabeçalho: quando o
-  // adversário projetado pela fonte ainda não é o que a chave real mostra.
+  // Confronto COMPLETO que a fonte projeta para o jogo — bandeira + código dos
+  // DOIS lados, com o vencedor apostado aceso. É o que deixa a lógica da chave
+  // da IA auditável no card (só o vencedor isolado escondia de quem ele ganhou).
   const [c1, c2] = confrontoDaFonte(fonte, jogo);
-  const rival = cod === c1 ? c2 : cod === c2 ? c1 : null;
-  const real1 = timeNoLado(jogo, 1);
-  const real2 = timeNoLado(jogo, 2);
-  const rivalReal = cod === real1 ? real2 : cod === real2 ? real1 : null;
-  const chip =
-    rival && rival !== rivalReal
-      ? `<span class="comp-rival" title="Nesta chave, ${escapar(nomeDoTime(cod))} elimina ${escapar(nomeDoTime(rival))}">vence ${escapar(rival)}</span>`
-      : "";
+  const timeHTML = (c) => {
+    if (!c) return `<span class="comp-time comp-time-indef">?</span>`;
+    const venceu = c === cod ? " comp-time-venceu" : "";
+    return `<span class="comp-time${venceu}" title="${escapar(nomeDoTime(c))}">${bandeiraHTML(c)}<b>${escapar(c)}</b></span>`;
+  };
 
   const placar = placarDoJogoDaFonte(fonte, jogo.id);
   const gols = placar
-    ? `<span class="comp-gols" title="Placar apostado (vencedor na frente)">${escapar(placar)}</span>`
+    ? `<span class="comp-gols" title="${fonte.ehReal ? "Resultado real" : "Placar apostado"} (vencedor na frente)">${escapar(placar)}</span>`
     : "";
 
-  return `<div class="lado ${classe}">${marca}${bandeiraHTML(cod)}
-    <span class="nome">${escapar(nomeDoTime(cod))}</span>${gols}${chip}</div>`;
+  // Pick fora do confronto projetado (palpite legado/inconsistente): mostra ao
+  // menos o vencedor apostado.
+  if (cod !== c1 && cod !== c2) {
+    return `<div class="lado ${classe}">${marca}${timeHTML(cod)}${gols}</div>`;
+  }
+
+  return `<div class="lado ${classe}">${marca}${timeHTML(c1)}<span class="comp-vs">×</span>${timeHTML(c2)}${gols}</div>`;
 }
 
 function jogoComparacaoHTML(fa, fb, jogo) {
