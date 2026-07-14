@@ -795,6 +795,24 @@ function renderizarComparacao() {
       : "⏳ Nada para comparar";
 }
 
+// A dupla escolhida sobrevive ao F5: fica no localStorage (quando disponível —
+// modo privado/etc. pode bloquear, daí os try/catch e o site segue sem memória).
+const CHAVE_COMPARADOR = "bolao-comparador";
+
+function lerComparadorSalvo() {
+  try {
+    return JSON.parse(localStorage.getItem(CHAVE_COMPARADOR)) || {};
+  } catch {
+    return {};
+  }
+}
+
+function salvarComparador(a, b) {
+  try {
+    localStorage.setItem(CHAVE_COMPARADOR, JSON.stringify({ a, b }));
+  } catch {}
+}
+
 function iniciarComparador() {
   const selA = $("#comp-a");
   const selB = $("#comp-b");
@@ -813,11 +831,19 @@ function iniciarComparador() {
     .join("");
   selA.innerHTML = opcoes;
   selB.innerHTML = opcoes;
-  selA.value = ias[0].id;
-  selB.value = ias[1].id;
 
-  selA.addEventListener("change", renderizarComparacao);
-  selB.addEventListener("change", renderizarComparacao);
+  // volta para a última dupla comparada, se ainda existir no manifest
+  const salvo = lerComparadorSalvo();
+  const existe = (id) => ias.some((f) => f.id === id);
+  selA.value = existe(salvo.a) ? salvo.a : ias[0].id;
+  selB.value = existe(salvo.b) ? salvo.b : ias[1].id;
+
+  const aoMudar = () => {
+    salvarComparador(selA.value, selB.value);
+    renderizarComparacao();
+  };
+  selA.addEventListener("change", aoMudar);
+  selB.addEventListener("change", aoMudar);
   renderizarComparacao();
 }
 
