@@ -291,10 +291,10 @@
       "origem2": "Vencedor Quartas 4",
       "candidatos1": null,
       "candidatos2": null,
-      "placar1": null,
-      "placar2": null,
+      "placar1": 1,
+      "placar2": 2,
       "penaltis": null,
-      "vencedor": null,
+      "vencedor": "ARG",
       "alimentado_por": [
         "Q3",
         "Q4"
