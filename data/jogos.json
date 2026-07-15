@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-14T21:30:24.250Z",
+  "atualizado_em": "2026-07-15T22:00:52.822Z",
   "pontuacao": {
     "oitavas": 1,
     "quartas": 2,
@@ -308,7 +308,7 @@
       "data": "2026-07-18T16:00:00-03:00",
       "cidade": null,
       "time1": "FRA",
-      "time2": null,
+      "time2": "ENG",
       "origem1": "Perdedor Semifinal 1",
       "origem2": "Perdedor Semifinal 2",
       "candidatos1": null,
@@ -331,7 +331,7 @@
       "data": "2026-07-19T16:00:00-03:00",
       "cidade": null,
       "time1": "ESP",
-      "time2": null,
+      "time2": "ARG",
       "origem1": "Vencedor Semifinal 1",
       "origem2": "Vencedor Semifinal 2",
       "candidatos1": null,
