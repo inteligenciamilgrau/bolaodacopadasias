@@ -313,10 +313,10 @@
       "origem2": "Perdedor Semifinal 2",
       "candidatos1": null,
       "candidatos2": null,
-      "placar1": null,
-      "placar2": null,
+      "placar1": 4,
+      "placar2": 6,
       "penaltis": null,
-      "vencedor": null,
+      "vencedor": "ENG",
       "alimentado_por": [
         "S1",
         "S2"
