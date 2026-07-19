@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-07-15T22:00:52.822Z",
+  "atualizado_em": "2026-07-19T22:11:15.735Z",
   "pontuacao": {
     "oitavas": 1,
     "quartas": 2,
@@ -336,10 +336,10 @@
       "origem2": "Vencedor Semifinal 2",
       "candidatos1": null,
       "candidatos2": null,
-      "placar1": null,
-      "placar2": null,
+      "placar1": 1,
+      "placar2": 0,
       "penaltis": null,
-      "vencedor": null,
+      "vencedor": "ESP",
       "alimentado_por": [
         "S1",
         "S2"
