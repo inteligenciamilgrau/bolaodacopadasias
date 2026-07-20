@@ -781,6 +781,37 @@ main { padding: 0 clamp(16px, 4vw, 48px); max-width: 1400px; margin: 0 auto; }
 .jogo.final-card .lado.vencedor { background: var(--ouro-suave); }
 .jogo.final-card .lado.vencedor .nome, .jogo.final-card .lado.vencedor .gols { color: var(--ouro); }
 
+/* Card do campeão do bolão — celebração fixa sob o ranking, pós-torneio */
+.campeao-bolao {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 22px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 213, 79, 0.35);
+  background: linear-gradient(160deg, var(--ouro-suave), var(--superficie));
+  box-shadow: 0 0 50px rgba(255, 213, 79, 0.10);
+}
+.campeao-bolao .cb-trofeu { font-size: 2.8rem; flex-shrink: 0; }
+.campeao-bolao h3 { margin: 0 0 6px; color: var(--ouro); font-size: 1.18rem; }
+.campeao-bolao p { margin: 0 0 10px; color: var(--texto-2); font-size: 0.92rem; }
+.campeao-bolao .cb-link {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--ouro);
+  border: 1px solid rgba(255, 213, 79, 0.45);
+  border-radius: 999px;
+  padding: 6px 14px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.campeao-bolao .cb-link:hover { background: var(--ouro-suave); }
+@media (max-width: 700px) {
+  .campeao-bolao { flex-direction: column; text-align: center; }
+}
+
 .campeao-banner {
   margin-top: 14px;
   text-align: center;
