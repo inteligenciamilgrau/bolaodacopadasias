@@ -781,6 +781,19 @@ main { padding: 0 clamp(16px, 4vw, 48px); max-width: 1400px; margin: 0 auto; }
 .jogo.final-card .lado.vencedor { background: var(--ouro-suave); }
 .jogo.final-card .lado.vencedor .nome, .jogo.final-card .lado.vencedor .gols { color: var(--ouro); }
 
+/* Nota de transparência sobre o adendo do 3º lugar (fim da seção Regras) */
+.nota-transparencia {
+  margin-top: 18px;
+  padding: 14px 18px;
+  border: 1px dashed var(--borda);
+  border-radius: var(--radius-sm);
+  background: var(--superficie);
+  color: var(--texto-2);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+.nota-transparencia b { color: var(--texto); }
+
 /* Card do campeão do bolão — celebração fixa sob o ranking, pós-torneio */
 .campeao-bolao {
   margin-top: 18px;
